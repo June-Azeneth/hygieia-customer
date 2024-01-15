@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.hygieia_customer.ui.transactions.TransactionsFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_transaction"
+        android:name="com.example.hygieia_customer.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_scanQR"
+        android:name="com.example.hygieia_customer.ui.scanQR.ScanQRFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_promosFragment"
+        android:name="com.example.hygieia_customer.ui.promos.PromosFragment"
+        android:label="fragment_promos"
+        tools:layout="@layout/fragment_promos" />
+    <fragment
+        android:id="@+id/navigation_rewardsFragment"
+        android:name="com.example.hygieia_customer.ui.rewards.RewardsFragment"
+        android:label="fragment_rewards"
+        tools:layout="@layout/fragment_rewards" />
+</navigation>

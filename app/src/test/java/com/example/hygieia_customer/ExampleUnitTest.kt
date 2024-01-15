@@ -1,4 +1,4 @@
-package com.example.hygieia_store
+package com.example.hygieia_customer
 
 import org.junit.Test
 

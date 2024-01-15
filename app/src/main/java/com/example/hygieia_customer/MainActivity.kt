@@ -1,4 +1,4 @@
-package com.example.hygieia_store
+package com.example.hygieia_customer
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

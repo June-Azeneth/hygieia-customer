@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Hygieia-Store"
+rootProject.name = "Hygieia-Customer"
 include(":app")
  
