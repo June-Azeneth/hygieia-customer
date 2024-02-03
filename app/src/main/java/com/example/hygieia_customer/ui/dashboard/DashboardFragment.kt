@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentDashboardBinding
@@ -39,8 +36,14 @@ class DashboardFragment : Fragment() {
 
         //navigation
         navigateTo(binding.earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
-        navigateTo(binding.rewardsCard, R.id.action_navigation_dashboard_to_navigation_rewardsFragment)
-        navigateTo(binding.promosCard, R.id.action_navigation_dashboard_to_navigation_promosFragment)
+        navigateTo(
+            binding.rewardsCard,
+            R.id.action_navigation_dashboard_to_navigation_rewardsFragment
+        )
+        navigateTo(
+            binding.promosCard,
+            R.id.action_navigation_dashboard_to_navigation_promosFragment
+        )
         navigateTo(binding.profile, R.id.action_navigation_dashboard_to_profileFragment)
 
 
@@ -68,6 +71,8 @@ class DashboardFragment : Fragment() {
                 if (user != null) {
                     binding.username.text = "Hello ${user.customerName}!"
                     binding.currentBalance.text = user.currentBalance.toString()
+                } else {
+                    binding.username.text = "Hello Customer!"
                 }
             }
         } catch (error: Exception) {

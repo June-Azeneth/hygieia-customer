@@ -3,13 +3,12 @@ package com.example.hygieia_customer
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hygieia_customer.databinding.ActivityLoggedInBinding
-import com.example.hygieia_customer.ui.dashboard.DashboardFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 class LoggedInActivity : AppCompatActivity() {
@@ -18,7 +17,7 @@ class LoggedInActivity : AppCompatActivity() {
     private var lastBackPressTime: Long = 0
 
     private lateinit var binding: ActivityLoggedInBinding
-    private lateinit var auth: FirebaseAuth;
+    private lateinit var auth: FirebaseAuth
 
     var bundle = Bundle()
 
@@ -26,7 +25,7 @@ class LoggedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         try {
             auth = FirebaseAuth.getInstance()
-            val currentUser = auth.currentUser
+//            val currentUser = auth.currentUser
 
             binding = ActivityLoggedInBinding.inflate(layoutInflater)
             setContentView(binding.root)
@@ -36,8 +35,7 @@ class LoggedInActivity : AppCompatActivity() {
             val navController = findNavController(R.id.nav_host_fragment_activity_logged_in)
             navView.setupWithNavController(navController)
 
-        }
-        catch (error: Exception){
+        } catch (error: Exception) {
             Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
             Log.e("ERROR DASHBOARD", error.toString())
         }
@@ -48,24 +46,24 @@ class LoggedInActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    override fun onBackPressed() {
-        // Check if the current fragment is the dashboard
-        if (currentFragment is DashboardFragment) {
-            // Check if it's the second click within 2 seconds
-            if (System.currentTimeMillis() - lastBackPressTime < 2000) {
-                // Exit the app
-                finishAffinity()
-            } else {
-                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
-                lastBackPressTime = System.currentTimeMillis()
-            }
-        } else {
-            // If not the dashboard, proceed with normal back press behavior
-            super.onBackPressed()
-        }
-    }
+//    override fun onBackPressed() {
+//        // Check if the current fragment is the dashboard
+//        if (currentFragment is DashboardFragment) {
+//            // Check if it's the second click within 2 seconds
+//            if (System.currentTimeMillis() - lastBackPressTime < 2000) {
+//                // Exit the app
+//                finishAffinity()
+//            } else {
+//                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
+//                lastBackPressTime = System.currentTimeMillis()
+//            }
+//        } else {
+//            // If not the dashboard, proceed with normal back press behavior
+//            super.onBackPressed()
+//        }
+//    }
 
-    private fun setCurrentFragment(fragment: Fragment) {
-//        currentFragment = fragment
-    }
+//    private fun setCurrentFragment(fragment: Fragment) {
+////        currentFragment = fragment
+//    }
 }

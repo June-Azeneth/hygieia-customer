@@ -19,7 +19,6 @@
             android:src="@drawable/recyclables"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_centerVertical="true"
             android:scaleType="centerCrop"/>
 
         <LinearLayout
@@ -32,7 +31,6 @@
                 android:id="@+id/product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PROMO NAME"
                 android:fontFamily="@font/nunito_sans_bold"
                 android:textColor="@color/sub_text"
                 android:textSize="16sp" />
@@ -41,8 +39,6 @@
                 android:id="@+id/discount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/product"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/main_green"
                 android:textSize="@dimen/text_small" />
 
@@ -51,8 +47,6 @@
                 android:id="@+id/disc_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/discount"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/main_green"
                 android:textSize="@dimen/text_small" />
 
@@ -60,8 +54,6 @@
                 android:id="@+id/points_required"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/disc_price"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/main_green"
                 android:textSize="@dimen/text_small" />
 
@@ -69,9 +61,7 @@
                 android:id="@+id/store"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/points_required"
                 android:layout_marginTop="4dp"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/secondary_green"
                 android:textSize="@dimen/text_small"/>
         </LinearLayout>

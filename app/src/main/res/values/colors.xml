@@ -11,7 +11,9 @@
     <color name="text_color">#314021</color>
     <color name="sub_text">#54683E</color>
     <color name="red">#B12626</color>
+    <color name="bright_red">#FF0000</color>
     <color name="green">#8DB930</color>
+    <color name="gold">#FFD500</color>
     <color name="gray">#969794</color>
     <color name="bgColor">#ECE5D4</color>
     <color name="offWhite">#E3DBCA</color>

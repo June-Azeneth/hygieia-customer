@@ -11,11 +11,10 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.example.hygieia_customer.databinding.FragmentLoginBinding
+import com.example.hygieia_customer.utils.Commons
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class LoginFragment : Fragment() {
     private lateinit var auth: FirebaseAuth;
@@ -24,28 +23,32 @@ class LoginFragment : Fragment() {
     private val binding
         get() = _binding
             ?: error("Binding should not be accessed before onCreateView or after onDestroyView")
-    private lateinit var intent: Intent
+    private lateinit var commons: Commons
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-//        auth = Firebase.auth
         auth = FirebaseAuth.getInstance()
-
-//        updateUI(currentUser)
+        commons = Commons()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.forgotPassword.setOnClickListener {
-            findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
-        }
         binding.loginBTN.setOnClickListener {
             loginUser()
         }
+        commons.setNavigationOnClickListener(
+            binding.toRegister,
+            R.id.action_loginFragment_to_signupFragment
+        )
+        commons.setNavigationOnClickListener(
+            binding.forgotPassword,
+            R.id.action_loginFragment_to_forgotPasswordFragment
+        )
     }
 
     private fun loginUser() {
@@ -60,12 +63,15 @@ class LoginFragment : Fragment() {
                 email.isEmpty() -> {
                     showToast("Please provide an email")
                 }
+
                 password.isEmpty() -> {
                     showToast("Please provide a password")
                 }
+
                 !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                     showToast("Please provide a valid email")
                 }
+
                 else -> {
                     text.visibility = INVISIBLE
                     loader.visibility = VISIBLE
@@ -77,10 +83,12 @@ class LoginFragment : Fragment() {
 
                             if (task.isSuccessful) {
                                 Log.d(TAG, "signInWithEmail:success")
-                                val intent = Intent(requireView().context, LoggedInActivity::class.java)
+                                val intent =
+                                    Intent(requireView().context, LoggedInActivity::class.java)
                                 startActivity(intent)
                                 binding.email.text = Editable.Factory.getInstance().newEditable("")
-                                binding.password.text = Editable.Factory.getInstance().newEditable("")
+                                binding.password.text =
+                                    Editable.Factory.getInstance().newEditable("")
                             } else {
                                 // If sign in fails, handle the specific exception
                                 Log.w(TAG, "signInWithEmail:failure", task.exception)
@@ -90,6 +98,7 @@ class LoginFragment : Fragment() {
                                     is FirebaseAuthInvalidCredentialsException -> {
                                         showToast("Invalid email or password")
                                     }
+
                                     else -> {
                                         showToast("Authentication failed.")
                                     }

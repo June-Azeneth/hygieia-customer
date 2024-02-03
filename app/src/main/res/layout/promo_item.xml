@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/small"
+    android:orientation="vertical"
     app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="@dimen/text_regular"
-    android:orientation="vertical">
+    app:cardCornerRadius="@dimen/tiny">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -18,38 +18,58 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_centerVertical="true"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_not_found"
+            app:layout_constraintBottom_toTopOf="@id/details"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0%"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
+            android:layout_marginTop="@dimen/small"
+            android:background="@color/gold"
+            android:textColor="@color/bright_red"
+            android:textSize="@dimen/text_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/points_required"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondary_green"
+            android:textSize="@dimen/text_regular"
+            android:text="50 pts"
+            android:layout_margin="@dimen/tiny"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <LinearLayout
+            android:id="@+id/details"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/tiny"
             android:orientation="vertical"
-            android:layout_margin="@dimen/small">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photo">
 
             <TextView
                 android:id="@+id/promo_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PROMO NAME"
-                android:fontFamily="@font/nunito_sans_bold"
                 android:textColor="@color/accent_orange"
                 android:textSize="@dimen/text_regular" />
+
 
             <TextView
                 android:id="@+id/product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/promo_name"
-                android:fontFamily="@font/nunito_sans_regular"
-                android:textColor="@color/sub_text"
-                android:textSize="@dimen/text_small" />
-
-            <TextView
-                android:id="@+id/discount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/product"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/sub_text"
                 android:textSize="@dimen/text_small" />
 
@@ -58,39 +78,23 @@
                 android:id="@+id/disc_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/discount"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/sub_text"
                 android:textSize="@dimen/text_small" />
 
             <TextView
-                android:id="@+id/points_required"
+                android:id="@+id/promoDuration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/disc_price"
-                android:fontFamily="@font/nunito_sans_regular"
-                android:textColor="@color/sub_text"
-                android:textSize="@dimen/text_small" />
-
-            <TextView
-                android:id="@+id/promoEnd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/points_required"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/sub_text"
                 android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/store"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:layout_below="@id/points_required"
-                android:fontFamily="@font/nunito_sans_regular"
-                android:textColor="@color/secondary_green"
-                android:textSize="@dimen/text_small"/>
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_small" />
         </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

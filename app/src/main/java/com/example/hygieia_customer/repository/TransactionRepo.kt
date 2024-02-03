@@ -12,15 +12,16 @@ class TransactionRepo {
 
         firestore.collection("transaction")
             .whereEqualTo("customerID", userId)
+//            .orderBy("added_on", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
-                val promoList = mutableListOf<Transaction>()
+                val transactionList = mutableListOf<Transaction>()
                 for (document in result) {
                     try {
                         val transaction = Transaction(
                             document.getString("customerID") ?: "",
                             document.getString("customerName") ?: "",
-                            document.getString("date") ?: "",
+                            document.getTimestamp("added_on")?.toDate(),
                             document.getDouble("discount") ?: 0.0,
                             document.getDouble("points_earned") ?: 0.0,
                             document.getDouble("points_spent") ?: 0.0,
@@ -29,13 +30,14 @@ class TransactionRepo {
                             document.getDouble("total") ?: 0.0,
                             document.getString("type") ?: "",
                         )
-                        promoList.add(transaction)
+                        transactionList.add(transaction)
                     } catch (e: Exception) {
                         Log.e(TAG, "Error creating Transaction object: ${e.message}")
                         // Handle the error or skip this document
                     }
                 }
-                callback(promoList)
+                callback(transactionList)
+                Log.e(TAG, transactionList.toString())
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting transactions: ", exception)

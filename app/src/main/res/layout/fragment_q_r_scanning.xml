@@ -18,7 +18,7 @@
         
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingVertical="25dp">
             
             <TextView
@@ -28,8 +28,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="Your current balance is"
-                android:fontFamily="@font/nunito_sans_semibold"
+                android:text="@string/your_current_balance_is"
                 android:textColor="@color/text_color"
                 />
 
@@ -40,9 +39,10 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text1"
-                android:text="0.0"
+                android:text="@string/_0_0"
+                android:fontFamily="@font/nunito_sans_semibold"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/large"
+                android:textSize="@dimen/text_large"
                 />
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -63,9 +63,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/medium"
-                android:textColor="@color/text_color"
                 android:fontFamily="@font/nunito_sans_semibold"
-                android:text="How to earn points by recycling with Hygieia"
+                android:text="@string/how_to_earn_points_by_recycling_with_hygieia"
                 app:layout_constraintTop_toBottomOf="@id/qrCode"
                 android:gravity="center"
                 />
@@ -79,7 +78,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/sub_text"
                 android:text="@string/how_to_earn_points_instructions"
                 />
@@ -91,8 +89,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="@dimen/regular"
+                android:text="@string/conversion_rate"
                 android:fontFamily="@font/nunito_sans_semibold"
-                android:text="Conversion Rate:"
                 android:textColor="@color/text_color"
                 app:layout_constraintTop_toBottomOf="@id/text3"
                 android:gravity="center"
@@ -107,7 +105,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="25dp"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/nunito_sans_regular"
                 android:textColor="@color/sub_text"
                 android:text="@string/conversion_rate_explanation"
                 />

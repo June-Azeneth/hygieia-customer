@@ -1,9 +1,11 @@
 package com.example.hygieia_customer.model
 
+import java.util.Date
+
 class Transaction(
     val customerID: String = "",
     val customerName: String = "",
-    val date: String = "",
+    val date: Date?,
     val discount: Double = 0.0,
     val points_earned: Double = 0.0,
     val points_spent: Double = 0.0,

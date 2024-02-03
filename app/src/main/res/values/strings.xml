@@ -6,14 +6,55 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 
-    //for Promos and Rewards
-    <string name="product">Product: </string>
-    <string name="discount">Discount: </string>
-    <string name="discPrice">Discounted Price: </string>
-    <string name="ptsReq">Points Required: </string>
+<!--    //for Promos and Rewards-->
+<!--    <string name="product">Product: </string>-->
+<!--    <string name="discount">Discount: </string>-->
+<!--    <string name="discPrice">Discounted Price: </string>-->
+<!--    <string name="ptsReq">Points Required: </string>-->
+
+    //for promo items
+    <string name="product_template">Product: %1$s</string>
+    <string name="disc_price_template">Discounted Price: ₱%1$s</string>
+    <string name="discount_template">-%1$s%%</string>
+    <string name="points_req_template">%1$s pts</string>
+    <string name="date_range">From %1$s to %2$s</string>
 
     //QR Code Fragment
     <string name="how_to_earn_points_instructions">1. Visit any of our affiliated stores and make a purchase. \n\n2. Return the recyclable packaging of the products you purchased back to the store. \n\n3. Present the clerk/staff with your QR code. \n\n4. The clerk will input how many recyclable items you have returned and add points to your account.</string>
     <string name="conversion_rate_explanation">The amount of points credited to your account depends on the quantity of the recyclable materials you have returned to the store.</string>
+
+    //Common strings
+    <string name="create_account">Create Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="address">Address</string>
+    <string name="password">Password</string>
+    <string name="login_instead">Login Instead</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
+    <string name="received_points">Received Points</string>
+    <string name="add_points">+%1$s pts</string>
+    <string name="subtract_points">-%1$s pts</string>
+    <string name="redeemed">Redeemed %1$s</string>
+    <string name="option_title">Option Title</string>
+    <string name="choose_your_profile_pic">Choose Your Profile Pic</string>
+    <string name="your_current_balance_is">Your current balance is</string>
+    <string name="how_to_earn_points_by_recycling_with_hygieia">How to earn points by recycling with Hygieia</string>
+    <string name="conversion_rate">Conversion Rate:</string>
+    <string name="_0_0">0.0</string>
+    <string name="back">Back</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="get_started">Get Started</string>
+    <string name="earn_more">Earn More</string>
+    <string name="recycle_now">Recycle Now!</string>
+    <string name="shop_at_any_of_our_affiliated_stores_return_the_recyclable_packaging_s_scan_your_qr_code_to_earn_points_effortlessly_it_s_that_simple">Shop at any of our affiliated stores, return the recyclable packaging\'s, scan your qr code to earn points effortlessly. It\'s that simple.</string>
+    <string name="rewards">Rewards</string>
+    <string name="see_what_products_you_can_avail_with_your_points">See what products you can avail with your points</string>
+    <string name="promos">Promos</string>
+    <string name="see_available_promos_offered_by_our_affiliated_stores">See available promos offered by our affiliated stores</string>
+    <string name="our_affiliated_stores">Our Affiliated Stores</string>
 
 </resources>

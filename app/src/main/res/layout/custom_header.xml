@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
+        android:contentDescription="@string/back"
         android:src="@drawable/back_arrow"
         android:layout_marginHorizontal="@dimen/tiniest"/>
 
@@ -25,10 +26,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Back"
+        android:text="@string/back"
         android:textColor="@color/white"
         android:textSize="@dimen/text_small"
-        android:fontFamily="@font/nunito_sans_bold"/>'
+        android:fontFamily="@font/nunito_sans_bold"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/icon"

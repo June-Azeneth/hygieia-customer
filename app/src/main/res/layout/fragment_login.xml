@@ -12,9 +12,8 @@
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_sans_regular"
         android:gravity="center"
-        android:text="Welcome Back!"
+        android:text="@string/welcome_back"
         android:textColor="@color/main_green"
         android:textSize="25sp" />
 
@@ -23,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
-        android:hint="Email"
+        android:hint="@string/email"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="10dp"
-        android:hint="Password"
+        android:hint="@string/password"
         app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -58,8 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/nunito_sans_regular"
-        android:text="Forgot Password"
+        android:text="@string/forgot_password"
         android:textColor="@color/secondary_green" />
 
     <!--    <androidx.appcompat.widget.AppCompatButton-->
@@ -87,7 +85,7 @@
             android:id="@+id/textLogin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Login"
+            android:text="@string/login"
             android:gravity="center"
             android:textColor="@color/white"
             android:fontFamily="@font/nunito_sans_regular"
@@ -114,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:fontFamily="@font/nunito_sans_regular"
         android:gravity="center"
-        android:text="Create Account" />
+        android:padding="@dimen/small"
+        android:text="@string/create_account" />
 </LinearLayout>

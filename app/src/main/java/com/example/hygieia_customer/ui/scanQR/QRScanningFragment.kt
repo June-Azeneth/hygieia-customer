@@ -40,18 +40,23 @@ class QRScanningFragment : Fragment() {
         updateUI()
     }
 
-    private fun updateUI(){
+    private fun updateUI() {
         try {
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
-                binding.currentBalance.text = user.currentBalance.toString()
                 if (user != null) {
-                    var imgUrl = user.img_url
+                    binding.currentBalance.text = user.currentBalance.toString()
+                    val imgUrl = user.img_url
                     if (!imgUrl.isNullOrBlank()) {
                         Glide.with(this)
                             .load(imgUrl)
                             .error(R.drawable.image_not_found) // Optional: Image to display if loading fails
                             .into(binding.qrCode)
                     }
+                } else {
+                    // Handle the case where userDetails is null (user document not found)
+                    // You can set default values or show a message to the user
+                    binding.currentBalance.text = "0"
+                    binding.qrCode.setImageResource(R.drawable.image_not_found)
                 }
             }
             val currentUser = userRepo.getCurrentUserId().toString()
@@ -60,6 +65,7 @@ class QRScanningFragment : Fragment() {
             Log.e(TAG, error.toString())
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

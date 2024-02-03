@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.hygieia_customer.R
 import com.google.android.material.imageview.ShapeableImageView
@@ -21,7 +22,7 @@ class Commons {
         iconRef.setImageResource(icon)
     }
 
-    fun setToolBarIconAction(root : View){
+    fun setToolBarIconAction(root: View) {
         val customToolbar = root.findViewById<View>(R.id.header)
         val iconRef: ShapeableImageView = customToolbar.findViewById(R.id.icon)
     }
@@ -32,9 +33,18 @@ class Commons {
             refreshLayout.isRefreshing = false
         }
     }
+
+    fun setNavigationOnClickListener(view: View, actionId: Int) {
+        view.setOnClickListener {
+            val navController = Navigation.findNavController(view)
+            navController.navigate(actionId)
+        }
+    }
+
     fun showToast(message: String, context: Context) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
+
     fun log(tag: String, message: String) {
         Log.e(tag, message)
     }

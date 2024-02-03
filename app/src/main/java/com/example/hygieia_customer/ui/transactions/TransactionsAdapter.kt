@@ -8,6 +8,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Transaction
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TransactionsAdapter(
     private val transactionList: ArrayList<Transaction>
@@ -21,15 +24,18 @@ class TransactionsAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = transactionList[position]
+        val context = holder.itemView.context
 
         holder.store.text = currentItem.storeName
         holder.type.text = currentItem.type
-        holder.date.text = currentItem.date
+
+        val dateOfTransaction = currentItem.date?.let { formatDateOnly(it) }
+        holder.date.text = dateOfTransaction
 
         when (currentItem.type) {
             "grant" -> {
-                holder.type.text = "Received Points"
-                holder.points.text = "+${currentItem.points_earned.toString()} pts"
+                holder.type.text = context.getString(R.string.received_points)
+                holder.points.text = context.getString(R.string.add_points, currentItem.points_earned.toString())
                 holder.points.setTextColor(
                     ContextCompat.getColor(
                         holder.itemView.context, R.color.green
@@ -37,8 +43,8 @@ class TransactionsAdapter(
                 )
             }
             "redeem" -> {
-                holder.type.text = "Redeemed ${currentItem.product}"
-                holder.points.text = "-${currentItem.points_spent.toString()} pts"
+                holder.type.text = context.getString(R.string.redeemed, currentItem.product)
+                holder.points.text = context.getString(R.string.subtract_points , currentItem.points_spent.toString())
                 holder.points.setTextColor(
                     ContextCompat.getColor(
                         holder.itemView.context, R.color.red
@@ -50,6 +56,11 @@ class TransactionsAdapter(
 
     override fun getItemCount(): Int {
         return transactionList.size
+    }
+
+    private fun formatDateOnly(date: Date): String {
+        val dateFormat = SimpleDateFormat("MMM dd yyyy", Locale.getDefault())
+        return dateFormat.format(date)
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

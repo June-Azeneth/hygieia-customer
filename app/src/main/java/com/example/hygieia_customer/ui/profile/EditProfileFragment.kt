@@ -40,7 +40,7 @@ class EditProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         updateUI()
         return binding.root
@@ -102,7 +102,7 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        val currentUserInfo = sharedViewModel.userDetails.value
+//        val currentUserInfo = sharedViewModel.userDetails.value
 
         val updatedUserInfo = UserInfo(
             img_url = selectedProfilePicture,
@@ -127,8 +127,8 @@ class EditProfileFragment : Fragment() {
 
 
 //        if (currentUserInfo != null && updatedUserInfo.isDifferent(currentUserInfo)) {
-            // Changes detected, update the profile
-            updateUserProfileInRepo(updatedUserInfo)
+        // Changes detected, update the profile
+        updateUserProfileInRepo(updatedUserInfo)
 //        } else {
 //            // No changes, show a toast
 //            Commons().showToast("No changes detected", requireContext())

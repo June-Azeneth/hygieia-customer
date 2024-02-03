@@ -14,16 +14,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="15dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/options"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/options"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile"
@@ -37,22 +29,19 @@
                 android:id="@+id/username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15sp"
+                android:layout_marginTop="@dimen/large"
                 android:fontFamily="@font/nunito_sans_semibold"
-                android:text="Hello ..."
-                android:textColor="@color/text_color"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/options" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_sans_semibold"
-                android:text="Your current balance is"
-                android:textColor="@color/text_color"
+                android:text="@string/your_current_balance_is"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,8 +64,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/nunito_sans_semibold"
                 android:text="0"
+                android:fontFamily="@font/nunito_sans_semibold"
                 android:textColor="@color/text_color"
                 android:textSize="45sp"
                 app:layout_constraintStart_toEndOf="@id/text2"
@@ -88,8 +77,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="28dp"
                 android:background="@drawable/orange_round_button"
-                android:fontFamily="@font/nunito_sans_semibold"
-                android:text="Earn More"
+                android:text="@string/earn_more"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,10 +112,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"
-                    android:fontFamily="@font/nunito_sans_semibold"
                     android:gravity="right"
-                    android:text="Recycle Now!"
+                    android:text="@string/recycle_now"
                     android:textColor="@color/white"
+                    android:fontFamily="@font/nunito_sans_bold"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.698"
@@ -141,9 +129,8 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="15dp"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="@font/nunito_sans_regular"
-                    android:gravity="right"
-                    android:text="Shop at any of our affiliated stores, return the recyclable packaging's, scan your qr code to earn points effortlessly. It's that simple."
+                    android:gravity="end"
+                    android:text="@string/shop_at_any_of_our_affiliated_stores_return_the_recyclable_packaging_s_scan_your_qr_code_to_earn_points_effortlessly_it_s_that_simple"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -162,7 +149,6 @@
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="10dp"
                 app:cardBackgroundColor="@color/white"
-                android:clickable="true"
                 app:cardCornerRadius="@dimen/text_tiny"
                 app:layout_constraintEnd_toStartOf="@id/card2"
                 app:layout_constraintStart_toStartOf="parent"
@@ -172,7 +158,6 @@
                     android:id="@+id/rewardsCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
                     android:orientation="vertical"
                     android:padding="15dp">
 
@@ -186,20 +171,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_sans_semibold"
-                        android:text="Rewards"
-                        android:textColor="@color/text_color"
+                        android:text="@string/rewards"
                         android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Try"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nunito_sans_semibold"
-                        android:text="See what products you can avail with your points"
+                        android:text="@string/see_what_products_you_can_avail_with_your_points"
                         android:textColor="@color/main_green"
                         android:textSize="12sp" />
 
@@ -223,7 +201,6 @@
                     android:id="@+id/promosCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:clickable="true"
                     android:orientation="vertical"
                     android:padding="15dp">
 
@@ -237,36 +214,27 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/nunito_sans_semibold"
-                        android:text="Promos"
-                        android:textColor="@color/text_color"
+                        android:text="@string/promos"
                         android:textSize="18sp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/nunito_sans_semibold"
-                        android:text="See available promos offered by our affiliated stores"
+                        android:text="@string/see_available_promos_offered_by_our_affiliated_stores"
                         android:textColor="@color/main_green"
                         android:textSize="12sp" />
-
                 </LinearLayout>
-
             </androidx.cardview.widget.CardView>
-
-
 
             <TextView
                 android:id="@+id/text5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/nunito_sans_semibold"
-                android:text="Our Affiliated Stores"
-                android:textColor="@color/text_color"
+                android:text="@string/our_affiliated_stores"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/card1" />
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/verticalScroll"
@@ -275,27 +243,6 @@
                 android:orientation="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/text5" />
-
-            <TextView
-                android:id="@+id/text6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:fontFamily="@font/nunito_sans_semibold"
-                android:text="Recent Transactions"
-                android:textColor="@color/text_color"
-                android:textSize="18sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/verticalScroll" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/transactionList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text6" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
