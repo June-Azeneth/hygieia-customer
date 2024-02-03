@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.scanQR.QRScanningFragment">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/custom_header"/>
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingVertical="25dp">
+            
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="Your current balance is"
+                android:fontFamily="@font/nunito_sans_semibold"
+                android:textColor="@color/text_color"
+                />
+
+            <TextView
+                android:id="@+id/currentBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text1"
+                android:text="0.0"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/large"
+                />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/qrCode"
+                android:layout_width="230dp"
+                android:layout_height="230dp"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/image_not_found"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/currentBalance"
+                app:layout_constraintBottom_toTopOf="@id/text2"/>
+            
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/medium"
+                android:textColor="@color/text_color"
+                android:fontFamily="@font/nunito_sans_semibold"
+                android:text="How to earn points by recycling with Hygieia"
+                app:layout_constraintTop_toBottomOf="@id/qrCode"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/text3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:text="@string/how_to_earn_points_instructions"
+                />
+
+            <TextView
+                android:id="@+id/text4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/regular"
+                android:fontFamily="@font/nunito_sans_semibold"
+                android:text="Conversion Rate:"
+                android:textColor="@color/text_color"
+                app:layout_constraintTop_toBottomOf="@id/text3"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/text5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/text4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:text="@string/conversion_rate_explanation"
+                />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</LinearLayout>

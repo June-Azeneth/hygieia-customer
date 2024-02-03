@@ -1,9 +1,19 @@
 <resources>
-    <string name="app_name">Hygieia-Store</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Hygieia</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_logged_in">LoggedInActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    //for Promos and Rewards
+    <string name="product">Product: </string>
+    <string name="discount">Discount: </string>
+    <string name="discPrice">Discounted Price: </string>
+    <string name="ptsReq">Points Required: </string>
+
+    //QR Code Fragment
+    <string name="how_to_earn_points_instructions">1. Visit any of our affiliated stores and make a purchase. \n\n2. Return the recyclable packaging of the products you purchased back to the store. \n\n3. Present the clerk/staff with your QR code. \n\n4. The clerk will input how many recyclable items you have returned and add points to your account.</string>
+    <string name="conversion_rate_explanation">The amount of points credited to your account depends on the quantity of the recyclable materials you have returned to the store.</string>
+
 </resources>

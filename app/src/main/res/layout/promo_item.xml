@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/small"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/text_regular"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/photo"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/small">
+
+            <TextView
+                android:id="@+id/promo_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PROMO NAME"
+                android:fontFamily="@font/nunito_sans_bold"
+                android:textColor="@color/accent_orange"
+                android:textSize="@dimen/text_regular" />
+
+            <TextView
+                android:id="@+id/product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/promo_name"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/discount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:textSize="@dimen/text_small" />
+
+
+            <TextView
+                android:id="@+id/disc_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/discount"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/points_required"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/disc_price"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/promoEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/points_required"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/sub_text"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/store"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_below="@id/points_required"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:textColor="@color/secondary_green"
+                android:textSize="@dimen/text_small"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
