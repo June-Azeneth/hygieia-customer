@@ -4,7 +4,7 @@ import android.util.Log
 import com.example.hygieia_customer.model.Transaction
 import com.google.firebase.firestore.FirebaseFirestore
 
-class TransactionRepo {
+class TransactionsRepo {
     val TAG = "TransactionRepoMessages"
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 

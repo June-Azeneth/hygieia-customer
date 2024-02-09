@@ -31,10 +31,6 @@ class RewardsFragment : Fragment() {
             rewardViewModel.fetchRewards()
         }
 
-//        Commons().setOnRefreshListener(binding.refreshLayout) {
-//            rewardViewModel.fetchAllRewards()
-//        }
-
         rewardViewModel.rewardDetails.observe(viewLifecycleOwner) { rewards ->
             if (rewards != null) {
                 rewardList.clear()
@@ -45,16 +41,12 @@ class RewardsFragment : Fragment() {
         }
 
         setUpRecyclerView()
-
         return binding.root
     }
 
     private fun setUpRecyclerView() {
         try {
             val recyclerView = binding.recyclerView
-
-//            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.small)
-//            recyclerView.addItemDecoration(SpacesItemDecoration(spacingInPixels))
 
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
             recyclerView.setHasFixedSize(true)
@@ -65,7 +57,6 @@ class RewardsFragment : Fragment() {
             binding.progressBar.visibility = View.VISIBLE
 
             rewardViewModel.fetchRewards()
-//            rewardViewModel.fetchAllRewards()
         } catch (error: Exception) {
             Log.e(TAG, error.toString())
         }
