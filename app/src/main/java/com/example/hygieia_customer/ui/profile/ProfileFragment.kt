@@ -85,8 +85,11 @@ class ProfileFragment : Fragment() {
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
                     binding.customerName.text = requireContext().getString(R.string.customer_name, user.firstName, user.lastName)
-                    binding.address.text = "${user.address}"
                     binding.email.text = user.email
+
+                    val city = user.address?.get("city") ?: ""
+                    val province = user.address?.get("province") ?: ""
+                    binding.address.text = requireContext().getString(R.string.address_template, city, province)
 
                     val photoUrl = user.photo.ifEmpty {
                         R.drawable.user_photo_placeholder

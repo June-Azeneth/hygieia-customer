@@ -21,6 +21,7 @@
 
     //Profile
     <string name="customer_name">%1$s %2$s</string>
+    <string name="address_template">%1$s, %2$s</string>
 
     //QR Code Fragment
     <string name="how_to_earn_points_instructions">1. Visit any of our affiliated stores and make a purchase. \n\n2. Return the recyclable packaging of the products you purchased back to the store. \n\n3. Present the clerk/staff with your QR code. \n\n4. The clerk will input how many recyclable items you have returned and add points to your account.</string>

@@ -1,6 +1,7 @@
 package com.example.hygieia_customer
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import com.example.hygieia_customer.databinding.FragmentSignupBinding
 import com.example.hygieia_customer.model.UserInfo
+import com.example.hygieia_customer.utils.Commons
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -82,7 +84,7 @@ class SignupFragment : Fragment() {
 
     private fun submitForm() {
         val validEmail = binding.emailLayout.helperText == null
-        val validPassword = binding.emailLayout.helperText == null
+        val validPassword = binding.passwordLayout.helperText == null
         val validFirstName = isNotEmpty(firstName)
         val validLastName = isNotEmpty(lastName)
         val validSitio = isNotEmpty(sitio)
@@ -293,14 +295,12 @@ class SignupFragment : Fragment() {
             collectionRef.document(customerId)
                 .set(userInfo)
                 .addOnSuccessListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "Data uploaded successfully for User with ID: $customerId",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
+                    Commons().showToast("Register Success", requireContext())
                     binding.text.visibility = VISIBLE
                     binding.progressBar.visibility = INVISIBLE
+
+                    var intent = Intent(requireContext(), LoggedInActivity::class.java)
+                    startActivity(intent)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(

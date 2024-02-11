@@ -31,7 +31,7 @@ class PromosRepo {
         private const val DATE_PAUSED = "datePaused"
         private const val DATE_RESUME = "dateResume"
         private const val STORE_COLLECTION_NAME = "store"
-        private const val STORE_NAME_FIELD = "storeName"
+        private const val STORE_NAME_FIELD = "name"
     }
 
     suspend fun getPromos(callback: (List<Promo>?) -> Unit) = coroutineScope {

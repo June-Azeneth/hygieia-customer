@@ -22,6 +22,7 @@ import com.example.hygieia_customer.model.UserInfo
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.ui.profile.profilePhotos.ProfilePhotosFragment
 import com.example.hygieia_customer.utils.Commons
+import com.google.android.material.textfield.TextInputEditText
 
 class EditProfileFragment : Fragment() {
     val TAG = "EditProfileFragmentMessages"
@@ -36,6 +37,12 @@ class EditProfileFragment : Fragment() {
     }
 
     private var selectedProfilePicture: String = ""
+    private lateinit var firstName: TextInputEditText
+    private lateinit var lastName: TextInputEditText
+    private lateinit var sitio: TextInputEditText
+    private lateinit var barangay: TextInputEditText
+    private lateinit var city: TextInputEditText
+    private lateinit var province: TextInputEditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,6 +50,12 @@ class EditProfileFragment : Fragment() {
     ): View {
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         updateUI()
+        firstName = binding.firstName
+        lastName = binding.lastName
+        sitio = binding.sitio
+        barangay = binding.barangay
+        city = binding.city
+        province = binding.province
         return binding.root
     }
 
@@ -70,9 +83,14 @@ class EditProfileFragment : Fragment() {
         try {
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    binding.firstName.setText(user.firstName)
-                    binding.lastName.setText(user.lastName)
-//                    binding.address.setText(user.address)
+                    firstName.setText(user.firstName)
+                    lastName.setText(user.lastName)
+                    user.address?.let { addressMap ->
+                        binding.sitio.setText(addressMap["sitio"])
+                        binding.barangay.setText(addressMap["barangay"])
+                        binding.city.setText(addressMap["city"])
+                        binding.province.setText(addressMap["province"])
+                    }
 
                     //initialize the customer photo here before using it anywhere in the class or else there will be a null input stream error
                     selectedProfilePicture = user.photo
@@ -107,11 +125,18 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
+        val addressMap = mapOf(
+            "sitio" to sitio.text.toString(),
+            "barangay" to barangay.text.toString(),
+            "city" to city.text.toString(),
+            "province" to province.text.toString()
+        )
+
         val updatedUserInfo = UserInfo(
             photo = selectedProfilePicture,
-            firstName = binding.firstName.text.toString(),
-            lastName = binding.lastName.text.toString(),
-//            address = binding.address.text.toString()
+            firstName = firstName.text.toString(),
+            lastName = lastName.text.toString(),
+            address = addressMap
         )
         updateUserProfileInRepo(updatedUserInfo)
     }
