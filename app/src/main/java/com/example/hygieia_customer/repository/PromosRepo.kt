@@ -30,8 +30,7 @@ class PromosRepo {
         private const val PROMO_END = "promoEnd"
         private const val DATE_PAUSED = "datePaused"
         private const val DATE_RESUME = "dateResume"
-        private const val STORE_COLLECTION_NAME = "store"
-        private const val STORE_NAME_FIELD = "name"
+        private const val STORE_NAME = "storeName"
     }
 
     suspend fun getPromos(callback: (List<Promo>?) -> Unit) = coroutineScope {
@@ -52,7 +51,7 @@ class PromosRepo {
         }
     }
 
-    private suspend fun processPromoDocument(document: DocumentSnapshot, currentDate: Long): Promo? {
+    private fun processPromoDocument(document: DocumentSnapshot, currentDate: Long): Promo? {
         return try {
             val startDate = document.getTimestamp(PROMO_START)?.toDate()?.time ?: 0
             val endDate = document.getTimestamp(PROMO_END)?.toDate()?.time ?: 0
@@ -69,10 +68,9 @@ class PromosRepo {
             Log.d(_tag, promoStatus)
 
             if (promoStatus == "Ongoing" || promoStatus == "Upcoming") {
-                val storeName = getStoreDetails(document.getString(STORE_ID) ?: "").await()
                 Promo(
                     document.getString(STORE_ID) ?: "",
-                    storeName,
+                    document.getString(STORE_NAME) ?: "",
                     document.getString(ID) ?: "",
                     document.getString(PRODUCT) ?: "",
                     document.getString(PHOTO) ?: "",
@@ -89,17 +87,6 @@ class PromosRepo {
         } catch (error: Exception) {
             Log.e(_tag, error.toString())
             null
-        }
-    }
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun getStoreDetails(storeID: String): Deferred<String> = GlobalScope.async {
-        try {
-            val document = firestore.collection(STORE_COLLECTION_NAME).document(storeID).get().await()
-            document.getString(STORE_NAME_FIELD) ?: ""
-        } catch (exception: Exception) {
-            Log.e(_tag, "Error getting store details: ", exception)
-            ""
         }
     }
 }

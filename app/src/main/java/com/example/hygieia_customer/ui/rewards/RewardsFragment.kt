@@ -7,14 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentRewardsBinding
 import com.example.hygieia_customer.model.Reward
 import com.example.hygieia_customer.utils.Commons
 
-class RewardsFragment : Fragment() {
+class RewardsFragment : Fragment(){
     val _tag = "RewardsFragmentMessages"
     private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
@@ -22,7 +22,16 @@ class RewardsFragment : Fragment() {
     private lateinit var rewardList: ArrayList<Reward>
     private val rewardViewModel: RewardsViewModel by activityViewModels()
 
-    private val adapter by lazy { RewardsAdapter(arrayListOf()) }
+    private val adapter by lazy { RewardsAdapter(arrayListOf(), onItemClickListener) }
+
+    private val onItemClickListener = object : RewardsAdapter.OnItemClickListener {
+        override fun onItemClick(item: Reward) {
+            //Pass the store id extracted from the selected reward item and store it in a variable in the viewmodel
+            //so that it can be used/passed to another fragment later on
+            rewardViewModel.setSelectedReward(item.storeId)
+            findNavController().navigate(R.id.action_navigation_rewardsFragment_to_storeProfileFragment)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -58,6 +67,7 @@ class RewardsFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
 
             rewardList = arrayListOf()
+
             recyclerView.adapter = adapter
 
             binding.progressBar.visibility = View.VISIBLE

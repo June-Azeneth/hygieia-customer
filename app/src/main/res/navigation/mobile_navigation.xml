@@ -58,7 +58,11 @@
         android:id="@+id/navigation_rewardsFragment"
         android:name="com.example.hygieia_customer.ui.rewards.RewardsFragment"
         android:label="fragment_rewards"
-        tools:layout="@layout/fragment_rewards" />
+        tools:layout="@layout/fragment_rewards" >
+        <action
+            android:id="@+id/action_navigation_rewardsFragment_to_storeProfileFragment"
+            app:destination="@id/storeProfileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.hygieia_customer.ui.profile.ProfileFragment"
@@ -97,4 +101,9 @@
         app:destination="@id/editProfileFragment"
         app:popUpTo="@+id/navigation_dashboard"
         app:popUpToInclusive="true"/>
+    <fragment
+        android:id="@+id/storeProfileFragment"
+        android:name="com.example.hygieia_customer.ui.store.StoreProfileFragment"
+        android:label="fragment_store_profile"
+        tools:layout="@layout/fragment_store_profile" />
 </navigation>
