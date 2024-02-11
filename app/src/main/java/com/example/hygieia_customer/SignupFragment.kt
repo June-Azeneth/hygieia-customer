@@ -40,7 +40,10 @@ class SignupFragment : Fragment() {
 
     private lateinit var firstName: TextInputEditText
     private lateinit var lastName: TextInputEditText
-    private lateinit var address: TextInputEditText
+    private lateinit var sitio: TextInputEditText
+    private lateinit var barangay: TextInputEditText
+    private lateinit var city: TextInputEditText
+    private lateinit var province: TextInputEditText
     private lateinit var email: TextInputEditText
     private lateinit var password: TextInputEditText
     private var qrCode: String = ""
@@ -57,9 +60,13 @@ class SignupFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
 
+        //Initialize global variables before usage
         firstName = binding.firstName
         lastName = binding.lastName
-        address = binding.address
+        sitio = binding.sitio
+        barangay = binding.barangay
+        city = binding.city
+        province = binding.province
         email = binding.email
         password = binding.password
 
@@ -78,18 +85,21 @@ class SignupFragment : Fragment() {
         val validPassword = binding.emailLayout.helperText == null
         val validFirstName = isNotEmpty(firstName)
         val validLastName = isNotEmpty(lastName)
-        val validAddress = isNotEmpty(address)
+        val validSitio = isNotEmpty(sitio)
+        val validBarangay = isNotEmpty(barangay)
+        val validCity = isNotEmpty(city)
+        val validProvince = isNotEmpty(province)
         val passNotEmpty = isNotEmpty(password)
         val emailNotEmpty = isNotEmpty(email)
 
-        if (validEmail && validPassword && validFirstName && validLastName && validAddress && passNotEmpty && emailNotEmpty) {
+        if (validEmail && validPassword && validFirstName && validLastName && validSitio && validBarangay && validCity && validProvince && passNotEmpty && emailNotEmpty) {
             registerUser(email.text.toString(), password.text.toString())
         } else {
             invalidForm()
         }
     }
 
-    private fun registerUser(email: String, password: String) : String? {
+    private fun registerUser(email: String, password: String): String? {
         try {
             binding.text.visibility = INVISIBLE
             binding.progressBar.visibility = VISIBLE
@@ -131,8 +141,14 @@ class SignupFragment : Fragment() {
         if (binding.passwordLayout.helperText !== null) {
             message += "\n\nPassword: " + binding.passwordLayout.helperText
         }
-        if (binding.firstName.text?.isEmpty() == true || binding.lastName.text?.isEmpty() == true || binding.address.text?.isEmpty() == true
-            || binding.email.text?.isEmpty() == true || binding.password.text?.isEmpty() == true
+        if (binding.firstName.text?.isEmpty() == true ||
+            binding.lastName.text?.isEmpty() == true ||
+            binding.sitio.text?.isEmpty() == true ||
+            binding.barangay.text?.isEmpty() == true ||
+            binding.city.text?.isEmpty() == true ||
+            binding.province.text?.isEmpty() == true ||
+            binding.email.text?.isEmpty() == true ||
+            binding.password.text?.isEmpty() == true
         ) {
             message += "\n\nFill in all required fields"
         }
@@ -252,15 +268,22 @@ class SignupFragment : Fragment() {
     private fun saveToFirestore(customerId: String) {
         val collectionRef = firestore.collection("consumer")
 
+        val addressMap = mapOf(
+            "sitio" to sitio.text.toString(),
+            "barangay" to barangay.text.toString(),
+            "city" to city.text.toString(),
+            "province" to province.text.toString()
+        )
+
         val userInfo = getCurrentUserUID()?.let {
             UserInfo(
                 firstName = firstName.text.toString(),
                 lastName = lastName.text.toString(),
                 email = email.text.toString(),
-                address = address.text.toString(),
+                address = addressMap,
                 dateRegistered = getCurrentDateTime(),
                 qrCode = qrCode,
-                customerId = it
+                id = it
                 // Set other fields accordingly
             )
         }

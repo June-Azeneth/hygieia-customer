@@ -31,7 +31,7 @@ class RewardsAdapter(private var rewardList: ArrayList<Reward>) :
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.prodPhoto)
 
-        holder.product.text = currentItem.product
+        holder.product.text = currentItem.name
         holder.discount.text = context.getString(R.string.discount_template, currentItem.discount.toString())
         holder.discPrice.text = context.getString(R.string.disc_price_template, currentItem.discountedPrice.toString())
         holder.pointsReq.text = context.getString(R.string.points_req_template, currentItem.pointsRequired.toString())

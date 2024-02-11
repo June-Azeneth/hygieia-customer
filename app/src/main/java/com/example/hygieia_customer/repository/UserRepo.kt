@@ -51,7 +51,7 @@ class UserRepo {
 //        )
 
         val updateData = mapOf(
-            "customerPhoto" to updatedUserInfo.customerPhoto,
+            "photo" to updatedUserInfo.photo,
             "firstName" to updatedUserInfo.firstName,
             "lastName" to updatedUserInfo.lastName,
             "address" to updatedUserInfo.address

@@ -72,12 +72,12 @@ class EditProfileFragment : Fragment() {
                 if (user != null) {
                     binding.firstName.setText(user.firstName)
                     binding.lastName.setText(user.lastName)
-                    binding.address.setText(user.address)
+//                    binding.address.setText(user.address)
 
                     //initialize the customer photo here before using it anywhere in the class or else there will be a null input stream error
-                    selectedProfilePicture = user.customerPhoto
+                    selectedProfilePicture = user.photo
 
-                    val photoUrl = user.customerPhoto.ifEmpty {
+                    val photoUrl = user.photo.ifEmpty {
                         R.drawable.user_photo_placeholder
                     }
 
@@ -108,10 +108,10 @@ class EditProfileFragment : Fragment() {
 
     private fun updateProfile() {
         val updatedUserInfo = UserInfo(
-            customerPhoto = selectedProfilePicture,
+            photo = selectedProfilePicture,
             firstName = binding.firstName.text.toString(),
             lastName = binding.lastName.text.toString(),
-            address = binding.address.text.toString()
+//            address = binding.address.text.toString()
         )
         updateUserProfileInRepo(updatedUserInfo)
     }

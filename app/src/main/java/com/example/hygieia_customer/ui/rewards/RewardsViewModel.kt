@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 class RewardsViewModel : ViewModel() {
     private val _rewardDetails = MutableLiveData<List<Reward>>()
     val rewardDetails: LiveData<List<Reward>> get() = _rewardDetails
-    private val rewardsRepo : RewardsRepo= RewardsRepo()
+    private val rewardsRepo : RewardsRepo = RewardsRepo()
 
     fun fetchRewards() {
         viewModelScope.launch {
-            rewardsRepo.getRewards { reward ->
-                _rewardDetails.value = reward
+            rewardsRepo.getRewards { rewards ->
+                _rewardDetails.value = rewards
             }
         }
     }

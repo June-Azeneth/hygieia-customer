@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -84,7 +83,7 @@ class TransactionFragment : Fragment() {
             sharedViewModel.fetchUserDetails(currentUser)
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    transactionViewModel.fetchTransactions(user.customerId)
+                    transactionViewModel.fetchTransactions(user.id)
                 }
             }
         } catch (error: Exception) {

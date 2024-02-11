@@ -60,5 +60,9 @@
     <string name="see_available_promos_offered_by_our_affiliated_stores">See available promos offered by our affiliated stores</string>
     <string name="our_affiliated_stores">Our Affiliated Stores</string>
     <string name="register">Register</string>
+    <string name="sitio">Sitio</string>
+    <string name="province">Province</string>
+    <string name="city">City</string>
+    <string name="barangay">Barangay</string>
 
 </resources>
