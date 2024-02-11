@@ -1,5 +1,6 @@
 package com.example.hygieia_customer.ui.promos
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentPromosBinding
 import com.example.hygieia_customer.model.Promo
+import com.example.hygieia_customer.ui.rewards.RewardsAdapter
 import com.example.hygieia_customer.utils.Commons
 
 class PromosFragment : Fragment() {
@@ -22,12 +24,16 @@ class PromosFragment : Fragment() {
 
     private lateinit var promoList: ArrayList<Promo>
     private val promosViewModel: PromosViewModel by activityViewModels()
+    private val adapter by lazy { PromosAdapter(arrayListOf()) }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPromosBinding.inflate(inflater, container, false)
+
+        binding.recyclerView.adapter = adapter
 
         Commons().setToolbarIcon(R.drawable.filter, binding.root)
         Commons().setOnRefreshListener(binding.refreshLayout) {
@@ -39,7 +45,7 @@ class PromosFragment : Fragment() {
             if (promos != null) {
                 promoList.clear()
                 promoList.addAll(promos)
-                binding.recyclerView.adapter?.notifyDataSetChanged()
+                adapter.setData(promoList)
                 binding.progressBar.visibility = View.GONE
             }
         }
@@ -56,7 +62,7 @@ class PromosFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
 
             promoList = arrayListOf()
-            recyclerView.adapter = PromoAdapter(promoList)
+            recyclerView.adapter = adapter
 
             binding.progressBar.visibility = View.VISIBLE
 

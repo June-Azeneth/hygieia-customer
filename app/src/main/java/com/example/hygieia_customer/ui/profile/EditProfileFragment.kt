@@ -61,6 +61,7 @@ class EditProfileFragment : Fragment() {
         }
 
         binding.cancelBTN.setOnClickListener {
+            sharedViewModel.setSelectedProfilePicture("")
             findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
         }
     }
@@ -69,15 +70,19 @@ class EditProfileFragment : Fragment() {
         try {
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    binding.name.setText(user.customerName)
-                    binding.email.setText(user.email)
-                    binding.address.setText(user.userLocation)
-                    selectedProfilePicture = user.userPhoto
+                    binding.firstName.setText(user.firstName)
+                    binding.lastName.setText(user.lastName)
+                    binding.address.setText(user.address)
 
-//                    selectedProfilePicture = sharedViewModel.selectedProfilePicture.value.toString()
+                    //initialize the customer photo here before using it anywhere in the class or else there will be a null input stream error
+                    selectedProfilePicture = user.customerPhoto
+
+                    val photoUrl = user.customerPhoto.ifEmpty {
+                        R.drawable.user_photo_placeholder
+                    }
 
                     Glide.with(requireContext())
-                        .load(user.userPhoto)
+                        .load(photoUrl)
                         .apply(RequestOptions.circleCropTransform())
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(binding.userPhoto)
@@ -102,37 +107,13 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-//        val currentUserInfo = sharedViewModel.userDetails.value
-
         val updatedUserInfo = UserInfo(
-            img_url = selectedProfilePicture,
-            customerName = binding.name.text.toString(),
-            email = binding.email.text.toString(),
-            userLocation = binding.address.text.toString()
+            customerPhoto = selectedProfilePicture,
+            firstName = binding.firstName.text.toString(),
+            lastName = binding.lastName.text.toString(),
+            address = binding.address.text.toString()
         )
-
-//        Log.d(TAG, "Updated UserInfo:")
-//        Log.d(TAG, "  img_url: ${updatedUserInfo.img_url}")
-//        Log.d(TAG, "  customerName: ${updatedUserInfo.customerName}")
-//        Log.d(TAG, "  email: ${updatedUserInfo.email}")
-//        Log.d(TAG, "  userLocation: ${updatedUserInfo.userLocation}")
-//
-//        Log.d(TAG, "Old UserInfo:")
-//        if (currentUserInfo != null) {
-//            Log.d(TAG, "  img_url: ${currentUserInfo.userPhoto}")
-//            Log.d(TAG, "  customerName: ${currentUserInfo.customerName}")
-//            Log.d(TAG, "  email: ${currentUserInfo.email}")
-//            Log.d(TAG, "  userLocation: ${currentUserInfo.userLocation}")
-//        }
-
-
-//        if (currentUserInfo != null && updatedUserInfo.isDifferent(currentUserInfo)) {
-        // Changes detected, update the profile
         updateUserProfileInRepo(updatedUserInfo)
-//        } else {
-//            // No changes, show a toast
-//            Commons().showToast("No changes detected", requireContext())
-//        }
     }
 
     private fun updateUserProfileInRepo(updatedUserInfo: UserInfo) {

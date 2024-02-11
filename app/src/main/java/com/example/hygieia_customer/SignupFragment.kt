@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import androidx.fragment.app.Fragment
 import com.example.hygieia_customer.databinding.FragmentSignupBinding
 import com.example.hygieia_customer.model.UserInfo
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
@@ -27,9 +27,9 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
 import java.io.ByteArrayOutputStream
+import java.util.Date
 
 class SignupFragment : Fragment() {
-//    private val TAG = "LOGINMESSAGES"
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storageReference: StorageReference = FirebaseStorage.getInstance().reference
@@ -68,8 +68,6 @@ class SignupFragment : Fragment() {
 
         binding.submit.setOnClickListener {
             submitForm()
-//            binding.text.visibility = INVISIBLE
-//            binding.progressBar.visibility = VISIBLE
         }
 
         return binding.root
@@ -85,17 +83,13 @@ class SignupFragment : Fragment() {
         val emailNotEmpty = isNotEmpty(email)
 
         if (validEmail && validPassword && validFirstName && validLastName && validAddress && passNotEmpty && emailNotEmpty) {
-            registerUser()
+            registerUser(email.text.toString(), password.text.toString())
         } else {
             invalidForm()
         }
     }
 
-    private fun registerUser() {
-        registerWithEmailAndPassword(email.text.toString(), password.text.toString())
-    }
-
-    private fun registerWithEmailAndPassword(email: String, password: String): String? {
+    private fun registerUser(email: String, password: String) : String? {
         try {
             binding.text.visibility = INVISIBLE
             binding.progressBar.visibility = VISIBLE
@@ -103,14 +97,9 @@ class SignupFragment : Fragment() {
             firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        binding.text.visibility = VISIBLE
-                        binding.progressBar.visibility = INVISIBLE
                         // Registration successful, retrieve the UserUID
                         val userUID = getCurrentUserUID()
-                        if (userUID != null) {
-                            generateQRCode(userUID)
-                        }
-                        // Perform additional actions or return the UserUID
+                        if (userUID != null) generateQRCode(userUID)
                     } else {
                         // Registration failed, handle the error
                         // val exception = task.exception
@@ -184,10 +173,10 @@ class SignupFragment : Fragment() {
         }
     }
 
-    private fun generateQRCode(userID: String) {
+    private fun generateQRCode(customerId: String) {
         val writer = QRCodeWriter()
         try {
-            val bitMatrix = writer.encode(userID, BarcodeFormat.QR_CODE, 512, 512)
+            val bitMatrix = writer.encode(customerId, BarcodeFormat.QR_CODE, 512, 512)
             val width = bitMatrix.width
             val height = bitMatrix.height
             val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
@@ -200,7 +189,7 @@ class SignupFragment : Fragment() {
                     )
                 }
             }
-            uploadQRCodeImage(bmp, userID, object : UploadCallback {
+            uploadQRCodeImage(bmp, customerId, object : UploadCallback {
                 override fun onUploadSuccess(qrCodeUrl: String) {
                     // Use qrCodeUrl here
                     qrCode = qrCodeUrl
@@ -221,14 +210,14 @@ class SignupFragment : Fragment() {
         }
     }
 
-    private fun uploadQRCodeImage(bmp: Bitmap, userID: String, callback: UploadCallback) {
+    private fun uploadQRCodeImage(bmp: Bitmap, customerId: String, callback: UploadCallback) {
         // Convert Bitmap to ByteArray
         val byteArrOutputStream = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutputStream)
         val data = byteArrOutputStream.toByteArray()
 
         // Set up Firebase Storage reference
-        val imageRef = storageReference.child("qr_codes/$userID.jpg")
+        val imageRef = storageReference.child("qr_codes/$customerId.jpg")
 
         // Upload ByteArray to Firebase Storage
         val uploadTask = imageRef.putBytes(data)
@@ -238,10 +227,7 @@ class SignupFragment : Fragment() {
             if (task.isSuccessful) {
                 // Image uploaded successfully, get download URL
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
-                    //DO SOMETHING HERE
                     qrCode = uri.toString()
-                    Log.e("SIGNUP", uri.toString())
-
                     val qrCodeUrl = uri.toString()
                     // Call the callback with the URL
                     callback.onUploadSuccess(qrCodeUrl)
@@ -256,40 +242,54 @@ class SignupFragment : Fragment() {
         }
     }
 
-    private fun saveToFirestore(userID: String) {
+    private fun getCurrentDateTime(): Timestamp {
+        // Get the current date and time
+        val currentDate = Date()
+        // Convert the Date object to a Timestamp
+        return Timestamp(currentDate)
+    }
+
+    private fun saveToFirestore(customerId: String) {
         val collectionRef = firestore.collection("consumer")
 
-        val userInfo = UserInfo(
-            img_url = qrCode,
-            customerName = firstName.text.toString(),
-            email = email.text.toString(),
-            userLocation = address.text.toString(),
-            // Set other fields accordingly
-        )
+        val userInfo = getCurrentUserUID()?.let {
+            UserInfo(
+                firstName = firstName.text.toString(),
+                lastName = lastName.text.toString(),
+                email = email.text.toString(),
+                address = address.text.toString(),
+                dateRegistered = getCurrentDateTime(),
+                qrCode = qrCode,
+                customerId = it
+                // Set other fields accordingly
+            )
+        }
 
         // Create a data object with the information to be stored
-        collectionRef.document(userID)
-            .set(userInfo)
-            .addOnSuccessListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Data uploaded successfully for User with ID: $userID",
-                    Toast.LENGTH_SHORT
-                ).show()
+        if (userInfo != null) {
+            collectionRef.document(customerId)
+                .set(userInfo)
+                .addOnSuccessListener {
+                    Toast.makeText(
+                        requireContext(),
+                        "Data uploaded successfully for User with ID: $customerId",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-                binding.text.visibility = VISIBLE
-                binding.progressBar.visibility = INVISIBLE
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    requireContext(),
-                    "Error uploading to Firestore: $e",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    binding.text.visibility = VISIBLE
+                    binding.progressBar.visibility = INVISIBLE
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        requireContext(),
+                        "Error uploading to Firestore: $e",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-                binding.text.visibility = VISIBLE
-                binding.progressBar.visibility = INVISIBLE
-            }
+                    binding.text.visibility = VISIBLE
+                    binding.progressBar.visibility = INVISIBLE
+                }
+        }
     }
 
     override fun onDestroyView() {

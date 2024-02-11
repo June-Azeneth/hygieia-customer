@@ -21,6 +21,7 @@ import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.rpc.context.AttributeContext.Resource
 
 class ProfileFragment : Fragment() {
 
@@ -84,11 +85,13 @@ class ProfileFragment : Fragment() {
 
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    binding.customerName.text = user.customerName
-                    binding.customerLocation.text = user.userLocation
+                    binding.customerName.text = requireContext().getString(R.string.customer_name, user.firstName, user.lastName)
+                    binding.address.text = user.address
+                    binding.email.text = user.email
 
-                    val selectedProfilePicture = sharedViewModel.selectedProfilePicture.value
-                    val photoUrl = selectedProfilePicture ?: user.userPhoto
+                    val photoUrl = user.customerPhoto.ifEmpty {
+                        R.drawable.user_photo_placeholder
+                    }
 
                     Glide.with(requireContext())
                         .load(photoUrl)

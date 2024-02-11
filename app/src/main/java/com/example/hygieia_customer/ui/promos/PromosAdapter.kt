@@ -4,19 +4,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Promo
+import com.example.hygieia_customer.model.Reward
+import com.example.hygieia_customer.ui.rewards.RewardsDiffUtil
 import com.google.android.material.imageview.ShapeableImageView
 import java.util.Date
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class PromoAdapter(private val promosList: ArrayList<Promo>) :
-    RecyclerView.Adapter<PromoAdapter.MyViewHolder>() {
+class PromosAdapter(private val promosList: ArrayList<Promo>) :
+    RecyclerView.Adapter<PromosAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.promo_item, parent, false)
         return MyViewHolder(itemView)
@@ -71,5 +74,15 @@ class PromoAdapter(private val promosList: ArrayList<Promo>) :
         val pointsReq: TextView = itemView.findViewById(R.id.points_required)
         val duration: TextView = itemView.findViewById(R.id.promoDuration)
         val store : TextView = itemView.findViewById(R.id.store)
+    }
+
+    fun setData(newPromoList: ArrayList<Promo>) {
+        val oldPromoList = ArrayList(promosList) // Create a copy of the old list
+        promosList.clear() // Clear the old list
+        promosList.addAll(newPromoList) // Update the list with the new data
+
+        val diffUtil = PromosDiffUtil(oldPromoList, promosList) // Pass the old and new lists to the DiffUtil
+        val diffResults = DiffUtil.calculateDiff(diffUtil) // Calculate the diff between the old and new lists
+        diffResults.dispatchUpdatesTo(this) // Dispatch the updates to the adapter
     }
 }

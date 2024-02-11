@@ -5,6 +5,7 @@ import com.example.hygieia_customer.model.Promo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -12,23 +13,23 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 
 class PromosRepo {
-    private val TAG = "PromosRepoMessages"
+    private val _tag = "PromosRepoMessages"
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     companion object {
         private const val COLLECTION_NAME = "promo"
-        private const val STORE_ID = "store_id"
+        private const val STORE_ID = "storeId"
         private const val ID = "id"
         private const val PRODUCT = "product"
-        private const val PHOTO = "image_url"
+        private const val PHOTO = "photo"
         private const val NAME = "name"
-        private const val PRICE = "discount_price"
-        private const val DISCOUNT_RATE = "discount_rate"
-        private const val POINTS_REQUIRED = "points_required"
-        private const val PROMO_START = "promo_start"
-        private const val PROMO_END = "promo_end"
-        private const val DATE_PAUSED = "date_paused"
-        private const val DATE_RESUME = "date_resume"
+        private const val PRICE = "discountedPrice"
+        private const val DISCOUNT_RATE = "discountRate"
+        private const val POINTS_REQUIRED = "pointsRequired"
+        private const val PROMO_START = "promoStart"
+        private const val PROMO_END = "promoEnd"
+        private const val DATE_PAUSED = "datePaused"
+        private const val DATE_RESUME = "dateResume"
         private const val STORE_COLLECTION_NAME = "store"
         private const val STORE_NAME_FIELD = "storeName"
     }
@@ -44,9 +45,9 @@ class PromosRepo {
             promoList.addAll(deferredPromos.awaitAll().filterNotNull())
 
             callback(promoList)
-            Log.d(TAG, promoList.toString())
+            Log.d(_tag, promoList.toString())
         } catch (exception: Exception) {
-            Log.e(TAG, "Error getting promos: ", exception)
+            Log.e(_tag, "Error getting promos: ", exception)
             callback(null)
         }
     }
@@ -65,7 +66,7 @@ class PromosRepo {
                 else -> "Passed"
             }
 
-            Log.d(TAG, promoStatus)
+            Log.d(_tag, promoStatus)
 
             if (promoStatus == "Ongoing" || promoStatus == "Upcoming") {
                 val storeName = getStoreDetails(document.getString(STORE_ID) ?: "").await()
@@ -86,22 +87,19 @@ class PromosRepo {
                 null
             }
         } catch (error: Exception) {
-            Log.e(TAG, error.toString())
+            Log.e(_tag, error.toString())
             null
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun getStoreDetails(storeID: String): Deferred<String> = GlobalScope.async {
         try {
             val document = firestore.collection(STORE_COLLECTION_NAME).document(storeID).get().await()
             document.getString(STORE_NAME_FIELD) ?: ""
         } catch (exception: Exception) {
-            Log.e(TAG, "Error getting store details: ", exception)
+            Log.e(_tag, "Error getting store details: ", exception)
             ""
         }
     }
-
-//    fun getAPromo() {
-//        // Implementation for getting a single promo
-//    }
 }

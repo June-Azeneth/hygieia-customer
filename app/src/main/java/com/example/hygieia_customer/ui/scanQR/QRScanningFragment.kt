@@ -45,10 +45,10 @@ class QRScanningFragment : Fragment() {
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
                     binding.currentBalance.text = user.currentBalance.toString()
-                    val imgUrl = user.img_url
-                    if (!imgUrl.isNullOrBlank()) {
+                    val qrCode = user.qrCode
+                    if (!qrCode.isNullOrBlank()) {
                         Glide.with(this)
-                            .load(imgUrl)
+                            .load(qrCode)
                             .error(R.drawable.image_not_found) // Optional: Image to display if loading fails
                             .into(binding.qrCode)
                     }

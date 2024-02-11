@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -23,26 +24,29 @@ class TransactionFragment : Fragment() {
     private lateinit var transactionList: ArrayList<Transaction>
     private val transactionViewModel: TransactionViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val adapter by lazy { TransactionsAdapter(arrayListOf()) }
     private val userRepo = UserRepo()
-
     private var currentUser: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
         Commons().setToolbarIcon(R.drawable.qr_code, binding.root)
+
+        binding.recyclerView.adapter = adapter
 
         transactionViewModel.transactionDetails.observe(viewLifecycleOwner) { transactions ->
             if (transactions != null) {
                 transactionList.clear()
                 transactionList.addAll(transactions)
-                binding.recyclerView.adapter?.notifyDataSetChanged()
+                adapter.setData(transactionList)
                 binding.progressBar.visibility = View.GONE
-
                 if (transactionList.isEmpty()) {
-                    binding.imageMessage.setImageResource(R.drawable.no_data)
+                    showNoDataMessage(true)
+                } else {
+                    showNoDataMessage(false)
                 }
             }
         }
@@ -55,6 +59,16 @@ class TransactionFragment : Fragment() {
         return binding.root
     }
 
+    private fun showNoDataMessage(show: Boolean) {
+        if (show) {
+            binding.imageMessage.setImageResource(R.drawable.no_data)
+            binding.imageMessage.visibility = View.VISIBLE
+        } else {
+            binding.imageMessage.visibility = View.GONE
+        }
+    }
+
+
     private fun setUpRecyclerView() {
         try {
             val recyclerView = binding.recyclerView
@@ -62,7 +76,7 @@ class TransactionFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
 
             transactionList = arrayListOf()
-            recyclerView.adapter = TransactionsAdapter(transactionList)
+            recyclerView.adapter = adapter
 
             binding.progressBar.visibility = View.VISIBLE
 
@@ -70,7 +84,7 @@ class TransactionFragment : Fragment() {
             sharedViewModel.fetchUserDetails(currentUser)
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    transactionViewModel.fetchTransactions(user.userID)
+                    transactionViewModel.fetchTransactions(user.customerId)
                 }
             }
         } catch (error: Exception) {

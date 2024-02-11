@@ -69,7 +69,7 @@ class DashboardFragment : Fragment() {
 
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    binding.username.text = "Hello ${user.customerName}!"
+                    binding.username.text = "Hello ${user.firstName}!"
                     binding.currentBalance.text = user.currentBalance.toString()
                 } else {
                     binding.username.text = "Hello Customer!"

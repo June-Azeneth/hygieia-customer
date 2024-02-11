@@ -19,6 +19,9 @@
     <string name="points_req_template">%1$s pts</string>
     <string name="date_range">From %1$s to %2$s</string>
 
+    //Profile
+    <string name="customer_name">%1$s %2$s</string>
+
     //QR Code Fragment
     <string name="how_to_earn_points_instructions">1. Visit any of our affiliated stores and make a purchase. \n\n2. Return the recyclable packaging of the products you purchased back to the store. \n\n3. Present the clerk/staff with your QR code. \n\n4. The clerk will input how many recyclable items you have returned and add points to your account.</string>
     <string name="conversion_rate_explanation">The amount of points credited to your account depends on the quantity of the recyclable materials you have returned to the store.</string>
@@ -56,5 +59,6 @@
     <string name="promos">Promos</string>
     <string name="see_available_promos_offered_by_our_affiliated_stores">See available promos offered by our affiliated stores</string>
     <string name="our_affiliated_stores">Our Affiliated Stores</string>
+    <string name="register">Register</string>
 
 </resources>

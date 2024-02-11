@@ -3,32 +3,34 @@ package com.example.hygieia_customer.repository
 import android.util.Log
 import com.example.hygieia_customer.model.Transaction
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class TransactionsRepo {
     val TAG = "TransactionRepoMessages"
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
+    //COLLECTION BASED QUERY
     fun getTransactions(userId: String, callback: (List<Transaction>?) -> Unit) {
-
         firestore.collection("transaction")
             .whereEqualTo("customerID", userId)
-//            .orderBy("added_on", Query.Direction.DESCENDING)
+            .orderBy("addedOn", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
                 val transactionList = mutableListOf<Transaction>()
                 for (document in result) {
                     try {
                         val transaction = Transaction(
+                            document.getString("id") ?: "",
                             document.getString("customerID") ?: "",
                             document.getString("customerName") ?: "",
-                            document.getTimestamp("added_on")?.toDate(),
                             document.getDouble("discount") ?: 0.0,
-                            document.getDouble("points_earned") ?: 0.0,
-                            document.getDouble("points_spent") ?: 0.0,
+                            document.getDouble("pointsEarned") ?: 0.0,
+                            document.getDouble("pointsSpent") ?: 0.0,
                             document.getString("product") ?: "",
                             document.getString("storeName") ?: "",
                             document.getDouble("total") ?: 0.0,
-                            document.getString("type") ?: "",
+                            document.getTimestamp("addedOn"),
+                            document.getString("type") ?: ""
                         )
                         transactionList.add(transaction)
                     } catch (e: Exception) {

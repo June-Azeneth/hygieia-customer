@@ -3,15 +3,12 @@ package com.example.hygieia_customer.ui.profile.profilePhotos
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.InAppProfilePhotos
-import com.example.hygieia_customer.model.ProfileOptions
 import com.google.android.material.imageview.ShapeableImageView
 
 class ProfilePhotosAdapter(
@@ -26,7 +23,6 @@ class ProfilePhotosAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.profile_pics_item, parent, false)
-
         return MyViewHolder(itemView)
     }
 
@@ -34,7 +30,7 @@ class ProfilePhotosAdapter(
         val currentItem = picture[position]
 
         Glide.with(holder.itemView)
-            .load(currentItem.img_url)
+            .load(currentItem.customerPhoto)
             .apply(RequestOptions.centerCropTransform())
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.pictureOption)

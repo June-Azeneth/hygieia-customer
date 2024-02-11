@@ -45,25 +45,4 @@ class LoggedInActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_logged_in)
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-//    override fun onBackPressed() {
-//        // Check if the current fragment is the dashboard
-//        if (currentFragment is DashboardFragment) {
-//            // Check if it's the second click within 2 seconds
-//            if (System.currentTimeMillis() - lastBackPressTime < 2000) {
-//                // Exit the app
-//                finishAffinity()
-//            } else {
-//                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
-//                lastBackPressTime = System.currentTimeMillis()
-//            }
-//        } else {
-//            // If not the dashboard, proceed with normal back press behavior
-//            super.onBackPressed()
-//        }
-//    }
-
-//    private fun setCurrentFragment(fragment: Fragment) {
-////        currentFragment = fragment
-//    }
 }

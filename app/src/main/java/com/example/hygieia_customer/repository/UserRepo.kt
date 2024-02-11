@@ -43,11 +43,18 @@ class UserRepo {
         val userRef = firestore.collection("consumer").document(userId)
 
         // Create a map with only the fields you want to update
+//        val updateData = mapOf(
+//            "user_photo" to updatedUserInfo.userPhoto,
+//            "first_name" to updatedUserInfo.firstName,
+//            "address" to updatedUserInfo.address
+//            // Add other fields if needed
+//        )
+
         val updateData = mapOf(
-            "userPhoto" to updatedUserInfo.img_url,
-            "customerName" to updatedUserInfo.customerName,
-            "email" to updatedUserInfo.email,
-            "userLocation" to updatedUserInfo.userLocation
+            "customerPhoto" to updatedUserInfo.customerPhoto,
+            "firstName" to updatedUserInfo.firstName,
+            "lastName" to updatedUserInfo.lastName,
+            "address" to updatedUserInfo.address
             // Add other fields if needed
         )
 
