@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/small"
     android:orientation="vertical"
+    android:id="@+id/item"
     app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="@dimen/tiny">
 

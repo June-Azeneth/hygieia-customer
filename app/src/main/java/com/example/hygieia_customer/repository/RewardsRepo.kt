@@ -21,7 +21,6 @@ class RewardsRepo {
         private const val STORE_NAME = "storeName"
     }
 
-    //Collection based query
     fun getRewards(callback: (List<Reward>?) -> Unit) {
         firestore.collection(COLLECTION_NAME)
             .get()

@@ -36,15 +36,15 @@ class ProfileFragment : Fragment() {
 
     private val optionsIcons = intArrayOf(
         R.drawable.user_avatar,
-        R.drawable.stats,
-        R.drawable.change_pass,
+//        R.drawable.stats,
+//        R.drawable.change_pass,
         R.drawable._logout
     )
     private val optionsTitles = arrayOf(
         "Edit Profile",
-        "Stats",
+//        "Stats",
 //        "Deactivate Account",
-        "Change Password",
+//        "Change Password",
         "Logout"
     )
 

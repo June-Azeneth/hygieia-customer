@@ -3,6 +3,7 @@ package com.example.hygieia_customer.utils
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -10,10 +11,11 @@ import com.example.hygieia_customer.R
 import com.google.android.material.imageview.ShapeableImageView
 
 class Commons {
+
     fun setPageTitle(title: String, root: View) {
-//        val customToolbar = root.findViewById<View>(R.id.header)
-//        val titleTextView: TextView = customToolbar.findViewById(R.id.titleTextView)
-//        titleTextView.text = title
+        val customToolbar = root.findViewById<View>(R.id.header)
+        val ref: TextView = customToolbar.findViewById(R.id.pageTitle)
+        ref.text = title
     }
 
     fun setToolbarIcon(icon: Int, root: View) {
@@ -22,9 +24,21 @@ class Commons {
         iconRef.setImageResource(icon)
     }
 
-    fun setToolBarIconAction(root: View) {
+    fun setBackAction(root: View, action: () -> Unit) {
+        val customToolbar = root.findViewById<View>(R.id.header)
+        val icon : ShapeableImageView = customToolbar.findViewById(R.id.back)
+        icon.visibility = View.VISIBLE
+        icon.setOnClickListener {
+            action.invoke() // Invoke the lambda function when the icon is clicked
+        }
+    }
+
+    fun setToolBarIconAction(root: View, action: () -> Unit) {
         val customToolbar = root.findViewById<View>(R.id.header)
         val iconRef: ShapeableImageView = customToolbar.findViewById(R.id.icon)
+        iconRef.setOnClickListener {
+            action.invoke() // Invoke the lambda function when the icon is clicked
+        }
     }
 
     fun setOnRefreshListener(refreshLayout: SwipeRefreshLayout, refreshAction: () -> Unit) {

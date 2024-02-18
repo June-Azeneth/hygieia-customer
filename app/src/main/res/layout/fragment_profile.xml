@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/wallpaper5"
     tools:context=".ui.profile.ProfileFragment">
+
     <include
         android:id="@+id/header"
         layout="@layout/custom_header" />

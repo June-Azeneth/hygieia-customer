@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.SharedViewModel
@@ -32,10 +33,19 @@ class TransactionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
-        Commons().setToolbarIcon(R.drawable.qr_code, binding.root)
 
+        //instantiation
         binding.recyclerView.adapter = adapter
 
+        //method calls
+        commonActions()
+        setUpRecyclerView()
+        observeDataChanges()
+
+        return binding.root
+    }
+
+    private fun observeDataChanges() {
         transactionViewModel.transactionDetails.observe(viewLifecycleOwner) { transactions ->
             if (transactions != null) {
                 transactionList.clear()
@@ -49,13 +59,16 @@ class TransactionFragment : Fragment() {
                 }
             }
         }
+    }
 
+    private fun commonActions() {
         Commons().setOnRefreshListener(binding.refreshLayout) {
             transactionViewModel.fetchTransactions(currentUser)
         }
-
-        setUpRecyclerView()
-        return binding.root
+        Commons().setToolbarIcon(R.drawable.qr_code, binding.root)
+        Commons().setToolBarIconAction(binding.root) {
+            findNavController().navigate(R.id.action_navigation_transaction_to_navigation_scanQR)
+        }
     }
 
     private fun showNoDataMessage(show: Boolean) {
@@ -66,7 +79,6 @@ class TransactionFragment : Fragment() {
             binding.imageMessage.visibility = View.GONE
         }
     }
-
 
     private fun setUpRecyclerView() {
         try {

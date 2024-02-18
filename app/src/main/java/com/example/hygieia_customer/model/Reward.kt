@@ -12,7 +12,7 @@ class Reward(
     var storeName: String = "",
     var storeId: String ="",
     var addedOn: Timestamp? = null,
-    var isDeleted: Boolean = false,
+//    var isDeleted: Boolean = false,
 )
 //    override fun toString(): String {
 //        return "Reward(id=$name, /* Other properties */)"

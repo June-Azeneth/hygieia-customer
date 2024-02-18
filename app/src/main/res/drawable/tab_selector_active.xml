@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background rectangle -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- Corners for the top side -->
+            <corners
+                android:topLeftRadius="15dp"
+                android:topRightRadius="15dp" />
+            <solid android:color="@color/secondary_green" />
+        </shape>
+    </item>
+    <!-- Transparent rectangle to clip bottom corners -->
+    <item android:top="15dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+        </shape>
+    </item>
+</layer-list>

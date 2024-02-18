@@ -89,4 +89,55 @@ class PromosRepo {
             null
         }
     }
+
+    fun getPromosByStoreId(storeId: String, callback: (List<Promo>?) -> Unit) {
+        val currentDate = System.currentTimeMillis()
+        firestore.collection(COLLECTION_NAME)
+            .whereEqualTo(STORE_ID, storeId)
+            .get()
+            .addOnSuccessListener { result ->
+                val rewardList = mutableListOf<Promo>()
+                for (document in result) {
+                    try {
+                        val startDate = document.getTimestamp(PROMO_START)?.toDate()?.time ?: 0
+                        val endDate = document.getTimestamp(PROMO_END)?.toDate()?.time ?: 0
+                        val pausedDate = document.getTimestamp(DATE_PAUSED)?.toDate()?.time ?: 0
+                        val resumeDate = document.getTimestamp(DATE_RESUME)?.toDate()?.time ?: 0
+
+                        val promoStatus = when {
+                            currentDate < startDate -> "Upcoming"
+                            currentDate in startDate..endDate ->
+                                if (currentDate in pausedDate..resumeDate) "Paused" else "Ongoing"
+
+                            else -> "Passed"
+                        }
+
+                        if (promoStatus == "Ongoing" || promoStatus == "Upcoming") {
+                            val promo = Promo(
+                                document.getString(STORE_ID) ?: "",
+                                document.getString(STORE_NAME) ?: "",
+                                document.getString(ID) ?: "",
+                                document.getString(PRODUCT) ?: "",
+                                document.getString(PHOTO) ?: "",
+                                document.getString(NAME) ?: "",
+                                document.getDouble(PRICE) ?: 0.0,
+                                document.getDouble(DISCOUNT_RATE) ?: 0.0,
+                                document.getDouble(POINTS_REQUIRED) ?: 0.0,
+                                document.getTimestamp(PROMO_START)?.toDate(),
+                                document.getTimestamp(PROMO_END)?.toDate(),
+                            )
+                            rewardList.add(promo)
+                        }
+
+                    } catch (error: Exception) {
+                        callback(null)
+                    }
+                }
+                callback(rewardList)
+            }
+            .addOnFailureListener { exception ->
+                callback(null)
+                Log.e("PROMOSREPO", exception.toString())
+            }
+    }
 }

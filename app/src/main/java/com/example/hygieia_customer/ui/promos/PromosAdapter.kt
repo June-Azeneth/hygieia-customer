@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,16 +13,30 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Promo
 import com.example.hygieia_customer.model.Reward
-import com.example.hygieia_customer.ui.rewards.RewardsDiffUtil
+import com.example.hygieia_customer.ui.rewards.RewardsAdapter
 import com.google.android.material.imageview.ShapeableImageView
-import java.util.Date
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
-class PromosAdapter(private val promosList: ArrayList<Promo>) :
+class PromosAdapter(
+    private val promosList: ArrayList<Promo>,
+    private val onItemClickListener: OnItemClickListener = object :
+        OnItemClickListener {
+        override fun onItemClick(item: Promo) {
+            // Default implementation
+        }
+    }
+) :
     RecyclerView.Adapter<PromosAdapter.MyViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(item: Promo)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.promo_item, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.promo_item, parent, false)
         return MyViewHolder(itemView)
     }
 
@@ -41,11 +56,23 @@ class PromosAdapter(private val promosList: ArrayList<Promo>) :
 
         holder.promoName.text = currentItem.promoName
         holder.product.text = context.getString(R.string.product_template, currentItem.product)
-        holder.discount.text = context.getString(R.string.discount_template, formatDouble(currentItem.discountRate))
-        holder.discPrice.text = context.getString(R.string.disc_price_template, formatDouble(currentItem.discountedPrice))
-        holder.pointsReq.text = context.getString(R.string.points_req_template, formatDouble(currentItem.pointsRequired))
+        holder.discount.text =
+            context.getString(R.string.discount_template, formatDouble(currentItem.discountRate))
+        holder.discPrice.text = context.getString(
+            R.string.disc_price_template,
+            formatDouble(currentItem.discountedPrice)
+        )
+        holder.pointsReq.text = context.getString(
+            R.string.points_req_template,
+            formatDouble(currentItem.pointsRequired)
+        )
         holder.duration.text = formattedString
         holder.store.text = currentItem.storeName
+
+
+        holder.item.setOnClickListener {
+            onItemClickListener.onItemClick(currentItem)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -73,7 +100,8 @@ class PromosAdapter(private val promosList: ArrayList<Promo>) :
         val discPrice: TextView = itemView.findViewById(R.id.disc_price)
         val pointsReq: TextView = itemView.findViewById(R.id.points_required)
         val duration: TextView = itemView.findViewById(R.id.promoDuration)
-        val store : TextView = itemView.findViewById(R.id.store)
+        val store: TextView = itemView.findViewById(R.id.store)
+        val item : CardView = itemView.findViewById(R.id.item)
     }
 
     fun setData(newPromoList: ArrayList<Promo>) {
@@ -81,8 +109,10 @@ class PromosAdapter(private val promosList: ArrayList<Promo>) :
         promosList.clear() // Clear the old list
         promosList.addAll(newPromoList) // Update the list with the new data
 
-        val diffUtil = PromosDiffUtil(oldPromoList, promosList) // Pass the old and new lists to the DiffUtil
-        val diffResults = DiffUtil.calculateDiff(diffUtil) // Calculate the diff between the old and new lists
+        val diffUtil =
+            PromosDiffUtil(oldPromoList, promosList) // Pass the old and new lists to the DiffUtil
+        val diffResults =
+            DiffUtil.calculateDiff(diffUtil) // Calculate the diff between the old and new lists
         diffResults.dispatchUpdatesTo(this) // Dispatch the updates to the adapter
     }
 }

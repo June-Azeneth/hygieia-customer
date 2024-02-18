@@ -1,6 +1,7 @@
 package com.example.hygieia_customer.repository
 
 import android.util.Log
+import com.example.hygieia_customer.model.Store
 import com.example.hygieia_customer.model.UserInfo
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -67,4 +68,35 @@ class UserRepo {
                 callback(false)
             }
     }
+
+    fun getStoreDetails(storeId: String, callback: (Store?) -> Unit) {
+
+        val userRef = firestore.collection("store").document(storeId)
+        userRef.get()
+            .addOnSuccessListener { document ->
+                try {
+                    if (document.exists()) {
+                        val storeData = document.data // Retrieve all data from the document
+                        val store = Store(
+                            document.getString("id") ?: "",
+                            storeData?.get("address") as? Map<*,*>?,
+                            document.getString("email") ?: "",
+                            storeData?.get("recyclables") as? List<*>?,
+                            document.getString("name") ?: "",
+                            document.getString("photo") ?: ""
+                        )
+                        callback(store)
+                    } else {
+                        callback(null)
+                    }
+                } catch (error: Exception) {
+//                    Log.e(logTag, error.toString())
+                }
+            }
+            .addOnFailureListener {
+                // Handle errors here (e.g., log, show error message)
+                callback(null)
+            }
+    }
+
 }

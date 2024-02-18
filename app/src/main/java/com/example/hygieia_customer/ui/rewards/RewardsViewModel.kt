@@ -10,6 +10,8 @@ import kotlinx.coroutines.launch
 
 class RewardsViewModel : ViewModel() {
     private val rewardsRepo : RewardsRepo = RewardsRepo()
+    private val _storeProfileRewards = MutableLiveData<List<Reward>?>()
+    val storeProfileRewards: MutableLiveData<List<Reward>?> get() = _storeProfileRewards
     private val _rewardDetails = MutableLiveData<List<Reward>>()
     val rewardDetails: LiveData<List<Reward>> get() = _rewardDetails
     private val _selectedReward = MutableLiveData<String>()
@@ -28,11 +30,15 @@ class RewardsViewModel : ViewModel() {
         _selectedReward.value = storeId
     }
 
+    fun clearRewards(){
+        _storeProfileRewards.postValue(null)
+    }
+
     //Used in Store Profile Fragment
     fun fetchRewardsBasedOnStoreId(selectedReward : String){
         viewModelScope.launch {
             rewardsRepo.getRewardByStoreId(selectedReward) { rewards ->
-                _rewardDetails.value = rewards
+                _storeProfileRewards.value = rewards
             }
         }
     }

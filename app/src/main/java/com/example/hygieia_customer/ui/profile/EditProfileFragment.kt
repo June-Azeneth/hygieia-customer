@@ -150,7 +150,7 @@ class EditProfileFragment : Fragment() {
                 if (success) {
                     binding.progressBar.visibility = INVISIBLE
                     Commons().showToast("Update Profile Success", requireContext())
-                    findNavController().navigate(R.id.to_edit_profile)
+                    findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
 
                 } else {
                     binding.progressBar.visibility = INVISIBLE

@@ -12,24 +12,25 @@
     app:contentInsetRight="0dp"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:contentDescription="@string/back"
         android:src="@drawable/back_arrow"
-        android:layout_marginHorizontal="@dimen/tiniest"/>
+        android:visibility="invisible"
+        android:layout_marginHorizontal="@dimen/small"/>
 
     <TextView
-        android:id="@+id/backTxt"
+        android:id="@+id/pageTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/back"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_small"
-        android:fontFamily="@font/nunito_sans_bold"/>
+        android:textSize="@dimen/small"
+        android:layout_gravity="center"
+        android:fontFamily="@font/nunito_sans_semibold"/>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/icon"
