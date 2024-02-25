@@ -8,7 +8,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -34,7 +33,7 @@ class StoreProfileFragment : Fragment() {
 
     private lateinit var shimmerLayout: ShimmerFrameLayout
     private lateinit var actualLayout: LinearLayout
-    private lateinit var commons : Commons
+    private var commons : Commons = Commons()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +46,6 @@ class StoreProfileFragment : Fragment() {
         promo = binding.promo
         shimmerLayout = binding.shimmerLayout
         actualLayout = binding.actualLayout
-        commons = Commons()
 
         navigation()
         observeViewModel()
@@ -110,7 +108,7 @@ class StoreProfileFragment : Fragment() {
             observeViewModel()
         }
         commons.setBackAction(binding.root){
-            findNavController().navigate(R.id.action_storeProfileFragment_to_navigation_rewardsFragment)
+            findNavController().navigate(R.id.action_storeProfileFragment_to_offersFragment)
         }
     }
 

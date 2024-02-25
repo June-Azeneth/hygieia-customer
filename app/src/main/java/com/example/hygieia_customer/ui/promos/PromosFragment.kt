@@ -1,6 +1,5 @@
 package com.example.hygieia_customer.ui.promos
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +17,7 @@ import com.example.hygieia_customer.utils.Commons
 
 class PromosFragment : Fragment() {
 
-    val TAG = "PromosFragmentMessages"
+    private val logTag = "PromosFragmentMessages"
 
     private var _binding: FragmentPromosBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +33,7 @@ class PromosFragment : Fragment() {
             //so that it can be used/passed to another fragment later on
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
-            findNavController().navigate(R.id.action_navigation_promosFragment_to_storeProfileFragment)
+            findNavController().navigate(R.id.to_store_profile)
         }
     }
 
@@ -56,11 +55,11 @@ class PromosFragment : Fragment() {
     }
 
     private fun commonActions(){
-        commons.setToolbarIcon(R.drawable.filter, binding.root)
+//        commons.setToolbarIcon(R.drawable.filter, binding.root)
         commons.setOnRefreshListener(binding.refreshLayout) {
             promosViewModel.fetchPromos()
         }
-        commons.setPageTitle("Promos", binding.root)
+//        commons.setPageTitle("Promos", binding.root)
     }
 
     private fun observeDataChanges(){
@@ -71,7 +70,23 @@ class PromosFragment : Fragment() {
                 promoList.addAll(promos)
                 adapter.setData(promoList)
                 binding.progressBar.visibility = View.GONE
+                if (promoList.isEmpty()) {
+                    showNoDataMessage(true)
+                } else {
+                    showNoDataMessage(false)
+                }
             }
+        }
+    }
+
+    private fun showNoDataMessage(show: Boolean) {
+        if (show) {
+            binding.imageMessage.setImageResource(R.drawable.no_data)
+            binding.imageMessage.visibility = View.VISIBLE
+            binding.message.visibility = View.VISIBLE
+        } else {
+            binding.imageMessage.visibility = View.GONE
+            binding.message.visibility = View.GONE
         }
     }
 
@@ -88,7 +103,7 @@ class PromosFragment : Fragment() {
 
             promosViewModel.fetchPromos()
         } catch (error: Exception) {
-            Log.e(TAG, error.toString())
+            Log.e(logTag, error.toString())
         }
     }
 

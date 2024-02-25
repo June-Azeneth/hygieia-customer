@@ -37,7 +37,7 @@ class TransactionsAdapter(
         when (currentItem.type) {
             "grant" -> {
                 holder.type.text = context.getString(R.string.received_points)
-                holder.points.text = context.getString(R.string.add_points, currentItem.points_earned.toString())
+                holder.points.text = context.getString(R.string.add_points, currentItem.pointsEarned.toString())
                 holder.points.setTextColor(
                     ContextCompat.getColor(
                         holder.itemView.context, R.color.green
@@ -46,7 +46,7 @@ class TransactionsAdapter(
             }
             "redeem" -> {
                 holder.type.text = context.getString(R.string.redeemed, currentItem.product)
-                holder.points.text = context.getString(R.string.subtract_points , currentItem.points_spent.toString())
+                holder.points.text = context.getString(R.string.subtract_points , currentItem.pointsSpent.toString())
                 holder.points.setTextColor(
                     ContextCompat.getColor(
                         holder.itemView.context, R.color.red

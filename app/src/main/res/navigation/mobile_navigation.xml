@@ -35,6 +35,9 @@
             app:destination="@id/profileFragment"
             app:popUpTo="@+id/navigation_dashboard"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_dashboard_to_offersFragment"
+            app:destination="@id/offersFragment" />
     </fragment>
 
     <fragment
@@ -115,8 +118,8 @@
         android:label="fragment_store_profile"
         tools:layout="@layout/fragment_store_profile" >
         <action
-            android:id="@+id/action_storeProfileFragment_to_navigation_rewardsFragment"
-            app:destination="@id/navigation_rewardsFragment"
+            android:id="@+id/action_storeProfileFragment_to_offersFragment"
+            app:destination="@id/offersFragment"
             app:popUpTo="@+id/navigation_dashboard"
             app:popUpToInclusive="true"/>
     </fragment>
@@ -125,4 +128,16 @@
         app:destination="@id/navigation_scanQR"
         app:popUpTo="@+id/navigation_dashboard"
         app:popUpToInclusive="true" />
+    <fragment
+        android:id="@+id/offersFragment"
+        android:name="com.example.hygieia_customer.ui.offers.OffersFragment"
+        android:label="fragment_offers"
+        tools:layout="@layout/fragment_offers" />
+
+    <action
+        android:id="@+id/to_store_profile"
+        app:destination="@id/storeProfileFragment"
+        app:popUpTo="@+id/navigation_dashboard"
+        app:popUpToInclusive="true"/>
+
 </navigation>

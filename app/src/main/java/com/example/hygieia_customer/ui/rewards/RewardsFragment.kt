@@ -30,7 +30,8 @@ class RewardsFragment : Fragment(){
             //so that it can be used/passed to another fragment later on
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
-            findNavController().navigate(R.id.action_navigation_rewardsFragment_to_storeProfileFragment)
+            commons.log(_tag, item.storeId)
+            findNavController().navigate(R.id.to_store_profile)
         }
     }
     private var commons : Commons = Commons()
@@ -62,12 +63,10 @@ class RewardsFragment : Fragment(){
     }
 
     private fun commonActions(){
-        commons.setToolbarIcon(R.drawable.filter, binding.root)
         commons.setOnRefreshListener(binding.refreshLayout) {
             //Fetch rewards from database
             rewardViewModel.fetchRewards()
         }
-        commons.setPageTitle("Rewards", binding.root)
     }
 
     private fun setUpRecyclerView() {

@@ -12,7 +12,7 @@ class TransactionsRepo {
     //COLLECTION BASED QUERY
     fun getTransactions(userId: String, callback: (List<Transaction>?) -> Unit) {
         firestore.collection("transaction")
-            .whereEqualTo("customerID", userId)
+            .whereEqualTo("customerId", userId)
             .orderBy("addedOn", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
@@ -21,7 +21,7 @@ class TransactionsRepo {
                     try {
                         val transaction = Transaction(
                             document.getString("id") ?: "",
-                            document.getString("customerID") ?: "",
+                            document.getString("customerId") ?: "",
                             document.getString("customerName") ?: "",
                             document.getDouble("discount") ?: 0.0,
                             document.getDouble("pointsEarned") ?: 0.0,

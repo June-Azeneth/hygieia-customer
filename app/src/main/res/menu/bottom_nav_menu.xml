@@ -17,13 +17,18 @@
         android:title="" />
 
     <item
-        android:id="@+id/navigation_rewardsFragment"
-        android:icon="@drawable/reward"
+        android:id="@+id/offersFragment"
+        android:icon="@drawable/discount"
         android:title="" />
 
+<!--    <item-->
+<!--        android:id="@+id/navigation_promosFragment"-->
+<!--        android:icon="@drawable/discount"-->
+<!--        android:title="" />-->
+
     <item
-        android:id="@+id/navigation_promosFragment"
-        android:icon="@drawable/discount"
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/user"
         android:title="" />
 
 <!--    <item-->

@@ -45,7 +45,6 @@ class DashboardFragment : Fragment() {
             navigateTo(earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
             navigateTo(rewardsCard, R.id.action_navigation_dashboard_to_navigation_rewardsFragment)
             navigateTo(promosCard, R.id.action_navigation_dashboard_to_navigation_promosFragment)
-            navigateTo(profile, R.id.action_navigation_dashboard_to_profileFragment)
         }
     }
 

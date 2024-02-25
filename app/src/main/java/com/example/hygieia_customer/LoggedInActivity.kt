@@ -13,9 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 
 class LoggedInActivity : AppCompatActivity() {
 
-//    private var currentFragment: Fragment? = null
-//    private var lastBackPressTime: Long = 0
-
     private lateinit var binding: ActivityLoggedInBinding
     private lateinit var auth: FirebaseAuth
 
@@ -25,7 +22,6 @@ class LoggedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         try {
             auth = FirebaseAuth.getInstance()
-//            val currentUser = auth.currentUser
             binding = ActivityLoggedInBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
