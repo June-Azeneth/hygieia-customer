@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.hygieia_customer.ui.dashboard.DashboardFragment"
+        android:name="com.example.hygieia_customer.pages.dashboard.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -44,19 +44,19 @@
 
     <fragment
         android:id="@+id/navigation_transaction"
-        android:name="com.example.hygieia_customer.ui.transactions.TransactionFragment"
+        android:name="com.example.hygieia_customer.pages.transactions.TransactionFragment"
         android:label="Transactions"
         tools:layout="@layout/fragment_transaction" />
 
     <fragment
         android:id="@+id/navigation_scanQR"
-        android:name="com.example.hygieia_customer.ui.scanQR.QRScanningFragment"
+        android:name="com.example.hygieia_customer.pages.scanQR.QRScanningFragment"
         android:label="Scan QR Code"
         tools:layout="@layout/fragment_q_r_scanning" />
 
     <fragment
         android:id="@+id/navigation_promosFragment"
-        android:name="com.example.hygieia_customer.ui.promos.PromosFragment"
+        android:name="com.example.hygieia_customer.pages.promos.PromosFragment"
         android:label="fragment_promos"
         tools:layout="@layout/fragment_promos" >
         <action
@@ -67,7 +67,7 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_rewardsFragment"
-        android:name="com.example.hygieia_customer.ui.rewards.RewardsFragment"
+        android:name="com.example.hygieia_customer.pages.rewards.RewardsFragment"
         android:label="fragment_rewards"
         tools:layout="@layout/fragment_rewards">
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.hygieia_customer.ui.profile.ProfileFragment"
+        android:name="com.example.hygieia_customer.pages.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile">
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.example.hygieia_customer.ui.profile.EditProfileFragment"
+        android:name="com.example.hygieia_customer.pages.profile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
@@ -106,12 +106,12 @@
 
     <fragment
         android:id="@+id/profilePhotosFragment"
-        android:name="com.example.hygieia_customer.ui.profile.profilePhotos.ProfilePhotosFragment"
+        android:name="com.example.hygieia_customer.pages.profile.profilePhotos.ProfilePhotosFragment"
         android:label="fragment_profile_photos"
         tools:layout="@layout/fragment_profile_photos" />
     <fragment
         android:id="@+id/storeProfileFragment"
-        android:name="com.example.hygieia_customer.ui.store.StoreProfileFragment"
+        android:name="com.example.hygieia_customer.pages.store.StoreProfileFragment"
         android:label="fragment_store_profile"
         tools:layout="@layout/fragment_store_profile" >
         <action
@@ -128,7 +128,7 @@
 
     <fragment
         android:id="@+id/offersFragment"
-        android:name="com.example.hygieia_customer.ui.offers.OffersFragment"
+        android:name="com.example.hygieia_customer.pages.offers.OffersFragment"
         android:label="fragment_offers"
         tools:layout="@layout/fragment_offers" />
 

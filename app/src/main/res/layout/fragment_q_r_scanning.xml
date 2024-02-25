@@ -6,7 +6,7 @@
     android:background="@color/bgColor"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.scanQR.QRScanningFragment">
+    tools:context=".pages.scanQR.QRScanningFragment">
 
     <include
         android:id="@+id/header"

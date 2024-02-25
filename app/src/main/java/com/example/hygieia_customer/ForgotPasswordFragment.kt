@@ -69,7 +69,6 @@ class ForgotPasswordFragment : Fragment() {
     private fun recoverAccount() {
         val strEmail = email.text.toString()
         if (!TextUtils.isEmpty(strEmail)) {
-//            auth.confirmPasswordReset()
 
             auth.sendPasswordResetEmail(strEmail).addOnSuccessListener {
                 showMessage()

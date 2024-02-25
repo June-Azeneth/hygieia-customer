@@ -7,12 +7,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 class UserRepo {
-    val TAG = "UserRepoMessages"
+    private val logTag = "UserRepoMessages"
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     fun getUserDetails(userId: String, callback: (UserInfo?) -> Unit) {
-        val userRef = firestore.collection("consumer").document(userId)
+        val userRef = fireStore.collection("consumer").document(userId)
         userRef.get()
             .addOnSuccessListener { documentSnapshot ->
                 try {
@@ -24,7 +24,7 @@ class UserRepo {
                         callback(null)
                     }
                 } catch (error: Exception) {
-                    Log.e(TAG, error.toString())
+                    Log.e(logTag, error.toString())
                 }
             }
             .addOnFailureListener {
@@ -41,7 +41,7 @@ class UserRepo {
     }
 
     fun updateUserProfile(userId: String, updatedUserInfo: UserInfo, callback: (Boolean) -> Unit) {
-        val userRef = firestore.collection("consumer").document(userId)
+        val userRef = fireStore.collection("consumer").document(userId)
 
         // Create a map with only the fields you want to update
 //        val updateData = mapOf(
@@ -71,7 +71,7 @@ class UserRepo {
 
     fun getStoreDetails(storeId: String, callback: (Store?) -> Unit) {
 
-        val userRef = firestore.collection("store").document(storeId)
+        val userRef = fireStore.collection("store").document(storeId)
         userRef.get()
             .addOnSuccessListener { document ->
                 try {

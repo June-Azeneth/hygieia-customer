@@ -6,12 +6,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class TransactionsRepo {
-    val TAG = "TransactionRepoMessages"
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val logTag = "TransactionRepoMessages"
+    private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     //COLLECTION BASED QUERY
     fun getTransactions(userId: String, callback: (List<Transaction>?) -> Unit) {
-        firestore.collection("transaction")
+        fireStore.collection("transaction")
             .whereEqualTo("customerId", userId)
             .orderBy("addedOn", Query.Direction.DESCENDING)
             .get()
@@ -34,19 +34,18 @@ class TransactionsRepo {
                         )
                         transactionList.add(transaction)
                     } catch (e: Exception) {
-                        Log.e(TAG, "Error creating Transaction object: ${e.message}")
+                        Log.e(logTag, "Error creating Transaction object: ${e.message}")
                         // Handle the error or skip this document
                     }
                 }
                 callback(transactionList)
-                Log.e(TAG, transactionList.toString())
+                Log.e(logTag, transactionList.toString())
             }
             .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting transactions: ", exception)
+                Log.w(logTag, "Error getting transactions: ", exception)
                 callback(null)
             }
     }
-
     //For a more accurate data, we should query the product and store name as well
     //TO DO query product and store name before passing
 }

@@ -68,5 +68,7 @@
     <string name="city">City</string>
     <string name="barangay">Barangay</string>
     <string name="the_store_accepts">The store accepts</string>
+    <string name="pts">PTS</string>
+    <string name="_0">0</string>
 
 </resources>

@@ -2,12 +2,11 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Reward
-import com.example.hygieia_customer.model.Transaction
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RewardsRepo {
-    val TAG = "RewardsRepoMessages"
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    val logTag = "RewardsRepoMessages"
+    private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     companion object {
         private const val COLLECTION_NAME = "reward"
@@ -15,14 +14,14 @@ class RewardsRepo {
         private const val ID = "id"
         private const val PHOTO = "photo"
         private const val NAME = "name"
-        private const val DISCOUNT_RATE = "discountRate"
+        private const val DISCOUNT_RATE = "discount"
         private const val DISCOUNTED_PRICE = "discountedPrice"
         private const val POINTS_REQUIRED = "pointsRequired"
         private const val STORE_NAME = "storeName"
     }
 
     fun getRewards(callback: (List<Reward>?) -> Unit) {
-        firestore.collection(COLLECTION_NAME)
+        fireStore.collection(COLLECTION_NAME)
             .get()
             .addOnSuccessListener { result ->
                 val rewardList = mutableListOf<Reward>()
@@ -40,20 +39,20 @@ class RewardsRepo {
                             )
                         rewardList.add(promo)
                     } catch (error: Exception) {
-                        Log.e(TAG, error.toString())
+                        Log.e(logTag, error.toString())
                         callback(null)
                     }
                 }
                 callback(rewardList)
             }
             .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting rewards: ", exception)
+                Log.w(logTag, "Error getting rewards: ", exception)
                 callback(null)
             }
     }
 
     fun getRewardByStoreId(storeId: String, callback: (List<Reward>?) -> Unit){
-        firestore.collection(COLLECTION_NAME)
+        fireStore.collection(COLLECTION_NAME)
             .whereEqualTo(STORE_ID, storeId)
             .get()
             .addOnSuccessListener { result ->
@@ -72,14 +71,14 @@ class RewardsRepo {
                         )
                         rewardList.add(promo)
                     } catch (error: Exception) {
-                        Log.e(TAG, error.toString())
+                        Log.e(logTag, error.toString())
                         callback(null)
                     }
                 }
                 callback(rewardList)
             }
             .addOnFailureListener { exception ->
-                Log.w(TAG, "Error getting rewards: ", exception)
+                Log.w(logTag, "Error getting rewards: ", exception)
                 callback(null)
             }
     }

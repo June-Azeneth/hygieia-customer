@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 if (available) {
                     val intent = Intent(this, LoggedInActivity::class.java)
                     startActivity(intent)
-//                    finish()
+                    finish()
                 } else {
                     if(!dialog.isShowing)
                         dialog.show()

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/small"
     android:background="@color/sub_text"
-    tools:context=".ui.store.RewardsTab">
+    tools:context=".pages.store.RewardsTab">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

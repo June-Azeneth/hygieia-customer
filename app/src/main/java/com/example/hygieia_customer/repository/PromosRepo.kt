@@ -4,17 +4,14 @@ import android.util.Log
 import com.example.hygieia_customer.model.Promo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 
 class PromosRepo {
-    private val _tag = "PromosRepoMessages"
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val logTag = "PromosRepoMessages"
+    private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     companion object {
         private const val COLLECTION_NAME = "promo"
@@ -38,15 +35,15 @@ class PromosRepo {
         val promoList = mutableListOf<Promo>()
 
         try {
-            val result = firestore.collection(COLLECTION_NAME).get().await()
+            val result = fireStore.collection(COLLECTION_NAME).get().await()
 
             val deferredPromos = result.documents.map { async { processPromoDocument(it, currentDate) } }
             promoList.addAll(deferredPromos.awaitAll().filterNotNull())
 
             callback(promoList)
-            Log.d(_tag, promoList.toString())
+            Log.d(logTag, promoList.toString())
         } catch (exception: Exception) {
-            Log.e(_tag, "Error getting promos: ", exception)
+            Log.e(logTag, "Error getting promos: ", exception)
             callback(null)
         }
     }
@@ -65,7 +62,7 @@ class PromosRepo {
                 else -> "Passed"
             }
 
-            Log.d(_tag, promoStatus)
+            Log.d(logTag, promoStatus)
 
             if (promoStatus == "Ongoing" || promoStatus == "Upcoming") {
                 Promo(
@@ -85,14 +82,14 @@ class PromosRepo {
                 null
             }
         } catch (error: Exception) {
-            Log.e(_tag, error.toString())
+            Log.e(logTag, error.toString())
             null
         }
     }
 
     fun getPromosByStoreId(storeId: String, callback: (List<Promo>?) -> Unit) {
         val currentDate = System.currentTimeMillis()
-        firestore.collection(COLLECTION_NAME)
+        fireStore.collection(COLLECTION_NAME)
             .whereEqualTo(STORE_ID, storeId)
             .get()
             .addOnSuccessListener { result ->
