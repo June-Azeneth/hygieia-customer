@@ -43,8 +43,8 @@ class DashboardFragment : Fragment() {
     private fun setUpNavigation() {
         with(binding) {
             navigateTo(earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
-            navigateTo(rewardsCard, R.id.action_navigation_dashboard_to_navigation_rewardsFragment)
-            navigateTo(promosCard, R.id.action_navigation_dashboard_to_navigation_promosFragment)
+            navigateTo(rewardsCard, R.id.action_navigation_dashboard_to_offersFragment)
+            navigateTo(promosCard, R.id.action_navigation_dashboard_to_offersFragment)
         }
     }
 

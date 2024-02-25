@@ -37,7 +37,9 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_navigation_dashboard_to_offersFragment"
-            app:destination="@id/offersFragment" />
+            app:destination="@id/offersFragment"
+            app:popUpTo="@+id/navigation_dashboard"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -94,24 +96,19 @@
             android:id="@+id/action_editProfileFragment_to_profilePhotosFragment"
             app:destination="@id/profilePhotosFragment"
             app:popUpTo="@+id/navigation_dashboard"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_editProfileFragment_to_profileFragment"
             app:destination="@id/profileFragment"
             app:popUpTo="@+id/navigation_dashboard"
             app:popUpToInclusive="true"/>
     </fragment>
+
     <fragment
         android:id="@+id/profilePhotosFragment"
         android:name="com.example.hygieia_customer.ui.profile.profilePhotos.ProfilePhotosFragment"
         android:label="fragment_profile_photos"
         tools:layout="@layout/fragment_profile_photos" />
-
-    <action
-        android:id="@+id/to_edit_profile"
-        app:destination="@id/editProfileFragment"
-        app:popUpTo="@+id/navigation_dashboard"
-        app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/storeProfileFragment"
         android:name="com.example.hygieia_customer.ui.store.StoreProfileFragment"
@@ -128,6 +125,7 @@
         app:destination="@id/navigation_scanQR"
         app:popUpTo="@+id/navigation_dashboard"
         app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/offersFragment"
         android:name="com.example.hygieia_customer.ui.offers.OffersFragment"
