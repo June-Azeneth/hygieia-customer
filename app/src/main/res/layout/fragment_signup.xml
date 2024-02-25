@@ -7,7 +7,7 @@
     android:layout_gravity="top"
     android:fillViewport="true"
     android:isScrollContainer="true"
-    tools:context=".SignupFragment">
+    tools:context=".ui.signup.SignupFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

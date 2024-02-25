@@ -5,16 +5,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
-import com.example.hygieia_customer.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentTransactionBinding
 import com.example.hygieia_customer.model.Transaction
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
+import com.example.hygieia_customer.utils.NetworkViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class TransactionFragment : Fragment() {
     val TAG = "TransactionFragmentMessages"
@@ -27,6 +30,7 @@ class TransactionFragment : Fragment() {
     private val adapter by lazy { TransactionsAdapter(arrayListOf()) }
     private val userRepo = UserRepo()
     private var currentUser: String = ""
+    private lateinit var dialog : AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +38,12 @@ class TransactionFragment : Fragment() {
     ): View {
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
 
-        //instantiation
+        //initialization
         binding.recyclerView.adapter = adapter
+        dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_Rounded)
+            .setView(R.layout.connectivity_dialog_box)
+            .setCancelable(true)
+            .create()
 
         //method calls
         commonActions()
@@ -46,17 +54,26 @@ class TransactionFragment : Fragment() {
     }
 
     private fun observeDataChanges() {
-        transactionViewModel.transactionDetails.observe(viewLifecycleOwner) { transactions ->
-            if (transactions != null) {
-                transactionList.clear()
-                transactionList.addAll(transactions)
-                adapter.setData(transactionList)
-                binding.progressBar.visibility = View.GONE
-                if (transactionList.isEmpty()) {
-                    showNoDataMessage(true)
-                } else {
-                    showNoDataMessage(false)
+        var networkViewModel = NetworkViewModel(requireContext())
+        networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
+            if (available) {
+                transactionViewModel.transactionDetails.observe(viewLifecycleOwner) { transactions ->
+                    if (transactions != null) {
+                        transactionList.clear()
+                        transactionList.addAll(transactions)
+                        adapter.setData(transactionList)
+                        binding.progressBar.visibility = View.GONE
+                        if (transactionList.isEmpty()) {
+                            showNoDataMessage(true)
+                        } else {
+                            showNoDataMessage(false)
+                        }
+                    }
                 }
+            }
+            else{
+                if(!dialog.isShowing)
+                    dialog.show()
             }
         }
     }

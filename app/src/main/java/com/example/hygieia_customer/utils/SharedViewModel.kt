@@ -1,5 +1,6 @@
-package com.example.hygieia_customer
+package com.example.hygieia_customer.utils
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

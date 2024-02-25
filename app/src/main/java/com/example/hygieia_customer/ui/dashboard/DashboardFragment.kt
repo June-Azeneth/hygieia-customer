@@ -5,27 +5,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hygieia_customer.R
-import com.example.hygieia_customer.SharedViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentDashboardBinding
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
-import com.google.firebase.auth.FirebaseAuth
+import com.example.hygieia_customer.utils.NetworkViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class DashboardFragment : Fragment() {
-    var TAG = "DASHBOARD"
+    private var logTag = "DASHBOARD"
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var networkViewModel: NetworkViewModel
     private val userRepo = UserRepo()
-    private lateinit var auth: FirebaseAuth
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
+    private lateinit var dialog : AlertDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,26 +34,43 @@ class DashboardFragment : Fragment() {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        //navigation
-        navigateTo(binding.earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
-        navigateTo(
-            binding.rewardsCard,
-            R.id.action_navigation_dashboard_to_navigation_rewardsFragment
-        )
-        navigateTo(
-            binding.promosCard,
-            R.id.action_navigation_dashboard_to_navigation_promosFragment
-        )
-        navigateTo(binding.profile, R.id.action_navigation_dashboard_to_profileFragment)
-
-
-        //method calls
-        Commons().setOnRefreshListener(binding.refreshLayout) {
-            updateUI()
-        }
-        updateUI()
+        setUpNavigation()
+        setupRefreshListener()
 
         return binding.root
+    }
+
+    private fun setUpNavigation() {
+        with(binding) {
+            navigateTo(earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
+            navigateTo(rewardsCard, R.id.action_navigation_dashboard_to_navigation_rewardsFragment)
+            navigateTo(promosCard, R.id.action_navigation_dashboard_to_navigation_promosFragment)
+            navigateTo(profile, R.id.action_navigation_dashboard_to_profileFragment)
+        }
+    }
+
+    private fun observeNetworkAvailability() {
+        networkViewModel = NetworkViewModel(requireContext())
+        dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_Rounded)
+            .setView(R.layout.connectivity_dialog_box)
+            .setCancelable(true)
+            .create()
+
+        networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
+            if (available) {
+                updateUI()
+            } else {
+                if(!dialog.isShowing)
+                    dialog.show()
+            }
+        }
+    }
+
+    private fun setupRefreshListener() {
+        Commons().setOnRefreshListener(binding.refreshLayout) {
+            observeNetworkAvailability()
+        }
+        observeNetworkAvailability()
     }
 
     private fun navigateTo(view: View, action: Int) {
@@ -76,7 +93,7 @@ class DashboardFragment : Fragment() {
                 }
             }
         } catch (error: Exception) {
-            Log.e(TAG, error.toString())
+            Log.e(logTag, error.toString())
         }
     }
 

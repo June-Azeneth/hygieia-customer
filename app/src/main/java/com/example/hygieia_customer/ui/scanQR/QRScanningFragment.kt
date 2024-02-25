@@ -5,13 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.hygieia_customer.R
-import com.example.hygieia_customer.SharedViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentQRScanningBinding
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons

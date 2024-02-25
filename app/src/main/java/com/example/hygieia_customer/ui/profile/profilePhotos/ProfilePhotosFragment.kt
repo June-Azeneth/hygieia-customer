@@ -10,10 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hygieia_customer.SharedViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentProfilePhotosBinding
 import com.example.hygieia_customer.model.InAppProfilePhotos
 import com.google.android.gms.tasks.CancellationTokenSource

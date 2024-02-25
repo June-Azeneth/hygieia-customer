@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
-import com.example.hygieia_customer.SharedViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentProfileBinding
 import com.example.hygieia_customer.model.ProfileOptions
 import com.example.hygieia_customer.repository.UserRepo

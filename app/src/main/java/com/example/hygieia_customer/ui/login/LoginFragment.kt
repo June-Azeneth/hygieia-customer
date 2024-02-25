@@ -1,4 +1,4 @@
-package com.example.hygieia_customer
+package com.example.hygieia_customer.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,21 +10,26 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.example.hygieia_customer.LoggedInActivity
+import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentLoginBinding
 import com.example.hygieia_customer.utils.Commons
+import com.example.hygieia_customer.utils.NetworkViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 class LoginFragment : Fragment() {
     private lateinit var auth: FirebaseAuth;
-    private val TAG = "LOGIN MESSAGES"
+    private val logTag = "LOGIN MESSAGES"
     private var _binding: FragmentLoginBinding? = null
     private val binding
         get() = _binding
             ?: error("Binding should not be accessed before onCreateView or after onDestroyView")
     private lateinit var commons: Commons
-
+    private lateinit var dialog : AlertDialog
+    private lateinit var networkViewModel: NetworkViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,14 +38,15 @@ class LoginFragment : Fragment() {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         commons = Commons()
+
+        //method calls
+        observeNetwork()
+        setUpNavigation()
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.loginBTN.setOnClickListener {
-            loginUser()
-        }
+    private fun setUpNavigation() {
         commons.setNavigationOnClickListener(
             binding.toRegister,
             R.id.action_loginFragment_to_signupFragment
@@ -49,6 +55,20 @@ class LoginFragment : Fragment() {
             binding.forgotPassword,
             R.id.action_loginFragment_to_forgotPasswordFragment
         )
+    }
+
+    private fun observeNetwork(){
+        networkViewModel = NetworkViewModel(requireContext())
+        networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
+            if (available) {
+                binding.loginBTN.setOnClickListener {
+                    loginUser()
+                }
+            } else {
+                if(!dialog.isShowing)
+                    dialog.show()
+            }
+        }
     }
 
     private fun loginUser() {
@@ -82,7 +102,7 @@ class LoginFragment : Fragment() {
                             loader.visibility = INVISIBLE
 
                             if (task.isSuccessful) {
-                                Log.d(TAG, "signInWithEmail:success")
+                                Log.d(logTag, "signInWithEmail:success")
                                 val intent =
                                     Intent(requireView().context, LoggedInActivity::class.java)
                                 startActivity(intent)
@@ -91,7 +111,7 @@ class LoginFragment : Fragment() {
                                     Editable.Factory.getInstance().newEditable("")
                             } else {
                                 // If sign in fails, handle the specific exception
-                                Log.w(TAG, "signInWithEmail:failure", task.exception)
+                                Log.w(logTag, "signInWithEmail:failure", task.exception)
 
                                 // Handle different exception cases
                                 when (task.exception) {
@@ -108,7 +128,7 @@ class LoginFragment : Fragment() {
                 }
             }
         } catch (error: Exception) {
-            Log.e(TAG, error.toString())
+            Log.e(logTag, error.toString())
         }
     }
 

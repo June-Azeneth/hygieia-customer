@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    tools:context=".LoginFragment">
+    tools:context=".ui.login.LoginFragment">
 
     <TextView
         android:id="@+id/title"
