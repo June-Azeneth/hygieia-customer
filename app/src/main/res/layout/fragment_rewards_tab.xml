@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small"
-        android:text="@string/no_active_promos"
+        android:text="@string/store_has_no_offered_rewards"
         android:textColor="@color/secondary_green"
         android:textSize="@dimen/text_regular"
         android:visibility="invisible"

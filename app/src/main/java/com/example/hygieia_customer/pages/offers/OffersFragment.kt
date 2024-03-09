@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentOffersBinding
 import com.example.hygieia_customer.pages.promos.PromosFragment
 import com.example.hygieia_customer.pages.rewards.RewardsFragment
+import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
 
 class OffersFragment : Fragment() {
@@ -18,6 +20,7 @@ class OffersFragment : Fragment() {
     private var _binding: FragmentOffersBinding? = null
     private val binding get() = _binding!!
     private var commons : Commons = Commons()
+    private val rewardViewModel : RewardsViewModel by activityViewModels()
     private lateinit var reward: AppCompatButton
     private lateinit var promo: AppCompatButton
 
@@ -38,6 +41,9 @@ class OffersFragment : Fragment() {
 
     private fun commonActions(){
         commons.setPageTitle("Offers", binding.root)
+        commons.setOnRefreshListener(binding.swipeRefreshLayout) {
+            rewardViewModel.fetchRewards()
+        }
     }
 
     private fun navigation() {

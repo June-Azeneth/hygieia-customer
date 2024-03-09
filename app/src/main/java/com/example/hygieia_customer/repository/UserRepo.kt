@@ -42,15 +42,6 @@ class UserRepo {
 
     fun updateUserProfile(userId: String, updatedUserInfo: UserInfo, callback: (Boolean) -> Unit) {
         val userRef = fireStore.collection("consumer").document(userId)
-
-        // Create a map with only the fields you want to update
-//        val updateData = mapOf(
-//            "user_photo" to updatedUserInfo.userPhoto,
-//            "first_name" to updatedUserInfo.firstName,
-//            "address" to updatedUserInfo.address
-//            // Add other fields if needed
-//        )
-
         val updateData = mapOf(
             "photo" to updatedUserInfo.photo,
             "firstName" to updatedUserInfo.firstName,
@@ -70,16 +61,18 @@ class UserRepo {
     }
 
     fun getStoreDetails(storeId: String, callback: (Store?) -> Unit) {
+        val userRef = fireStore.collection("store")
+            .whereEqualTo("storeId", storeId)
 
-        val userRef = fireStore.collection("store").document(storeId)
         userRef.get()
-            .addOnSuccessListener { document ->
+            .addOnSuccessListener { querySnapshot ->
                 try {
-                    if (document.exists()) {
+                    if (!querySnapshot.isEmpty) {
+                        val document = querySnapshot.documents[0]
                         val storeData = document.data // Retrieve all data from the document
                         val store = Store(
-                            document.getString("id") ?: "",
-                            storeData?.get("address") as? Map<*,*>?,
+                            document.getString("storeId") ?: "",
+                            storeData?.get("address") as? Map<*, *>?,
                             document.getString("email") ?: "",
                             storeData?.get("recyclables") as? List<*>?,
                             document.getString("name") ?: "",
@@ -90,11 +83,10 @@ class UserRepo {
                         callback(null)
                     }
                 } catch (error: Exception) {
-//                    Log.e(logTag, error.toString())
+                    callback(null)
                 }
             }
             .addOnFailureListener {
-                // Handle errors here (e.g., log, show error message)
                 callback(null)
             }
     }

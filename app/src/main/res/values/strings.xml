@@ -70,5 +70,6 @@
     <string name="the_store_accepts">The store accepts</string>
     <string name="pts">PTS</string>
     <string name="_0">0</string>
+    <string name="store_has_no_offered_rewards">No Rewards Available</string>
 
 </resources>

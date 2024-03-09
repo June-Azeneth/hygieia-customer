@@ -42,6 +42,7 @@ class RewardsFragment : Fragment() {
             //so that it can be used/passed to another fragment later on
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
+            Log.e("REWARD", item.storeId)
             findNavController().navigate(R.id.to_store_profile)
         }
     }
@@ -97,10 +98,10 @@ class RewardsFragment : Fragment() {
     }
 
     private fun commonActions() {
-        commons.setOnRefreshListener(binding.refreshLayout) {
-            observeNetwork()
-        }
-        observeNetwork()
+//        commons.setOnRefreshListener(binding.refreshLayout) {
+//            observeNetwork()
+//        }
+//        observeNetwork()
     }
 
     private fun setUpRecyclerView() {

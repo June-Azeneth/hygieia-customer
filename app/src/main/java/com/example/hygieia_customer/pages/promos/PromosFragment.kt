@@ -24,13 +24,13 @@ class PromosFragment : Fragment() {
     private val logTag = "PromosFragmentMessages"
     private var _binding: FragmentPromosBinding? = null
     private val binding get() = _binding!!
-    private lateinit var dialog : AlertDialog
+    private lateinit var dialog: AlertDialog
     private lateinit var promoList: ArrayList<Promo>
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
-    private var commons : Commons = Commons()
-    private val adapter by lazy { PromosAdapter(arrayListOf(), onItemClickListener)}
+    private var commons: Commons = Commons()
+    private val adapter by lazy { PromosAdapter(arrayListOf(), onItemClickListener) }
     private val onItemClickListener = object : PromosAdapter.OnItemClickListener {
         override fun onItemClick(item: Promo) {
             //Pass the store id extracted from the selected promo item and store it in a variable in the view model
@@ -40,8 +40,8 @@ class PromosFragment : Fragment() {
             findNavController().navigate(R.id.to_store_profile)
         }
     }
-    private lateinit var actualLayout : ConstraintLayout
-    private lateinit var placeholder : ShimmerFrameLayout
+    private lateinit var actualLayout: ConstraintLayout
+    private lateinit var placeholder: ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +63,7 @@ class PromosFragment : Fragment() {
         return binding.root
     }
 
-    private fun observeNetwork(){
+    private fun observeNetwork() {
         dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_Rounded)
             .setView(R.layout.connectivity_dialog_box)
             .setCancelable(true)
@@ -85,15 +85,13 @@ class PromosFragment : Fragment() {
         }
     }
 
-    private fun commonActions(){
-//        commons.setToolbarIcon(R.drawable.filter, binding.root)
+    private fun commonActions() {
         commons.setOnRefreshListener(binding.refreshLayout) {
             observeNetwork()
         }
-//        commons.setPageTitle("Promos", binding.root)
     }
 
-    private fun observeDataChanges(){
+    private fun observeDataChanges() {
         promosViewModel.promoDetails.observe(viewLifecycleOwner) { promos ->
             // Update UI with the new data
             if (promos != null) {
