@@ -11,15 +11,14 @@ import kotlinx.coroutines.launch
 class PromosViewModel : ViewModel() {
     private val _selectedReward = MutableLiveData<String>()
     val selectedReward: LiveData<String> get() = _selectedReward
-    private val _promoDetails = MutableLiveData<List<Promo>>()
-    val promoDetails: LiveData<List<Promo>> get() = _promoDetails
+    private val _promoDetails = MutableLiveData<List<Promo>?>()
+    val promoDetails: LiveData<List<Promo>?> get() = _promoDetails
     private val promosRepo: PromosRepo = PromosRepo()
 
     fun fetchPromos() {
         viewModelScope.launch {
-            promosRepo.getPromos() { promos ->
-                _promoDetails.value = promos
-            }
+            val rewards = promosRepo.getPromos()
+            _promoDetails.value = rewards
         }
     }
 

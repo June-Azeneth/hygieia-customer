@@ -2,7 +2,11 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Reward
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class RewardsRepo {
     val logTag = "RewardsRepoMessages"
@@ -20,14 +24,14 @@ class RewardsRepo {
         private const val STORE_NAME = "storeName"
     }
 
-    fun getRewards(callback: (List<Reward>?) -> Unit) {
-        fireStore.collection(COLLECTION_NAME)
-            .get()
-            .addOnSuccessListener { result ->
+    suspend fun getRewards(): List<Reward>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = fireStore.collection(COLLECTION_NAME).get().await()
                 val rewardList = mutableListOf<Reward>()
                 for (document in result) {
                     try {
-                        val promo = Reward(
+                        val reward = Reward(
                             document.getString(ID) ?: "",
                             document.getString(NAME) ?: "",
                             document.getDouble(POINTS_REQUIRED) ?: 0.0,
@@ -36,22 +40,42 @@ class RewardsRepo {
                             document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
                             document.getString(STORE_NAME) ?: "",
                             document.getString(STORE_ID) ?: ""
-                            )
-                        rewardList.add(promo)
+                        )
+                        val storeName = getStoreName(reward.storeId)
+                        if (storeName != null) {
+                            reward.storeName = storeName
+                        }
+                        rewardList.add(reward)
                     } catch (error: Exception) {
-                        Log.e(logTag, error.toString())
-                        callback(null)
+                        Log.e(logTag, "Error parsing reward document: ${error.message}")
                     }
                 }
-                callback(rewardList)
+                rewardList
+            } catch (e: Exception) {
+                Log.e(logTag, "Error fetching rewards: ${e.message}")
+                null
             }
-            .addOnFailureListener { exception ->
-                Log.w(logTag, "Error getting rewards: ", exception)
-                callback(null)
-            }
+        }
     }
 
-    fun getRewardByStoreId(storeId: String, callback: (List<Reward>?) -> Unit){
+    private suspend fun getStoreName(id: String): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val querySnapshot = fireStore.collection("store").whereEqualTo("storeId", id).get().await()
+                if (!querySnapshot.isEmpty) {
+                    val document = querySnapshot.documents.first()
+                    document.getString("name")
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e(logTag, "Error fetching store name: ${e.message}")
+                null
+            }
+        }
+    }
+
+    fun getRewardByStoreId(storeId: String, callback: (List<Reward>?) -> Unit) {
         fireStore.collection(COLLECTION_NAME)
             .whereEqualTo(STORE_ID, storeId)
             .get()

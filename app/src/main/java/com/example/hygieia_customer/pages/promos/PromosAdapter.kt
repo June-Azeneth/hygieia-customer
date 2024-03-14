@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Promo
+import com.example.hygieia_customer.utils.Commons
 import com.google.android.material.imageview.ShapeableImageView
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,8 +43,8 @@ class PromosAdapter(
         val currentItem = promosList[position]
         val context = holder.itemView.context
 
-        val start = currentItem.dateStart?.let { formatDateOnly(it) }
-        val end = currentItem.dateEnd?.let { formatDateOnly(it) }
+        val start = currentItem.dateStart?.let { Commons().dateFormatMMMDDYYYY(it) }
+        val end = currentItem.dateEnd?.let { Commons().dateFormatMMMDDYYYY(it) }
         val formattedString = context.getString(R.string.date_range, start, end)
 
         Glide.with(holder.itemView)
@@ -55,14 +56,14 @@ class PromosAdapter(
         holder.promoName.text = currentItem.promoName
         holder.product.text = context.getString(R.string.product_template, currentItem.product)
         holder.discount.text =
-            context.getString(R.string.discount_template, formatDouble(currentItem.discountRate))
+            context.getString(R.string.discount_template, Commons().formatDecimalNumber(currentItem.discountRate))
         holder.discPrice.text = context.getString(
             R.string.disc_price_template,
-            formatDouble(currentItem.discountedPrice)
+            Commons().formatDecimalNumber(currentItem.discountedPrice)
         )
         holder.pointsReq.text = context.getString(
             R.string.points_req_template,
-            formatDouble(currentItem.pointsRequired)
+            Commons().formatDecimalNumber(currentItem.pointsRequired)
         )
         holder.duration.text = formattedString
         holder.store.text = currentItem.storeName
@@ -75,19 +76,6 @@ class PromosAdapter(
 
     override fun getItemCount(): Int {
         return promosList.size
-    }
-
-    private fun formatDateOnly(date: Date): String {
-        val dateFormat = SimpleDateFormat("MMM dd", Locale.getDefault())
-        return dateFormat.format(date)
-    }
-
-    private fun formatDouble(value: Double): String {
-        return if (value % 1 == 0.0) {
-            String.format("%.0f", value)
-        } else {
-            String.format("%.2f", value)
-        }
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

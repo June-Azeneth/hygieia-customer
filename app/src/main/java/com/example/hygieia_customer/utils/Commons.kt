@@ -1,6 +1,8 @@
 package com.example.hygieia_customer.utils
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -9,8 +11,56 @@ import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.hygieia_customer.R
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.Timestamp
+import java.util.Date
+import java.util.Locale
 
 class Commons {
+
+    fun formatDecimalNumber(number: Double): String {
+        return if (number % 1 == 0.0) {
+            String.format("%.0f", number)
+        } else {
+            String.format("%.1f", number)
+        }
+    }
+
+    private fun getCurrentDate(): Timestamp {
+        val currentDate = Calendar.getInstance().time
+        val calendar = Calendar.getInstance()
+        calendar.time = currentDate
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        return Timestamp(Date(calendar.timeInMillis))
+    }
+
+    fun getDateAndTime(): Timestamp {
+        val currentDateTime = Calendar.getInstance().time
+        return Timestamp(Date(currentDateTime.time))
+    }
+
+    fun dateFormatMMMDDYYYY(): String? {
+        val currentDate = getCurrentDate().toDate() // Convert Timestamp to Date
+        val dateFormat = SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault())
+        return dateFormat.format(currentDate)
+    }
+
+    fun dateFormatMMMDDYYYY(date: Date): String {
+        val dateFormat = SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    fun dateFormatMMMDDYYYY(calendar: Calendar): String {
+        val dateFormat = SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault())
+        return dateFormat.format(calendar)
+    }
+
+    fun dateFormatMMMDDYYYY(date: Long): String {
+        val dateFormat = SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault())
+        return dateFormat.format(date)
+    }
 
     fun setPageTitle(title: String, root: View) {
         val customToolbar = root.findViewById<View>(R.id.header)

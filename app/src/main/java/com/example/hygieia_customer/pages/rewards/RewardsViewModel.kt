@@ -12,17 +12,16 @@ class RewardsViewModel : ViewModel() {
     private val rewardsRepo : RewardsRepo = RewardsRepo()
     private val _storeProfileRewards = MutableLiveData<List<Reward>?>()
     val storeProfileRewards: MutableLiveData<List<Reward>?> get() = _storeProfileRewards
-    private val _rewardDetails = MutableLiveData<List<Reward>>()
-    val rewardDetails: LiveData<List<Reward>> get() = _rewardDetails
+    private val _rewardDetails = MutableLiveData<List<Reward>?>()
+    val rewardDetails: LiveData<List<Reward>?> get() = _rewardDetails
     private val _selectedReward = MutableLiveData<String>()
     val selectedReward: LiveData<String> get() = _selectedReward
 
     //Used in: Rewards Fragment
     fun fetchRewards() {
         viewModelScope.launch {
-            rewardsRepo.getRewards { rewards ->
-                _rewardDetails.value = rewards
-            }
+            val rewards = rewardsRepo.getRewards()
+            _rewardDetails.value = rewards
         }
     }
 

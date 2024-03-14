@@ -2,12 +2,15 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Promo
+import com.example.hygieia_customer.model.Reward
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class PromosRepo {
     private val logTag = "PromosRepoMessages"
@@ -30,21 +33,74 @@ class PromosRepo {
         private const val STORE_NAME = "storeName"
     }
 
-    suspend fun getPromos(callback: (List<Promo>?) -> Unit) = coroutineScope {
-        val currentDate = System.currentTimeMillis()
-        val promoList = mutableListOf<Promo>()
+//    suspend fun getPromos(callback: (List<Promo>?) -> Unit) = coroutineScope {
+//        val currentDate = System.currentTimeMillis()
+//        val promoList = mutableListOf<Promo>()
+//
+//        try {
+//            val result = fireStore.collection(COLLECTION_NAME).get().await()
+//
+//            val deferredPromos = result.documents.map { async { processPromoDocument(it, currentDate) } }
+//            promoList.addAll(deferredPromos.awaitAll().filterNotNull())
+//
+//            callback(promoList)
+//            Log.d(logTag, promoList.toString())
+//        } catch (exception: Exception) {
+//            Log.e(logTag, "Error getting promos: ", exception)
+//            callback(null)
+//        }
+//    }
 
-        try {
-            val result = fireStore.collection(COLLECTION_NAME).get().await()
+    suspend fun getPromos(): List<Promo>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val result = fireStore.collection(COLLECTION_NAME).get().await()
+                val rewardList = mutableListOf<Promo>()
+                for (document in result) {
+                    try {
+                        val reward = Promo(
+                            document.id,
+                            document.getString(STORE_ID) ?: "",
+                            document.getString(PRODUCT) ?: "",
+                            document.getString(PHOTO) ?: "",
+                            document.getString(NAME) ?: "",
+                            document.getDouble(PRICE) ?: 0.0,
+                            document.getDouble(DISCOUNT_RATE) ?: 0.0,
+                            document.getDouble(POINTS_REQUIRED) ?: 0.0,
+                            document.getTimestamp(PROMO_START)?.toDate(),
+                            document.getTimestamp(PROMO_END)?.toDate(),
+                        )
+                        val storeName = getStoreName(reward.storeId)
+                        if (storeName != null) {
+                            reward.storeName = storeName
+                        }
+                        rewardList.add(reward)
+                    } catch (error: Exception) {
+                        Log.e(logTag, "Error parsing reward document: ${error.message}")
+                    }
+                }
+                rewardList
+            } catch (e: Exception) {
+                Log.e(logTag, "Error fetching rewards: ${e.message}")
+                null
+            }
+        }
+    }
 
-            val deferredPromos = result.documents.map { async { processPromoDocument(it, currentDate) } }
-            promoList.addAll(deferredPromos.awaitAll().filterNotNull())
-
-            callback(promoList)
-            Log.d(logTag, promoList.toString())
-        } catch (exception: Exception) {
-            Log.e(logTag, "Error getting promos: ", exception)
-            callback(null)
+    private suspend fun getStoreName(id: String): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val querySnapshot = fireStore.collection("store").whereEqualTo("storeId", id).get().await()
+                if (!querySnapshot.isEmpty) {
+                    val document = querySnapshot.documents.first()
+                    document.getString("name")
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e(logTag, "Error fetching store name: ${e.message}")
+                null
+            }
         }
     }
 
@@ -66,9 +122,8 @@ class PromosRepo {
 
             if (promoStatus == "Ongoing" || promoStatus == "Upcoming") {
                 Promo(
+                    document.id,
                     document.getString(STORE_ID) ?: "",
-                    document.getString(STORE_NAME) ?: "",
-                    document.getString(ID) ?: "",
                     document.getString(PRODUCT) ?: "",
                     document.getString(PHOTO) ?: "",
                     document.getString(NAME) ?: "",
@@ -111,9 +166,8 @@ class PromosRepo {
 
                         if (promoStatus == "Ongoing" || promoStatus == "Upcoming") {
                             val promo = Promo(
+                                document.id,
                                 document.getString(STORE_ID) ?: "",
-                                document.getString(STORE_NAME) ?: "",
-                                document.getString(ID) ?: "",
                                 document.getString(PRODUCT) ?: "",
                                 document.getString(PHOTO) ?: "",
                                 document.getString(NAME) ?: "",

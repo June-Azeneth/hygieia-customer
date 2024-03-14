@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Reward
+import com.example.hygieia_customer.utils.Commons
 import com.google.android.material.imageview.ShapeableImageView
 
 class RewardsAdapter(
@@ -46,12 +47,26 @@ class RewardsAdapter(
 
         holder.product.text = currentItem.name
         holder.discount.text =
-            context.getString(R.string.discount_template, currentItem.discount.toString())
-        holder.discPrice.text =
-            context.getString(R.string.disc_price_template, currentItem.discountedPrice.toString())
+            context.getString(
+                R.string.discount_template,
+                Commons().formatDecimalNumber(currentItem.discount)
+            )
         holder.pointsReq.text =
-            context.getString(R.string.points_req_template, currentItem.pointsRequired.toString())
+            context.getString(
+                R.string.points_req_template,
+                Commons().formatDecimalNumber(currentItem.pointsRequired)
+            )
         holder.store.text = currentItem.storeName
+
+        if (currentItem.discountedPrice.toInt() == 0) {
+            holder.discPrice.text = context.getString(R.string.free)
+        } else {
+            holder.discPrice.text =
+                context.getString(
+                    R.string.disc_price_template,
+                    Commons().formatDecimalNumber(currentItem.discountedPrice)
+                )
+        }
 
         holder.item.setOnClickListener {
             onItemClickListener.onItemClick(currentItem)
@@ -69,7 +84,7 @@ class RewardsAdapter(
         val discPrice: TextView = itemView.findViewById(R.id.disc_price)
         val pointsReq: TextView = itemView.findViewById(R.id.points_required)
         val store: TextView = itemView.findViewById(R.id.store)
-        val item : CardView = itemView.findViewById(R.id.item)
+        val item: CardView = itemView.findViewById(R.id.item)
     }
 
     fun setData(newRewardsList: List<Reward>) {
