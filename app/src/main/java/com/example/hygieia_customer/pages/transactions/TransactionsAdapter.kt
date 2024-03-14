@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Transaction
+import com.example.hygieia_customer.utils.Commons
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -31,7 +32,7 @@ class TransactionsAdapter(
         holder.store.text = currentItem.storeName
         holder.type.text = currentItem.type
 
-        val dateOfTransaction = currentItem.addedOn?.let { formatDateOnly(it) }
+        val dateOfTransaction = currentItem.addedOn?.let { Commons().dateFormatMMMDDYYYY(it) }
         holder.date.text = dateOfTransaction
 
         when (currentItem.type) {
