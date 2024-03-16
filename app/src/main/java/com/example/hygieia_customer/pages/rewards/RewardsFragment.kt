@@ -15,23 +15,20 @@ import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentRewardsBinding
 import com.example.hygieia_customer.model.Reward
 import com.example.hygieia_customer.pages.promos.PromosViewModel
-import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class RewardsFragment : Fragment() {
 
-    val _tag = "RewardsFragmentMessages"
+    val logTag = "RewardsFragmentMessages"
     private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
     private lateinit var rewardList: ArrayList<Reward>
     private lateinit var dialog: AlertDialog
-
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
-    private var commons: Commons = Commons()
     private lateinit var actualLayout : ConstraintLayout
     private lateinit var placeholder : ShimmerFrameLayout
 
@@ -42,8 +39,8 @@ class RewardsFragment : Fragment() {
             //so that it can be used/passed to another fragment later on
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
-            Log.e("REWARD", item.storeId)
-            findNavController().navigate(R.id.to_store_profile)
+            val dialog = RewardDetailsDialog(requireContext(), item, findNavController())
+            dialog.show()
         }
     }
 
@@ -119,7 +116,7 @@ class RewardsFragment : Fragment() {
 
             rewardViewModel.fetchRewards()
         } catch (error: Exception) {
-            Log.e(_tag, error.toString())
+            Log.e(logTag, error.toString())
         }
     }
 

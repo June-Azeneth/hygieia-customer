@@ -32,7 +32,6 @@ class LoggedInActivity : AppCompatActivity() {
 
         } catch (error: Exception) {
             Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
-            Log.e("ERROR DASHBOARD", error.toString())
         }
     }
 

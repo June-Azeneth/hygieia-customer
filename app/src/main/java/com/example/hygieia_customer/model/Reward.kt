@@ -10,10 +10,8 @@ class Reward(
     var discount: Double = 0.0,
     var discountedPrice: Double = 0.0,
     var storeName: String = "",
-    var storeId: String ="",
+    var storeId: String = "",
+    var price: Double = 0.0,
+    var description: String = "",
     var addedOn: Timestamp? = null,
-//    var isDeleted: Boolean = false,
 )
-//    override fun toString(): String {
-//        return "Reward(id=$name, /* Other properties */)"
-//    }

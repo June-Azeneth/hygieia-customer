@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.hygieia_customer.R
@@ -49,6 +51,11 @@ class Commons {
 
     fun dateFormatMMMDDYYYY(date: Date): String {
         val dateFormat = SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
+    fun dateFormatMMMDD(date: Date): String {
+        val dateFormat = SimpleDateFormat("MMM-dd", Locale.getDefault())
         return dateFormat.format(date)
     }
 
@@ -98,6 +105,24 @@ class Commons {
         }
     }
 
+    fun showAlertDialogWithCallback(
+        fragment: Fragment,
+        title: String,
+        message: String,
+        positiveButton: String,
+        positiveButtonCallback: (() -> Unit)? = null,
+    ) {
+        val builder = AlertDialog.Builder(fragment.requireContext())
+        builder.setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveButton) { dialog, _ ->
+                dialog.dismiss()
+                positiveButtonCallback?.invoke()
+            }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
     fun setNavigationOnClickListener(view: View, actionId: Int) {
         view.setOnClickListener {
             val navController = Navigation.findNavController(view)
@@ -111,5 +136,10 @@ class Commons {
 
     fun log(tag: String, message: String) {
         Log.e(tag, message)
+    }
+
+    fun validateEmail(email: String): Boolean {
+        val emailRegex = Regex("^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,})+$")
+        return emailRegex.matches(email)
     }
 }

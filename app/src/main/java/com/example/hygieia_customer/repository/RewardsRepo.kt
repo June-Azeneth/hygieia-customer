@@ -20,8 +20,10 @@ class RewardsRepo {
         private const val NAME = "name"
         private const val DISCOUNT_RATE = "discount"
         private const val DISCOUNTED_PRICE = "discountedPrice"
+        private const val PRICE = "price"
         private const val POINTS_REQUIRED = "pointsRequired"
         private const val STORE_NAME = "storeName"
+        private const val DESCRIPTION = "description"
     }
 
     suspend fun getRewards(): List<Reward>? {
@@ -39,7 +41,9 @@ class RewardsRepo {
                             document.getDouble(DISCOUNT_RATE) ?: 0.0,
                             document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
                             document.getString(STORE_NAME) ?: "",
-                            document.getString(STORE_ID) ?: ""
+                            document.getString(STORE_ID) ?: "",
+                            document.getDouble(PRICE) ?: 0.0,
+                            document.getString(DESCRIPTION) ?: "",
                         )
                         val storeName = getStoreName(reward.storeId)
                         if (storeName != null) {

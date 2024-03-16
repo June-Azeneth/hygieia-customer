@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.hygieia_customer.R
-import com.example.hygieia_customer.utils.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentDashboardBinding
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -27,9 +27,9 @@ class DashboardFragment : Fragment() {
     private val userRepo = UserRepo()
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
-    private lateinit var dialog : AlertDialog
-    private lateinit var actualLayout : ConstraintLayout
-    private lateinit var placeholder : ShimmerFrameLayout
+    private lateinit var dialog: AlertDialog
+    private lateinit var actualLayout: ConstraintLayout
+    private lateinit var placeholder: ShimmerFrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,11 +47,20 @@ class DashboardFragment : Fragment() {
         return binding.root
     }
 
+
     private fun setUpNavigation() {
         with(binding) {
             navigateTo(earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
-            navigateTo(rewardsCard, R.id.action_navigation_dashboard_to_offersFragment)
-            navigateTo(promosCard, R.id.action_navigation_dashboard_to_offersFragment)
+
+            rewardsCard.setOnClickListener {
+                sharedViewModel.setAction("reward")
+                findNavController().navigate(R.id.action_navigation_dashboard_to_offersFragment)
+            }
+
+            promosCard.setOnClickListener {
+                sharedViewModel.setAction("promo")
+                findNavController().navigate(R.id.action_navigation_dashboard_to_offersFragment)
+            }
         }
     }
 
@@ -71,7 +80,7 @@ class DashboardFragment : Fragment() {
             } else {
                 placeholder.visibility = View.VISIBLE
                 actualLayout.visibility = View.INVISIBLE
-                if(!dialog.isShowing)
+                if (!dialog.isShowing)
                     dialog.show()
             }
         }
@@ -97,10 +106,12 @@ class DashboardFragment : Fragment() {
 
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
-                    binding.username.text = "Hello ${user.firstName}!"
+                    if (user.firstName == "") {
+                        binding.username.text = "Hello!"
+                    } else {
+                        binding.username.text = "Hello ${user.firstName}!"
+                    }
                     binding.currentBalance.text = user.currentBalance.toString()
-                } else {
-                    binding.username.text = "Hello Customer!"
                 }
             }
         } catch (error: Exception) {

@@ -18,6 +18,9 @@ class SharedViewModel : ViewModel() {
 
     private val userRepo: UserRepo = UserRepo()
 
+    private val _action = MutableLiveData<String>()
+    val action : LiveData<String> get() = _action
+
     fun fetchUserDetails(userId: String) {
         viewModelScope.launch {
             userRepo.getUserDetails(userId) { user ->
@@ -28,5 +31,9 @@ class SharedViewModel : ViewModel() {
 
     fun setSelectedProfilePicture(imgUrl: String) {
         _selectedProfilePicture.value = imgUrl
+    }
+
+    fun setAction(action: String){
+        _action.value = action
     }
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentPromosBinding
 import com.example.hygieia_customer.model.Promo
+import com.example.hygieia_customer.pages.rewards.RewardDetailsDialog
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
@@ -37,7 +38,8 @@ class PromosFragment : Fragment() {
             //so that it can be used/passed to another fragment later on
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
-            findNavController().navigate(R.id.to_store_profile)
+            val dialog = PromoDetailsDialog(requireContext(), item, findNavController())
+            dialog.show()
         }
     }
     private lateinit var actualLayout: ConstraintLayout

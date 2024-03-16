@@ -1,5 +1,6 @@
 package com.example.hygieia_customer.pages.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.example.hygieia_customer.MainActivity
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentProfileBinding
 import com.example.hygieia_customer.model.ProfileOptions
@@ -20,8 +22,7 @@ import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
 import com.example.hygieia_customer.utils.SharedViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileFragment : Fragment() {
 
@@ -57,7 +58,7 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun commonActions(){
+    private fun commonActions() {
         commons.setPageTitle("Profile", binding.root)
     }
 
@@ -94,16 +95,26 @@ class ProfileFragment : Fragment() {
         sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 binding.apply {
-                    customerName.text = requireContext().getString(
-                        R.string.customer_name,
-                        user.firstName,
-                        user.lastName
-                    )
+                    if (user.firstName == "") {
+                        customerName.text = "Set Name"
+                    } else {
+                        customerName.text = requireContext().getString(
+                            R.string.customer_name,
+                            user.firstName,
+                            user.lastName
+                        )
+                    }
                     email.text = user.email
 
-                    val city = user.address?.get("city") ?: ""
-                    val province = user.address?.get("province") ?: ""
-                    address.text = requireContext().getString(R.string.address_template, city, province)
+                    if(user.address.isNullOrEmpty()){
+                        address.text = "Set address"
+                    }
+                    else{
+                        val city = user.address?.get("city") ?: ""
+                        val province = user.address?.get("province") ?: ""
+                        address.text =
+                            requireContext().getString(R.string.address_template, city, province)
+                    }
 
                     val photoUrl = user.photo.ifEmpty {
                         R.drawable.user_photo_placeholder
@@ -131,7 +142,8 @@ class ProfileFragment : Fragment() {
                         when (request.optionTitle) {
                             "Edit Profile" -> findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
                             "Logout" -> {
-                                Firebase.auth.signOut()
+                                FirebaseAuth.getInstance().signOut()
+                                startActivity(Intent(requireContext(), MainActivity::class.java))
                                 requireActivity().finish()
                             }
                         }

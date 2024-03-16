@@ -5,18 +5,18 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.hygieia_customer.LoggedInActivity
 import com.example.hygieia_customer.databinding.FragmentSignupBinding
 import com.example.hygieia_customer.model.UserInfo
+import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
@@ -32,10 +32,12 @@ import com.google.zxing.qrcode.QRCodeWriter
 import java.io.ByteArrayOutputStream
 import java.util.Date
 
-class SignupFragment : Fragment() {
+class BuildProfileFragment : Fragment() {
     private val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val storageReference: StorageReference = FirebaseStorage.getInstance().reference
+    private val signUpViewModel: SignUpViewModel by activityViewModels()
+    private val userRepo: UserRepo = UserRepo()
     private var _binding: FragmentSignupBinding? = null
     private val binding
         get() = _binding
@@ -47,9 +49,8 @@ class SignupFragment : Fragment() {
     private lateinit var barangay: TextInputEditText
     private lateinit var city: TextInputEditText
     private lateinit var province: TextInputEditText
-    private lateinit var email: TextInputEditText
-    private lateinit var password: TextInputEditText
     private var qrCode: String = ""
+    private var emailString: String = ""
 
     interface UploadCallback {
         fun onUploadSuccess(qrCodeUrl: String)
@@ -60,71 +61,44 @@ class SignupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         _binding = FragmentSignupBinding.inflate(inflater, container, false)
 
-        //Initialize global variables before usage
+        initializeVariables()
+        setUpOnClickListeners()
+
+        return binding.root
+    }
+
+    private fun setUpOnClickListeners() {
+        binding.submit.setOnClickListener {
+            submitForm()
+        }
+    }
+
+    private fun initializeVariables() {
         firstName = binding.firstName
         lastName = binding.lastName
         sitio = binding.sitio
         barangay = binding.barangay
         city = binding.city
         province = binding.province
-        email = binding.email
-        password = binding.password
-
-        validEmailChecker()
-        validPasswordChecker()
-
-        binding.submit.setOnClickListener {
-            submitForm()
-        }
-
-        return binding.root
     }
 
     private fun submitForm() {
-        val validEmail = binding.emailLayout.helperText == null
-        val validPassword = binding.passwordLayout.helperText == null
         val validFirstName = isNotEmpty(firstName)
         val validLastName = isNotEmpty(lastName)
         val validSitio = isNotEmpty(sitio)
         val validBarangay = isNotEmpty(barangay)
         val validCity = isNotEmpty(city)
         val validProvince = isNotEmpty(province)
-        val passNotEmpty = isNotEmpty(password)
-        val emailNotEmpty = isNotEmpty(email)
 
-        if (validEmail && validPassword && validFirstName && validLastName && validSitio && validBarangay && validCity && validProvince && passNotEmpty && emailNotEmpty) {
-            registerUser(email.text.toString(), password.text.toString())
+        if (validFirstName && validLastName && validSitio && validBarangay && validCity && validProvince) {
+            signUpViewModel.email.observe(viewLifecycleOwner) { email ->
+                generateQRCode(userRepo.getCurrentUserId().toString())
+            }
         } else {
             invalidForm()
         }
-    }
-
-    private fun registerUser(email: String, password: String): String? {
-        try {
-            binding.text.visibility = INVISIBLE
-            binding.progressBar.visibility = VISIBLE
-            // Create a new user with email and password
-            firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Registration successful, retrieve the UserUID
-                        val userUID = getCurrentUserUID()
-                        if (userUID != null) generateQRCode(userUID)
-                    } else {
-                        // Registration failed, handle the error
-                        // val exception = task.exception
-                        // Handle the exception (e.g., show an error message)
-                    }
-                }
-        } catch (e: FirebaseAuthException) {
-            e.printStackTrace()
-            // Handle exceptions related to FirebaseAuth
-        }
-
-        return null // Return null by default, adjust as needed
     }
 
     private fun getCurrentUserUID(): String? {
@@ -138,20 +112,12 @@ class SignupFragment : Fragment() {
 
     private fun invalidForm() {
         var message = ""
-        if (binding.emailLayout.helperText !== null) {
-            message += "\n\nEmail: " + binding.emailLayout.helperText
-        }
-        if (binding.passwordLayout.helperText !== null) {
-            message += "\n\nPassword: " + binding.passwordLayout.helperText
-        }
         if (binding.firstName.text?.isEmpty() == true ||
             binding.lastName.text?.isEmpty() == true ||
             binding.sitio.text?.isEmpty() == true ||
             binding.barangay.text?.isEmpty() == true ||
             binding.city.text?.isEmpty() == true ||
-            binding.province.text?.isEmpty() == true ||
-            binding.email.text?.isEmpty() == true ||
-            binding.password.text?.isEmpty() == true
+            binding.province.text?.isEmpty() == true
         ) {
             message += "\n\nFill in all required fields"
         }
@@ -164,32 +130,6 @@ class SignupFragment : Fragment() {
                     //DO NOTHING
                 }
             }.show()
-    }
-
-    private fun validEmailChecker() {
-        binding.email.doOnTextChanged { text, _, _, _ ->
-            val emailText = text.toString()
-            if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-                binding.emailLayout.helperText = "Invalid Email Address"
-            } else {
-                binding.emailLayout.helperText = null
-            }
-        }
-    }
-
-    private fun validPasswordChecker() {
-        binding.password.doOnTextChanged { text, _, _, _ ->
-            val passwordText = text.toString()
-            val helperText: CharSequence? = when {
-                passwordText.length < 8 -> "Must be 8 characters"
-                !passwordText.matches(".*[A-Z].*".toRegex()) -> "Must have at least 1 Upper-case letter"
-                !passwordText.matches(".*[a-z].*".toRegex()) -> "Must contain at least 1 Lower-case letter"
-                !passwordText.matches(".*[0-9].*".toRegex()) -> "Must contain at least 1 number"
-                !passwordText.matches(".*[@#\$%^&+=].*".toRegex()) -> "Must contain at least 1 special character (@#\$%^&+=)"
-                else -> null
-            }
-            binding.passwordLayout.helperText = helperText
-        }
     }
 
     private fun generateQRCode(customerId: String) {
@@ -210,9 +150,8 @@ class SignupFragment : Fragment() {
             }
             uploadQRCodeImage(bmp, customerId, object : UploadCallback {
                 override fun onUploadSuccess(qrCodeUrl: String) {
-                    // Use qrCodeUrl here
                     qrCode = qrCodeUrl
-                    getCurrentUserUID()?.let { saveToFirestore(it) }
+                    getCurrentUserUID()?.let { saveToFireStore(it) }
                 }
 
                 override fun onUploadFailure() {
@@ -230,46 +169,33 @@ class SignupFragment : Fragment() {
     }
 
     private fun uploadQRCodeImage(bmp: Bitmap, customerId: String, callback: UploadCallback) {
-        // Convert Bitmap to ByteArray
         val byteArrOutputStream = ByteArrayOutputStream()
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutputStream)
         val data = byteArrOutputStream.toByteArray()
-
-        // Set up Firebase Storage reference
         val imageRef = storageReference.child("qr_codes/$customerId.jpg")
-
-        // Upload ByteArray to Firebase Storage
         val uploadTask = imageRef.putBytes(data)
-
-        // Listen for state changes, errors, and completion of the upload.
         uploadTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // Image uploaded successfully, get download URL
                 imageRef.downloadUrl.addOnSuccessListener { uri ->
                     qrCode = uri.toString()
                     val qrCodeUrl = uri.toString()
-                    // Call the callback with the URL
                     callback.onUploadSuccess(qrCodeUrl)
                 }
             } else {
-                // Handle unsuccessful uploads
                 Toast.makeText(requireContext(), "Error uploading QR code", Toast.LENGTH_SHORT)
                     .show()
-
                 callback.onUploadFailure()
             }
         }
     }
 
     private fun getCurrentDateTime(): Timestamp {
-        // Get the current date and time
         val currentDate = Date()
-        // Convert the Date object to a Timestamp
         return Timestamp(currentDate)
     }
 
-    private fun saveToFirestore(customerId: String) {
-        val collectionRef = firestore.collection("consumer")
+    private fun saveToFireStore(customerId: String) {
+        val collectionRef = fireStore.collection("consumer")
 
         val addressMap = mapOf(
             "sitio" to sitio.text.toString(),
@@ -282,16 +208,14 @@ class SignupFragment : Fragment() {
             UserInfo(
                 firstName = firstName.text.toString(),
                 lastName = lastName.text.toString(),
-                email = email.text.toString(),
+                email = emailString,
                 address = addressMap,
                 dateRegistered = getCurrentDateTime(),
                 qrCode = qrCode,
                 id = it
-                // Set other fields accordingly
             )
         }
 
-        // Create a data object with the information to be stored
         if (userInfo != null) {
             collectionRef.document(customerId)
                 .set(userInfo)
@@ -320,5 +244,4 @@ class SignupFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

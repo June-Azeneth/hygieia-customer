@@ -2,13 +2,9 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Promo
-import com.example.hygieia_customer.model.Reward
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
@@ -23,14 +19,15 @@ class PromosRepo {
         private const val PRODUCT = "product"
         private const val PHOTO = "photo"
         private const val NAME = "name"
-        private const val PRICE = "discountedPrice"
+        private const val DISCOUNTED_PRICE = "discountedPrice"
         private const val DISCOUNT_RATE = "discountRate"
         private const val POINTS_REQUIRED = "pointsRequired"
         private const val PROMO_START = "promoStart"
         private const val PROMO_END = "promoEnd"
         private const val DATE_PAUSED = "datePaused"
         private const val DATE_RESUME = "dateResume"
-        private const val STORE_NAME = "storeName"
+        private const val DESCRIPTION = "description"
+        private const val PRICE = "price"
     }
 
 //    suspend fun getPromos(callback: (List<Promo>?) -> Unit) = coroutineScope {
@@ -64,11 +61,13 @@ class PromosRepo {
                             document.getString(PRODUCT) ?: "",
                             document.getString(PHOTO) ?: "",
                             document.getString(NAME) ?: "",
-                            document.getDouble(PRICE) ?: 0.0,
+                            document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
                             document.getDouble(DISCOUNT_RATE) ?: 0.0,
                             document.getDouble(POINTS_REQUIRED) ?: 0.0,
                             document.getTimestamp(PROMO_START)?.toDate(),
                             document.getTimestamp(PROMO_END)?.toDate(),
+                            document.getString(DESCRIPTION) ?: "",
+                            document.getDouble(PRICE) ?: 0.0,
                         )
                         val storeName = getStoreName(reward.storeId)
                         if (storeName != null) {
@@ -127,7 +126,7 @@ class PromosRepo {
                     document.getString(PRODUCT) ?: "",
                     document.getString(PHOTO) ?: "",
                     document.getString(NAME) ?: "",
-                    document.getDouble(PRICE) ?: 0.0,
+                    document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
                     document.getDouble(DISCOUNT_RATE) ?: 0.0,
                     document.getDouble(POINTS_REQUIRED) ?: 0.0,
                     document.getTimestamp(PROMO_START)?.toDate(),
@@ -171,7 +170,7 @@ class PromosRepo {
                                 document.getString(PRODUCT) ?: "",
                                 document.getString(PHOTO) ?: "",
                                 document.getString(NAME) ?: "",
-                                document.getDouble(PRICE) ?: 0.0,
+                                document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
                                 document.getDouble(DISCOUNT_RATE) ?: 0.0,
                                 document.getDouble(POINTS_REQUIRED) ?: 0.0,
                                 document.getTimestamp(PROMO_START)?.toDate(),

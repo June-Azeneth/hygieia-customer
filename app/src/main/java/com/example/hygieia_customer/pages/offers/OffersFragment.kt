@@ -1,12 +1,12 @@
 package com.example.hygieia_customer.pages.offers
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentOffersBinding
@@ -14,13 +14,15 @@ import com.example.hygieia_customer.pages.promos.PromosFragment
 import com.example.hygieia_customer.pages.rewards.RewardsFragment
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
+import com.example.hygieia_customer.utils.SharedViewModel
 
 class OffersFragment : Fragment() {
 
     private var _binding: FragmentOffersBinding? = null
     private val binding get() = _binding!!
-    private var commons : Commons = Commons()
-    private val rewardViewModel : RewardsViewModel by activityViewModels()
+    private var commons: Commons = Commons()
+    private val rewardViewModel: RewardsViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var reward: AppCompatButton
     private lateinit var promo: AppCompatButton
 
@@ -39,7 +41,7 @@ class OffersFragment : Fragment() {
         return binding.root
     }
 
-    private fun commonActions(){
+    private fun commonActions() {
         commons.setPageTitle("Offers", binding.root)
         commons.setOnRefreshListener(binding.swipeRefreshLayout) {
             rewardViewModel.fetchRewards()
@@ -47,8 +49,17 @@ class OffersFragment : Fragment() {
     }
 
     private fun navigation() {
-        //Set RewardsTab as default view for frame layout
         switchTabsManager(RewardsFragment::class.java)
+
+        sharedViewModel.action.observe(viewLifecycleOwner) { action ->
+            if (action == "reward") {
+                switchTabsManager(RewardsFragment::class.java)
+                setColor(reward)
+            } else {
+                switchTabsManager(PromosFragment::class.java)
+                setColor(promo)
+            }
+        }
 
         reward.setOnClickListener {
             switchTabsManager(RewardsFragment::class.java)

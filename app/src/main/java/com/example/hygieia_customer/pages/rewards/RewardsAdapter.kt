@@ -46,25 +46,30 @@ class RewardsAdapter(
             .into(holder.prodPhoto)
 
         holder.product.text = currentItem.name
-        holder.discount.text =
-            context.getString(
-                R.string.discount_template,
-                Commons().formatDecimalNumber(currentItem.discount)
-            )
         holder.pointsReq.text =
             context.getString(
                 R.string.points_req_template,
                 Commons().formatDecimalNumber(currentItem.pointsRequired)
             )
         holder.store.text = currentItem.storeName
+        holder.price.text = context.getString(
+            R.string.original_price,
+            Commons().formatDecimalNumber(currentItem.price)
+        )
 
-        if (currentItem.discountedPrice.toInt() == 0) {
-            holder.discPrice.text = context.getString(R.string.free)
+        holder.discPrice.text =
+            context.getString(
+                R.string.disc_price_template,
+                Commons().formatDecimalNumber(currentItem.discountedPrice)
+            )
+
+        if (currentItem.discount.toInt() == 100) {
+            holder.discount.text = context.getString(R.string.free)
         } else {
-            holder.discPrice.text =
+            holder.discount.text =
                 context.getString(
-                    R.string.disc_price_template,
-                    Commons().formatDecimalNumber(currentItem.discountedPrice)
+                    R.string.discount_template,
+                    Commons().formatDecimalNumber(currentItem.discount)
                 )
         }
 
@@ -85,6 +90,7 @@ class RewardsAdapter(
         val pointsReq: TextView = itemView.findViewById(R.id.points_required)
         val store: TextView = itemView.findViewById(R.id.store)
         val item: CardView = itemView.findViewById(R.id.item)
+        val price: TextView = itemView.findViewById(R.id.org_price)
     }
 
     fun setData(newRewardsList: List<Reward>) {

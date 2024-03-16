@@ -17,7 +17,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/photo"
             android:layout_width="150dp"
-            android:layout_height="110dp"
+            android:layout_height="125dp"
             android:scaleType="centerCrop"
             android:src="@drawable/recyclables"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
             android:id="@+id/details"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small"
+            android:layout_marginTop="@dimen/tiniest"
             android:layout_marginLeft="@dimen/tiniest"
             android:layout_marginRight="@dimen/tiniest"
             android:orientation="vertical"
@@ -68,6 +68,13 @@
                 android:fontFamily="@font/nunito_sans_bold"
                 android:textColor="@color/sub_text"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/org_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/main_green"
+                android:textSize="@dimen/text_small" />
 
             <TextView
                 android:id="@+id/disc_price"

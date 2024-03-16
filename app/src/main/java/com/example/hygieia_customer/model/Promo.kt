@@ -13,6 +13,7 @@ class Promo(
     var pointsRequired: Double = 0.0,
     var dateStart: Date? = null,
     var dateEnd: Date? = null,
+    var description: String = "",
+    var price : Double = 0.0,
     var storeName: String = "",
-) {
-}
+)

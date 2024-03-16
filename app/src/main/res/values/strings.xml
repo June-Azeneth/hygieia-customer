@@ -72,5 +72,8 @@
     <string name="_0">0</string>
     <string name="store_has_no_offered_rewards">No Rewards Available</string>
     <string name="free">FREE</string>
+    <string name="original_price">Original Price: ₱%1$s</string>
+    <string name="validate">Validate</string>
+    <string name="build_you_profile">Build your Profile</string>
 
 </resources>
