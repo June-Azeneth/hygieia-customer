@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -54,14 +55,28 @@ class PromosFragment : Fragment() {
         initializeVariables()
         setUpRecyclerView()
         observeNetwork()
+        setUpSearch()
 
         return binding.root
     }
-    fun initializeVariables(){
+    private fun initializeVariables(){
         binding.recyclerView.adapter = adapter
         networkViewModel = NetworkViewModel(requireContext())
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
+    }
+
+
+    private fun setUpSearch(){
+        binding.searchItem.doOnTextChanged { text, _, _, _ ->
+            val storeName = text.toString().trim()
+            if (storeName.isEmpty()) {
+                promosViewModel.fetchPromos()
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                promosViewModel.searchPromo(storeName)
+            }
+        }
     }
 
     private fun observeNetwork() {

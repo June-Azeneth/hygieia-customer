@@ -9,7 +9,7 @@ import com.example.hygieia_customer.repository.RewardsRepo
 import kotlinx.coroutines.launch
 
 class RewardsViewModel : ViewModel() {
-    private val rewardsRepo : RewardsRepo = RewardsRepo()
+    private val rewardsRepo: RewardsRepo = RewardsRepo()
     private val _storeProfileRewards = MutableLiveData<List<Reward>?>()
     val storeProfileRewards: MutableLiveData<List<Reward>?> get() = _storeProfileRewards
     private val _rewardDetails = MutableLiveData<List<Reward>?>()
@@ -25,16 +25,24 @@ class RewardsViewModel : ViewModel() {
         }
     }
 
+    fun searchReward(reward: String) {
+        viewModelScope.launch {
+            rewardsRepo.searchReward(reward) { rewards ->
+                _rewardDetails.value = rewards
+            }
+        }
+    }
+
     fun setSelectedReward(storeId: String) {
         _selectedReward.value = storeId
     }
 
-    fun clearRewards(){
+    fun clearRewards() {
         _storeProfileRewards.postValue(null)
     }
 
     //Used in Store Profile Fragment
-    fun fetchRewardsBasedOnStoreId(selectedReward : String){
+    fun fetchRewardsBasedOnStoreId(selectedReward: String) {
         viewModelScope.launch {
             rewardsRepo.getRewardByStoreId(selectedReward) { rewards ->
                 _storeProfileRewards.value = rewards

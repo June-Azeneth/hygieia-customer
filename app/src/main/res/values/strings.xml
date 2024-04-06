@@ -76,5 +76,7 @@
     <string name="validate">Validate</string>
     <string name="build_you_profile">Build your Profile</string>
     <string name="search_store">Search Store</string>
+    <string name="search_reward">Search Reward</string>
+    <string name="search_promo">Search Promo</string>
 
 </resources>

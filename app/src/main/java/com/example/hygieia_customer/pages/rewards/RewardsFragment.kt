@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -49,16 +50,31 @@ class RewardsFragment : Fragment() {
     ): View {
         _binding = FragmentRewardsBinding.inflate(inflater, container, false)
 
-        //initialization
+        //method calls
+        initializeVariables()
+        setUpRecyclerView()
+        observeNetwork()
+        setUpSearch()
+        return binding.root
+    }
+
+    private fun initializeVariables(){
         binding.recyclerView.adapter = adapter
         networkViewModel = NetworkViewModel(requireContext())
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
+    }
 
-        //method calls
-        setUpRecyclerView()
-        observeNetwork()
-        return binding.root
+    private fun setUpSearch(){
+        binding.searchItem.doOnTextChanged { text, _, _, _ ->
+            val storeName = text.toString().trim()
+            if (storeName.isEmpty()) {
+                rewardViewModel.fetchRewards()
+            } else {
+                binding.progressBar.visibility = View.VISIBLE
+                rewardViewModel.searchReward(storeName)
+            }
+        }
     }
 
     private fun observeNetwork() {

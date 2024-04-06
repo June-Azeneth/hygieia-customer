@@ -2,6 +2,7 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Reward
+import com.example.hygieia_customer.model.Store
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
@@ -24,6 +25,46 @@ class RewardsRepo {
         private const val STORE_NAME = "storeName"
         private const val DESCRIPTION = "description"
         private const val STATUS = "status"
+    }
+
+    suspend fun searchReward(rewardName: String, callback: (List<Reward>?) -> Unit) {
+        try {
+            val querySnapshot = fireStore.collection("reward")
+                .whereEqualTo("status", "active")
+                .get()
+                .await()
+
+            val rewardList = mutableListOf<Reward>()
+            for (document in querySnapshot.documents) {
+                try {
+                    val name = document.getString("name") ?: ""
+                    if (name.contains(rewardName, ignoreCase = true)) {
+                        val reward = Reward(
+                            document.getString(ID) ?: "",
+                            document.getString(NAME) ?: "",
+                            document.getDouble(POINTS_REQUIRED) ?: 0.0,
+                            document.getString(PHOTO) ?: "",
+                            document.getDouble(DISCOUNT_RATE) ?: 0.0,
+                            document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
+                            document.getString(STORE_NAME) ?: "",
+                            document.getString(STORE_ID) ?: "",
+                            document.getDouble(PRICE) ?: 0.0,
+                            document.getString(DESCRIPTION) ?: "",
+                        )
+                        val storeName = getStoreName(reward.storeId)
+                        if (storeName != null) {
+                            reward.storeName = storeName
+                        }
+                        rewardList.add(reward)
+                    }
+                } catch (error: Exception) {
+                    callback(null)
+                }
+            }
+            callback(rewardList)
+        } catch (e: Exception) {
+            callback(null)
+        }
     }
 
     suspend fun getRewards(): List<Reward>? {

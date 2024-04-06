@@ -32,7 +32,7 @@
         android:id="@+id/actual_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:padding="@dimen/small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,46 +51,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/searchBar"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchItemLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/search_store"
+            app:endIconMode="clear_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/searchItemLayout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/search_store"
-                app:endIconMode="clear_text"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/searchBtn">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/searchItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/searchBtn"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:paddingStart="@dimen/tiny"
-                android:background="@color/zxing_transparent"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchItem"
                 android:drawableStart="@drawable/search"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/searchItemLayout"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </androidx.appcompat.widget.AppCompatButton>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:drawablePadding="@dimen/tiny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -100,7 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchBar" />
+            app:layout_constraintTop_toBottomOf="@id/searchItemLayout" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageMessage"

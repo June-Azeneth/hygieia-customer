@@ -22,6 +22,14 @@ class PromosViewModel : ViewModel() {
         }
     }
 
+    fun searchPromo(promo: String) {
+        viewModelScope.launch {
+            promosRepo.searchPromo(promo) { promos ->
+                _promoDetails.value = promos
+            }
+        }
+    }
+
     fun setSelectedReward(storeId: String) {
         _selectedReward.value = storeId
     }

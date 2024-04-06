@@ -2,6 +2,7 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Promo
+import com.example.hygieia_customer.model.Reward
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +49,40 @@ class PromosRepo {
 //            callback(null)
 //        }
 //    }
+
+    suspend fun searchPromo(promoName: String, callback: (List<Promo>?) -> Unit) {
+        try {
+            val querySnapshot = fireStore.collection("promo")
+                .whereEqualTo("status", "active")
+                .get()
+                .await()
+
+            val promoList = mutableListOf<Promo>()
+            val currentDate = System.currentTimeMillis()
+            for (document in querySnapshot.documents) {
+                try {
+                    val name = document.getString("name") ?: ""
+                    if (name.contains(promoName, ignoreCase = true)) {
+                        val promo = processPromoDocument(document, currentDate)
+                        promo?.let {
+                            val storeId = document.getString(STORE_ID) ?: ""
+                            val storeName = getStoreName(storeId)
+                            it.storeName = storeName ?: "Unknown Store"
+                            promoList.add(it)
+                        }
+                        if (promo != null) {
+                            promoList.add(promo)
+                        }
+                    }
+                } catch (error: Exception) {
+                    callback(null)
+                }
+            }
+            callback(promoList)
+        } catch (e: Exception) {
+            callback(null)
+        }
+    }
 
     suspend fun getPromos(): List<Promo>? {
         return withContext(Dispatchers.IO) {

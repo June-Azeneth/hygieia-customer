@@ -93,6 +93,8 @@ class TransactionFragment : Fragment() {
         Commons().setToolBarIconAction(binding.root) {
             findNavController().navigate(R.id.action_navigation_transaction_to_navigation_scanQR)
         }
+
+        Commons().setPageTitle("Transactions", binding.root)
     }
 
     private fun showNoDataMessage(show: Boolean) {

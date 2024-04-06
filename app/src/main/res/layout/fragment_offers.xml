@@ -15,19 +15,6 @@
             android:id="@+id/header"
             layout="@layout/custom_header" />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/small"
-            android:paddingBottom="@dimen/small"
-            android:background="@color/secondary_green"
-            android:textColor="@color/white"
-            android:text="See what products and promos you can avail with your points"
-            app:layout_constraintTop_toBottomOf="@+id/header"
-            app:layout_constraintStart_toStartOf="parent"/>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/options"
             android:layout_width="match_parent"
@@ -36,7 +23,7 @@
             app:layout_constraintBottom_toTopOf="@id/offers_fragment_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text">
+            app:layout_constraintTop_toBottomOf="@id/header">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/reward"

@@ -24,8 +24,8 @@
         android:id="@+id/actual_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:visibility="invisible"
-        android:padding="@dimen/small"
+        android:visibility="visible"
+        android:paddingHorizontal="@dimen/small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,14 +43,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="@string/search_reward"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="@dimen/tiny"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/searchItem"
+                android:drawableStart="@drawable/search"
+                android:drawablePadding="@dimen/tiny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/tiny"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/searchItemLayout" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageMessage"

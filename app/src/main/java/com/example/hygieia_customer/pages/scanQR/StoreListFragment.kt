@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -63,10 +64,10 @@ class StoreListFragment : Fragment() {
 
         Commons().setPageTitle("Affiliated Stores", binding.root)
 
-        binding.searchBtn.setOnClickListener {
-            val storeName = binding.searchItem.text.toString().trim()
+        binding.searchItem.doOnTextChanged { text, _, _, _ ->
+            val storeName = text.toString().trim()
             if (storeName.isEmpty()) {
-                Commons().showToast("Please specify a store name", requireContext())
+                storeViewModel.fetchStores()
             } else {
                 binding.progressBar.visibility = View.VISIBLE
                 storeViewModel.searchForAStore(storeName)
@@ -77,7 +78,7 @@ class StoreListFragment : Fragment() {
     private fun observeDataSetChange() {
         storeViewModel.storeDetails.observe(viewLifecycleOwner) { stores ->
             if (stores != null) {
-                Commons().log("STORESLIST",stores.size.toString())
+                Commons().log("STORESLIST", stores.size.toString())
                 storeList.clear()
                 storeList.addAll(stores)
                 adapter.setData(storeList)
