@@ -28,6 +28,7 @@ class PromosRepo {
         private const val DATE_RESUME = "dateResume"
         private const val DESCRIPTION = "description"
         private const val PRICE = "price"
+        private const val STATUS = "status"
     }
 
 //    suspend fun getPromos(callback: (List<Promo>?) -> Unit) = coroutineScope {
@@ -52,44 +53,39 @@ class PromosRepo {
         return withContext(Dispatchers.IO) {
             try {
                 val result = fireStore.collection(COLLECTION_NAME).get().await()
-                val rewardList = mutableListOf<Promo>()
+                val promoList = mutableListOf<Promo>()
+
+                val currentDate = System.currentTimeMillis()
+
                 for (document in result) {
                     try {
-                        val reward = Promo(
-                            document.id,
-                            document.getString(STORE_ID) ?: "",
-                            document.getString(PRODUCT) ?: "",
-                            document.getString(PHOTO) ?: "",
-                            document.getString(NAME) ?: "",
-                            document.getDouble(DISCOUNTED_PRICE) ?: 0.0,
-                            document.getDouble(DISCOUNT_RATE) ?: 0.0,
-                            document.getDouble(POINTS_REQUIRED) ?: 0.0,
-                            document.getTimestamp(PROMO_START)?.toDate(),
-                            document.getTimestamp(PROMO_END)?.toDate(),
-                            document.getString(DESCRIPTION) ?: "",
-                            document.getDouble(PRICE) ?: 0.0,
-                        )
-                        val storeName = getStoreName(reward.storeId)
-                        if (storeName != null) {
-                            reward.storeName = storeName
+                        val promo = processPromoDocument(document, currentDate)
+                        promo?.let {
+//                            if (it.status == "active") {
+                            val storeId = document.getString(STORE_ID) ?: ""
+                            val storeName = getStoreName(storeId)
+                            it.storeName = storeName ?: "Unknown Store"
+                            promoList.add(it)
+//                            }
                         }
-                        rewardList.add(reward)
                     } catch (error: Exception) {
-                        Log.e(logTag, "Error parsing reward document: ${error.message}")
+                        Log.e(logTag, "Error parsing promo document: ${error.message}")
                     }
                 }
-                rewardList
+                promoList
             } catch (e: Exception) {
-                Log.e(logTag, "Error fetching rewards: ${e.message}")
+                Log.e(logTag, "Error fetching promos: ${e.message}")
                 null
             }
         }
     }
 
+
     private suspend fun getStoreName(id: String): String? {
         return withContext(Dispatchers.IO) {
             try {
-                val querySnapshot = fireStore.collection("store").whereEqualTo("storeId", id).get().await()
+                val querySnapshot =
+                    fireStore.collection("store").whereEqualTo("storeId", id).get().await()
                 if (!querySnapshot.isEmpty) {
                     val document = querySnapshot.documents.first()
                     document.getString("name")
@@ -105,6 +101,11 @@ class PromosRepo {
 
     private fun processPromoDocument(document: DocumentSnapshot, currentDate: Long): Promo? {
         return try {
+            val status = document.getString("status") ?: ""
+            if (status == "deleted") {
+                return null
+            }
+
             val startDate = document.getTimestamp(PROMO_START)?.toDate()?.time ?: 0
             val endDate = document.getTimestamp(PROMO_END)?.toDate()?.time ?: 0
             val pausedDate = document.getTimestamp(DATE_PAUSED)?.toDate()?.time ?: 0
@@ -114,6 +115,7 @@ class PromosRepo {
                 currentDate < startDate -> "Upcoming"
                 currentDate in startDate..endDate ->
                     if (currentDate in pausedDate..resumeDate) "Paused" else "Ongoing"
+
                 else -> "Passed"
             }
 
@@ -131,6 +133,7 @@ class PromosRepo {
                     document.getDouble(POINTS_REQUIRED) ?: 0.0,
                     document.getTimestamp(PROMO_START)?.toDate(),
                     document.getTimestamp(PROMO_END)?.toDate(),
+                    document.getString("description") ?: "",
                 )
             } else {
                 null
@@ -145,6 +148,7 @@ class PromosRepo {
         val currentDate = System.currentTimeMillis()
         fireStore.collection(COLLECTION_NAME)
             .whereEqualTo(STORE_ID, storeId)
+            .whereEqualTo(STATUS, "active")
             .get()
             .addOnSuccessListener { result ->
                 val rewardList = mutableListOf<Promo>()

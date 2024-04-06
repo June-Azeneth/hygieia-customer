@@ -2,14 +2,13 @@ package com.example.hygieia_customer.repository
 
 import android.util.Log
 import com.example.hygieia_customer.model.Reward
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class RewardsRepo {
-    val logTag = "RewardsRepoMessages"
+    private val logTag = "RewardsRepoMessages"
     private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     companion object {
@@ -24,12 +23,15 @@ class RewardsRepo {
         private const val POINTS_REQUIRED = "pointsRequired"
         private const val STORE_NAME = "storeName"
         private const val DESCRIPTION = "description"
+        private const val STATUS = "status"
     }
 
     suspend fun getRewards(): List<Reward>? {
         return withContext(Dispatchers.IO) {
             try {
-                val result = fireStore.collection(COLLECTION_NAME).get().await()
+                val result = fireStore.collection(COLLECTION_NAME)
+                    .whereEqualTo(STATUS, "active")
+                    .get().await()
                 val rewardList = mutableListOf<Reward>()
                 for (document in result) {
                     try {
@@ -65,7 +67,10 @@ class RewardsRepo {
     private suspend fun getStoreName(id: String): String? {
         return withContext(Dispatchers.IO) {
             try {
-                val querySnapshot = fireStore.collection("store").whereEqualTo("storeId", id).get().await()
+                val querySnapshot = fireStore.collection("store")
+                    .whereEqualTo("storeId", id)
+                    .whereEqualTo("status", "active")
+                    .get().await()
                 if (!querySnapshot.isEmpty) {
                     val document = querySnapshot.documents.first()
                     document.getString("name")
@@ -82,6 +87,7 @@ class RewardsRepo {
     fun getRewardByStoreId(storeId: String, callback: (List<Reward>?) -> Unit) {
         fireStore.collection(COLLECTION_NAME)
             .whereEqualTo(STORE_ID, storeId)
+            .whereEqualTo(STATUS, "active")
             .get()
             .addOnSuccessListener { result ->
                 val rewardList = mutableListOf<Reward>()

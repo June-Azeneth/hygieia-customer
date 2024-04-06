@@ -3,7 +3,6 @@ package com.example.hygieia_customer.repository
 import android.util.Log
 import com.example.hygieia_customer.model.Store
 import com.example.hygieia_customer.model.UserInfo
-import com.example.hygieia_customer.utils.Commons
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -11,6 +10,27 @@ class UserRepo {
     private val logTag = "UserRepoMessages"
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    fun checkAccountStatus(callback: (String) -> Unit) {
+        try {
+            val userRef = fireStore.collection("consumer")
+                .whereEqualTo("id", getCurrentUserId())
+
+            userRef.get()
+                .addOnSuccessListener { querySnapshot ->
+                    if (!querySnapshot.isEmpty) {
+                        val document = querySnapshot.documents.firstOrNull()
+                        val status = document?.getString("status") ?: ""
+                        callback(status)
+                    }
+                }
+                .addOnFailureListener {
+                    callback("")
+                }
+        } catch (error: Exception) {
+            callback("")
+        }
+    }
 
     fun getUserDetails(userId: String, callback: (UserInfo?) -> Unit) {
         val userRef = fireStore.collection("consumer").whereEqualTo("id", userId)
@@ -51,10 +71,10 @@ class UserRepo {
         return currentUser?.uid
     }
 
-    fun getEmail(): String? {
-        val currentUser = auth.currentUser
-        return currentUser?.email
-    }
+//    fun getEmail(): String? {
+//        val currentUser = auth.currentUser
+//        return currentUser?.email
+//    }
 
     fun updateUserProfile(userId: String, updatedUserInfo: UserInfo, callback: (Boolean) -> Unit) {
         val userRef = fireStore.collection("consumer").document(userId)
@@ -104,21 +124,50 @@ class UserRepo {
             }
     }
 
-    fun customerExist(callback: (Boolean) -> Unit) {
-        val userRef = fireStore.collection("consumer")
-            .whereEqualTo("id", getCurrentUserId())
+//    fun customerExist(callback: (Boolean) -> Unit) {
+//        val userRef = fireStore.collection("consumer")
+//            .whereEqualTo("id", getCurrentUserId())
+//
+//        userRef.get()
+//            .addOnSuccessListener { documents ->
+//                if (documents != null && !documents.isEmpty) {
+//                    callback(true)
+//                } else {
+//                    callback(false)
+//                }
+//            }
+//            .addOnFailureListener { exception ->
+//                callback(false)
+//                Commons().log(logTag, exception.message.toString())
+//            }
+//    }
 
-        userRef.get()
+    fun activateAccount(callback: (Boolean) -> Unit) {
+        fireStore.collection("consumer")
+            .whereEqualTo("id", getCurrentUserId())
+            .get()
             .addOnSuccessListener { documents ->
-                if (documents != null && !documents.isEmpty) {
-                    callback(true)
-                } else {
+                if (documents.isEmpty) {
                     callback(false)
+                } else {
+                    val document = documents.first()
+                    val status = document.getString("status")
+
+                    if (status == "unauthenticated") {
+                        document.reference.update("status", "active")
+                            .addOnSuccessListener {
+                                callback(true)
+                            }
+                            .addOnCanceledListener {
+                                callback(false)
+                            }
+                    } else {
+                        callback(true)
+                    }
                 }
             }
-            .addOnFailureListener { exception ->
+            .addOnFailureListener {
                 callback(false)
-                Commons().log(logTag, exception.message.toString())
             }
     }
 }

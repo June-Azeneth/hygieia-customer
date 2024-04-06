@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refreshLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgColor"
@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <include layout="@layout/placeholder_dashboard"/>
+                <include layout="@layout/placeholder_dashboard" />
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
+                android:paddingBottom="@dimen/small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,9 +39,9 @@
 
                 <TextView
                     android:id="@+id/username"
-                    android:layout_marginTop="@dimen/small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -75,8 +76,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="@string/_0"
                     android:fontFamily="@font/nunito_sans_semibold"
+                    android:text="@string/_0"
                     android:textColor="@color/text_color"
                     android:textSize="45sp"
                     app:layout_constraintStart_toEndOf="@id/text2"
@@ -123,10 +124,10 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
-                        android:gravity="right"
+                        android:fontFamily="@font/nunito_sans_bold"
+                        android:gravity="end"
                         android:text="@string/recycle_now"
                         android:textColor="@color/white"
-                        android:fontFamily="@font/nunito_sans_bold"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.698"
@@ -237,24 +238,45 @@
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-<!--            <TextView-->
-<!--                android:id="@+id/text5"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="15dp"-->
-<!--                android:text="@string/our_affiliated_stores"-->
-<!--                android:textSize="18sp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/card1" />-->
+                <LinearLayout
+                    android:id="@+id/head"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card1">
 
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/verticalScroll"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:orientation="vertical"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/text5" />-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/our_affiliated_stores"
+                        android:textSize="18sp"
+                        android:layout_marginEnd="@dimen/tiny"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/text5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="(View)"
+                        android:textColor="@color/main_green"
+                        android:textSize="18sp"
+                        android:textStyle="italic" />
+
+                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/storeList"
+                    android:layout_marginTop="@dimen/tiny"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/tiny"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/head" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

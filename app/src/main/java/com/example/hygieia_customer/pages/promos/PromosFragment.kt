@@ -30,7 +30,6 @@ class PromosFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
-    private var commons: Commons = Commons()
     private val adapter by lazy { PromosAdapter(arrayListOf(), onItemClickListener) }
     private val onItemClickListener = object : PromosAdapter.OnItemClickListener {
         override fun onItemClick(item: Promo) {
@@ -51,18 +50,18 @@ class PromosFragment : Fragment() {
     ): View? {
         _binding = FragmentPromosBinding.inflate(inflater, container, false)
 
-        //initialization
+        //method calls
+        initializeVariables()
+        setUpRecyclerView()
+        observeNetwork()
+
+        return binding.root
+    }
+    fun initializeVariables(){
         binding.recyclerView.adapter = adapter
         networkViewModel = NetworkViewModel(requireContext())
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
-
-        //method calls
-        setUpRecyclerView()
-        commonActions()
-        observeNetwork()
-
-        return binding.root
     }
 
     private fun observeNetwork() {
@@ -87,12 +86,6 @@ class PromosFragment : Fragment() {
         }
     }
 
-    private fun commonActions() {
-        commons.setOnRefreshListener(binding.refreshLayout) {
-            observeNetwork()
-        }
-    }
-
     private fun observeDataChanges() {
         promosViewModel.promoDetails.observe(viewLifecycleOwner) { promos ->
             // Update UI with the new data
@@ -114,10 +107,8 @@ class PromosFragment : Fragment() {
         if (show) {
             binding.imageMessage.setImageResource(R.drawable.no_data)
             binding.imageMessage.visibility = View.VISIBLE
-            binding.message.visibility = View.VISIBLE
         } else {
             binding.imageMessage.visibility = View.GONE
-            binding.message.visibility = View.GONE
         }
     }
 

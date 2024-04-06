@@ -7,19 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.hygieia_customer.R
-import com.example.hygieia_customer.utils.SharedViewModel
 import com.example.hygieia_customer.databinding.FragmentQRScanningBinding
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
+import com.example.hygieia_customer.utils.SharedViewModel
 
 class QRScanningFragment : Fragment() {
     private var TAG = "SCANQR"
     private val userRepo = UserRepo()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private var _binding: FragmentQRScanningBinding? = null
-    private var commons : Commons = Commons()
+    private var commons: Commons = Commons()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -33,6 +34,10 @@ class QRScanningFragment : Fragment() {
         _binding = FragmentQRScanningBinding.inflate(inflater, container, false)
         updateUI()
         commons.setPageTitle("Scan QR Code", binding.root)
+
+        binding.viewStores.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_scanQR_to_storeListFragment)
+        }
         return binding.root
     }
 

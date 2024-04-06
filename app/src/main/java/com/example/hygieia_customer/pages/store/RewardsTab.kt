@@ -63,10 +63,8 @@ class RewardsTab : Fragment() {
         if (show) {
             binding.imageMessage.setImageResource(R.drawable.no_data)
             binding.imageMessage.visibility = View.VISIBLE
-            binding.message.visibility = View.VISIBLE
         } else {
             binding.imageMessage.visibility = View.GONE
-            binding.message.visibility = View.GONE
         }
     }
 

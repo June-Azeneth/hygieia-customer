@@ -14,6 +14,6 @@ class Promo(
     var dateStart: Date? = null,
     var dateEnd: Date? = null,
     var description: String = "",
-    var price : Double = 0.0,
+    var price: Double = 0.0,
     var storeName: String = "",
 )

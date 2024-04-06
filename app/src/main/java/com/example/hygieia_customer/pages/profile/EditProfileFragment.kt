@@ -35,7 +35,6 @@ class EditProfileFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val userRepo = UserRepo()
     private lateinit var networkViewModel: NetworkViewModel
-    private var commons: Commons = Commons()
 
     private val profilePicOptionsPopUp: ProfilePhotosFragment by lazy {
         ProfilePhotosFragment()
@@ -56,19 +55,19 @@ class EditProfileFragment : Fragment() {
     ): View {
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
 
-        //initialization
-        firstName = binding.firstName
-        lastName = binding.lastName
-        sitio = binding.sitio
-        barangay = binding.barangay
-        city = binding.city
-        province = binding.province
-
-        //method calls
+        initializeVariables()
         onClickListeners()
         observeNetwork()
 
         return binding.root
+    }
+
+    fun initializeVariables(){
+        firstName = binding.firstName
+        lastName = binding.lastName
+        barangay = binding.barangay
+        city = binding.city
+        province = binding.province
     }
 
     private fun observeNetwork(){
@@ -114,7 +113,6 @@ class EditProfileFragment : Fragment() {
                     firstName.setText(user.firstName)
                     lastName.setText(user.lastName)
                     user.address?.let { addressMap ->
-                        binding.sitio.setText(addressMap["sitio"])
                         binding.barangay.setText(addressMap["barangay"])
                         binding.city.setText(addressMap["city"])
                         binding.province.setText(addressMap["province"])
@@ -154,7 +152,6 @@ class EditProfileFragment : Fragment() {
 
     private fun updateProfile() {
         val addressMap = mapOf(
-            "sitio" to sitio.text.toString(),
             "barangay" to barangay.text.toString(),
             "city" to city.text.toString(),
             "province" to province.text.toString()

@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentOffersBinding
 import com.example.hygieia_customer.pages.promos.PromosFragment
+import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardsFragment
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
@@ -22,9 +23,11 @@ class OffersFragment : Fragment() {
     private val binding get() = _binding!!
     private var commons: Commons = Commons()
     private val rewardViewModel: RewardsViewModel by activityViewModels()
+    private val promosViewModel: PromosViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var reward: AppCompatButton
     private lateinit var promo: AppCompatButton
+    private var currentTab: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +48,7 @@ class OffersFragment : Fragment() {
         commons.setPageTitle("Offers", binding.root)
         commons.setOnRefreshListener(binding.swipeRefreshLayout) {
             rewardViewModel.fetchRewards()
+            promosViewModel.fetchPromos()
         }
     }
 
@@ -52,6 +56,7 @@ class OffersFragment : Fragment() {
         switchTabsManager(RewardsFragment::class.java)
 
         sharedViewModel.action.observe(viewLifecycleOwner) { action ->
+            currentTab = action
             if (action == "reward") {
                 switchTabsManager(RewardsFragment::class.java)
                 setColor(reward)

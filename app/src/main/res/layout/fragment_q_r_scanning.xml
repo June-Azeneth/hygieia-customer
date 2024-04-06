@@ -108,7 +108,21 @@
                 android:textColor="@color/sub_text"
                 android:text="@string/conversion_rate_explanation"
                 />
-            
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/viewStores"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View Stores"
+                android:layout_marginHorizontal="@dimen/XL"
+                android:background="@drawable/rounded_button"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_marginTop="@dimen/regular"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text5" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </LinearLayout>

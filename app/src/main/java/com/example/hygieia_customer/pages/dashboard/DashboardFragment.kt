@@ -10,8 +10,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentDashboardBinding
+import com.example.hygieia_customer.model.Store
+import com.example.hygieia_customer.pages.scanQR.StoreViewModel
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
@@ -30,6 +33,9 @@ class DashboardFragment : Fragment() {
     private lateinit var dialog: AlertDialog
     private lateinit var actualLayout: ConstraintLayout
     private lateinit var placeholder: ShimmerFrameLayout
+    private lateinit var adapter: StoresAdapter
+    private val storeList: ArrayList<Store> = arrayListOf()
+    private val storeViewModel: StoreViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +44,19 @@ class DashboardFragment : Fragment() {
     ): View {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
-        actualLayout = binding.actualLayout
-        placeholder = binding.dashboardPlaceholder
-
+        updateUI()
+        initializeVariables()
         setUpNavigation()
         setupRefreshListener()
+        setUpRecyclerView()
 
         return binding.root
+    }
+
+    private fun initializeVariables() {
+        actualLayout = binding.actualLayout
+        placeholder = binding.dashboardPlaceholder
+        adapter = StoresAdapter(ArrayList())
     }
 
 
@@ -60,6 +72,10 @@ class DashboardFragment : Fragment() {
             promosCard.setOnClickListener {
                 sharedViewModel.setAction("promo")
                 findNavController().navigate(R.id.action_navigation_dashboard_to_offersFragment)
+            }
+
+            binding.text5.setOnClickListener{
+                findNavController().navigate(R.id.action_navigation_dashboard_to_storeListFragment)
             }
         }
     }
@@ -99,6 +115,21 @@ class DashboardFragment : Fragment() {
         }
     }
 
+    private fun setUpRecyclerView() {
+        try {
+            val recyclerView = binding.storeList
+
+            recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.setHasFixedSize(true)
+
+            recyclerView.adapter = adapter
+
+            storeViewModel.fetchStores()
+        } catch (error: Exception) {
+            Commons().showToast("An error occurred: $error", requireContext())
+        }
+    }
+
     private fun updateUI() {
         try {
             val currentUser = userRepo.getCurrentUserId().toString()
@@ -112,6 +143,19 @@ class DashboardFragment : Fragment() {
                         binding.username.text = "Hello ${user.firstName}!"
                     }
                     binding.currentBalance.text = user.currentBalance.toString()
+                }
+            }
+
+            storeViewModel.storeDetails.observe(viewLifecycleOwner) { stores ->
+                if (stores != null) {
+                    storeList.clear()
+                    storeList.addAll(stores)
+                    adapter.setData(storeList)
+//
+//                    showNoDataMessage(false)
+                } else {
+//                    binding.progressBar.visibility = View.GONE
+//                    showNoDataMessage(true)
                 }
             }
         } catch (error: Exception) {

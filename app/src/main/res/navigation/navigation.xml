@@ -47,11 +47,11 @@
     </fragment>
     <fragment
         android:id="@+id/signUpWithEmailAndPassFragment"
-        android:name="com.example.hygieia_customer.pages.signup.SignUpWithEmailAndPassFragment"
+        android:name="com.example.hygieia_customer.pages.signup.SignUpFragment"
         android:label="fragment_sign_up_with_email_and_pass"
         tools:layout="@layout/fragment_sign_up_with_email_and_pass" >
         <action
-            android:id="@+id/action_signUpWithEmailAndPassFragment_to_loginFragment"
+            android:id="@+id/action_signUpFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

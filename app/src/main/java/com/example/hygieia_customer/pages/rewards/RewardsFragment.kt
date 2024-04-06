@@ -21,7 +21,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class RewardsFragment : Fragment() {
 
-    val logTag = "RewardsFragmentMessages"
+    private val logTag = "RewardsFragmentMessages"
     private var _binding: FragmentRewardsBinding? = null
     private val binding get() = _binding!!
     private lateinit var rewardList: ArrayList<Reward>
@@ -57,7 +57,6 @@ class RewardsFragment : Fragment() {
 
         //method calls
         setUpRecyclerView()
-        commonActions()
         observeNetwork()
         return binding.root
     }
@@ -90,15 +89,21 @@ class RewardsFragment : Fragment() {
                 rewardList.addAll(rewards)
                 adapter.setData(rewardList)
                 binding.progressBar.visibility = View.GONE
+                showNoDataMessage(false)
+            }
+            else{
+                showNoDataMessage(true)
             }
         }
     }
 
-    private fun commonActions() {
-//        commons.setOnRefreshListener(binding.refreshLayout) {
-//            observeNetwork()
-//        }
-//        observeNetwork()
+    private fun showNoDataMessage(show: Boolean) {
+        if (show) {
+            binding.imageMessage.setImageResource(R.drawable.no_data)
+            binding.imageMessage.visibility = View.VISIBLE
+        } else {
+            binding.imageMessage.visibility = View.GONE
+        }
     }
 
     private fun setUpRecyclerView() {
