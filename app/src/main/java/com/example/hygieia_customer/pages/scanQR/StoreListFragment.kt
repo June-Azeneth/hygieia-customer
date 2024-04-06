@@ -62,7 +62,7 @@ class StoreListFragment : Fragment() {
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
 
-        Commons().setPageTitle("Affiliated Stores", binding.root)
+        Commons().setPageTitle("Hygieia Affiliated Stores", binding.root)
 
         binding.searchItem.doOnTextChanged { text, _, _, _ ->
             val storeName = text.toString().trim()
