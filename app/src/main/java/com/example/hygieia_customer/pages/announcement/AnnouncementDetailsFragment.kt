@@ -26,13 +26,8 @@ class AnnouncementDetailsFragment : Fragment() {
         _binding = FragmentAnnouncementDetailsBinding.inflate(inflater, container, false)
 
         observeNetwork()
-        setUpUi()
 
         return binding.root
-    }
-
-    private fun setUpUi() {
-        Commons().setPageTitle("Details", binding.root)
     }
 
     private fun observeDataSetChange() {

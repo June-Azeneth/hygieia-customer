@@ -3,6 +3,7 @@ package com.example.hygieia_customer.repository
 import android.util.Log
 import com.example.hygieia_customer.model.Promo
 import com.example.hygieia_customer.model.Reward
+import com.example.hygieia_customer.utils.Commons
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -70,14 +71,12 @@ class PromosRepo {
                             it.storeName = storeName ?: "Unknown Store"
                             promoList.add(it)
                         }
-                        if (promo != null) {
-                            promoList.add(promo)
-                        }
                     }
                 } catch (error: Exception) {
                     callback(null)
                 }
             }
+            Commons().log(logTag,promoList.size.toString())
             callback(promoList)
         } catch (e: Exception) {
             callback(null)

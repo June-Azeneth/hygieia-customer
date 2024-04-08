@@ -9,7 +9,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.example.hygieia_customer.LoggedInActivity
+import com.example.hygieia_customer.MainActivity2
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentLoginBinding
 import com.example.hygieia_customer.repository.UserRepo
@@ -157,7 +157,7 @@ class LoginFragment : Fragment() {
                                             if (success) {
                                                 val intent = Intent(
                                                     requireView().context,
-                                                    LoggedInActivity::class.java
+                                                    MainActivity2::class.java
                                                 )
                                                 startActivity(intent)
                                                 requireActivity().finish()

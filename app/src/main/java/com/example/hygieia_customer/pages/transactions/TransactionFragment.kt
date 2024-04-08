@@ -89,12 +89,10 @@ class TransactionFragment : Fragment() {
         Commons().setOnRefreshListener(binding.refreshLayout) {
             transactionViewModel.fetchTransactions(currentUser)
         }
-        Commons().setToolbarIcon(R.drawable.qr_code, binding.root)
-        Commons().setToolBarIconAction(binding.root) {
-            findNavController().navigate(R.id.action_navigation_transaction_to_navigation_scanQR)
-        }
-
-        Commons().setPageTitle("Transactions", binding.root)
+//        Commons().setToolbarIcon(R.drawable.qr_code, binding.root)
+//        Commons().setToolBarIconAction(binding.root) {
+//            findNavController().navigate(R.id.action_navigation_transaction_to_navigation_scanQR)
+//        }
     }
 
     private fun showNoDataMessage(show: Boolean) {

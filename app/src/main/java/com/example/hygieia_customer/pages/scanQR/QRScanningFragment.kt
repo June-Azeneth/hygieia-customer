@@ -33,10 +33,9 @@ class QRScanningFragment : Fragment() {
     ): View {
         _binding = FragmentQRScanningBinding.inflate(inflater, container, false)
         updateUI()
-        commons.setPageTitle("Scan QR Code", binding.root)
 
         binding.viewStores.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_scanQR_to_storeListFragment)
+            findNavController().navigate(R.id.action_QRScanningFragment_to_storeListFragment2)
         }
         return binding.root
     }

@@ -116,14 +116,6 @@ class StoreProfileFragment : Fragment() {
         commons.setOnRefreshListener(binding.refreshLayout) {
             observeNetwork()
         }
-        commons.setBackAction(binding.root) {
-            val nav = sharedViewModel.storeListNav.value.toString()
-            if (nav == "fromOffers") {
-                findNavController().navigate(R.id.action_storeProfileFragment_to_offersFragment)
-            } else {
-                findNavController().navigate(R.id.action_storeProfileFragment_to_storeListFragment)
-            }
-        }
     }
 
     private fun observeNetwork() {

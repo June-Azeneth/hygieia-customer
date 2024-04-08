@@ -26,7 +26,7 @@ class AnnouncementFragment : Fragment() {
     private val onItemClickListener = object : AnnouncementAdapter.OnItemClickListener {
         override fun onItemClick(item: Announcement) {
             announcementViewModel.fetchAnnouncement(item.id)
-            findNavController().navigate(R.id.action_announcementFragment_to_announcementDetailsFragment)
+            findNavController().navigate(R.id.action_announcementFragment2_to_announcementDetailsFragment2)
         }
     }
 
@@ -47,7 +47,6 @@ class AnnouncementFragment : Fragment() {
         Commons().setOnRefreshListener(binding.actualLayout) {
             observeNetwork()
         }
-        Commons().setPageTitle("Details", binding.root)
     }
 
     private fun observeNetwork() {

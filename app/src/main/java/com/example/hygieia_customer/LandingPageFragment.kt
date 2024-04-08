@@ -98,7 +98,7 @@ class LandingPageFragment : Fragment() {
     }
 
     private fun navigateToLoggedInActivity() {
-        val intent = Intent(requireView().context, LoggedInActivity::class.java)
+        val intent = Intent(requireView().context, MainActivity2::class.java)
         startActivity(intent)
         requireActivity().finish()
     }

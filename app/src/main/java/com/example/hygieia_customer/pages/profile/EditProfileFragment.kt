@@ -102,7 +102,7 @@ class EditProfileFragment : Fragment() {
 
         binding.cancelBTN.setOnClickListener {
             sharedViewModel.setSelectedProfilePicture("")
-            findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+            findNavController().navigate(R.id.action_editProfileFragment2_to_profileFragment2)
         }
     }
 

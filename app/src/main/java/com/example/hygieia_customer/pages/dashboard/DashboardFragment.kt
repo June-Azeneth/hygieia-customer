@@ -58,28 +58,29 @@ class DashboardFragment : Fragment() {
         placeholder = binding.dashboardPlaceholder
         adapter = StoresAdapter(ArrayList())
 
-        binding.announcement.setOnClickListener {
-            findNavController().navigate(R.id.action_navigation_dashboard_to_announcementFragment)
-        }
     }
 
 
     private fun setUpNavigation() {
         with(binding) {
-            navigateTo(earnMore, R.id.action_navigation_dashboard_to_navigation_scanQR)
+            navigateTo(earnMore, R.id.action_dashboardFragment_to_QRScanningFragment)
 
             rewardsCard.setOnClickListener {
-                sharedViewModel.setAction("reward")
-                findNavController().navigate(R.id.action_navigation_dashboard_to_offersFragment)
+                sharedViewModel.setAction("rewards")
+                findNavController().navigate(R.id.action_dashboardFragment_to_offersFragment2)
             }
 
             promosCard.setOnClickListener {
-                sharedViewModel.setAction("promo")
-                findNavController().navigate(R.id.action_navigation_dashboard_to_offersFragment)
+                sharedViewModel.setAction("promos")
+                findNavController().navigate(R.id.action_dashboardFragment_to_offersFragment2)
             }
 
             binding.text5.setOnClickListener{
-                findNavController().navigate(R.id.action_navigation_dashboard_to_storeListFragment)
+                findNavController().navigate(R.id.action_dashboardFragment_to_storeListFragment2)
+            }
+
+            binding.announcement.setOnClickListener {
+                findNavController().navigate(R.id.action_dashboardFragment_to_announcementFragment2)
             }
         }
     }

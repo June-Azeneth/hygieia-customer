@@ -29,7 +29,6 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
-    private val commons: Commons = Commons()
     private val userRepo = UserRepo()
 
     private lateinit var dialog: AlertDialog
@@ -53,13 +52,8 @@ class ProfileFragment : Fragment() {
         networkViewModel = NetworkViewModel(requireContext())
         observeNetwork()
         setUpRefreshListener()
-        commonActions()
 
         return binding.root
-    }
-
-    private fun commonActions() {
-        commons.setPageTitle("Profile", binding.root)
     }
 
     private fun observeNetwork() {
@@ -106,10 +100,9 @@ class ProfileFragment : Fragment() {
                     }
                     email.text = user.email
 
-                    if(user.address.isNullOrEmpty()){
+                    if (user.address.isNullOrEmpty()) {
                         address.text = "Set address"
-                    }
-                    else{
+                    } else {
                         val city = user.address["city"] ?: ""
                         val province = user.address["province"] ?: ""
                         address.text =
@@ -140,7 +133,7 @@ class ProfileFragment : Fragment() {
                 object : ProfileAdapter.OnItemClickListener {
                     override fun onItemClick(request: ProfileOptions) {
                         when (request.optionTitle) {
-                            "Edit Profile" -> findNavController().navigate(R.id.action_profileFragment_to_editProfileFragment)
+                            "Edit Profile" -> findNavController().navigate(R.id.action_profileFragment2_to_editProfileFragment2)
                             "Logout" -> {
                                 FirebaseAuth.getInstance().signOut()
                                 startActivity(Intent(requireContext(), MainActivity::class.java))

@@ -42,7 +42,7 @@ class StoreListFragment : Fragment() {
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
             sharedViewModel.setStoreListNav("fromStoreList")
-            findNavController().navigate(R.id.to_store_profile)
+            findNavController().navigate(R.id.action_storeListFragment2_to_storeProfileFragment2)
         }
     }
 
@@ -64,8 +64,6 @@ class StoreListFragment : Fragment() {
         networkViewModel = NetworkViewModel(requireContext())
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
-
-        Commons().setPageTitle("Hygieia Affiliated Stores", binding.root)
 
         binding.searchItem.doOnTextChanged { text, _, _, _ ->
             val storeName = text.toString().trim()
