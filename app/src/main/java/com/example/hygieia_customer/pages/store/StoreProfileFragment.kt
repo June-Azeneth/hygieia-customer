@@ -22,6 +22,7 @@ import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -29,6 +30,7 @@ class StoreProfileFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private val storeViewModel: StoreViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
     private var _binding: FragmentStoreProfileBinding? = null
     private val binding get() = _binding!!
@@ -115,7 +117,12 @@ class StoreProfileFragment : Fragment() {
             observeNetwork()
         }
         commons.setBackAction(binding.root) {
-            findNavController().navigate(R.id.action_storeProfileFragment_to_offersFragment)
+            val nav = sharedViewModel.storeListNav.value.toString()
+            if (nav == "fromOffers") {
+                findNavController().navigate(R.id.action_storeProfileFragment_to_offersFragment)
+            } else {
+                findNavController().navigate(R.id.action_storeProfileFragment_to_storeListFragment)
+            }
         }
     }
 

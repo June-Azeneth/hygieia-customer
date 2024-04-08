@@ -18,6 +18,7 @@ import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -28,6 +29,7 @@ class StoreListFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private val storeViewModel: StoreViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
     private lateinit var actualLayout: ConstraintLayout
     private lateinit var placeholder: ShimmerFrameLayout
@@ -39,6 +41,7 @@ class StoreListFragment : Fragment() {
         override fun onItemClick(item: Store) {
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
+            sharedViewModel.setStoreListNav("fromStoreList")
             findNavController().navigate(R.id.to_store_profile)
         }
     }

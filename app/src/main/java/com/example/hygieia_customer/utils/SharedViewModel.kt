@@ -21,6 +21,9 @@ class SharedViewModel : ViewModel() {
     private val _action = MutableLiveData<String>()
     val action : LiveData<String> get() = _action
 
+    private val _storeListNav = MutableLiveData<String>()
+    val storeListNav : LiveData<String> get() = _storeListNav
+
     fun fetchUserDetails(userId: String) {
         viewModelScope.launch {
             userRepo.getUserDetails(userId) { user ->
@@ -35,5 +38,9 @@ class SharedViewModel : ViewModel() {
 
     fun setAction(action: String){
         _action.value = action
+    }
+
+    fun setStoreListNav(nav: String){
+        _storeListNav.value = nav
     }
 }

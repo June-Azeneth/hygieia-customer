@@ -110,8 +110,8 @@ class ProfileFragment : Fragment() {
                         address.text = "Set address"
                     }
                     else{
-                        val city = user.address?.get("city") ?: ""
-                        val province = user.address?.get("province") ?: ""
+                        val city = user.address["city"] ?: ""
+                        val province = user.address["province"] ?: ""
                         address.text =
                             requireContext().getString(R.string.address_template, city, province)
                     }

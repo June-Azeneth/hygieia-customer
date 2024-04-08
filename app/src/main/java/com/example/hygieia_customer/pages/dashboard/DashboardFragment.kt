@@ -57,6 +57,10 @@ class DashboardFragment : Fragment() {
         actualLayout = binding.actualLayout
         placeholder = binding.dashboardPlaceholder
         adapter = StoresAdapter(ArrayList())
+
+        binding.announcement.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_dashboard_to_announcementFragment)
+        }
     }
 
 

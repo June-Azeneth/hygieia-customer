@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation2"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.hygieia_customer.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.example.hygieia_customer.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.example.hygieia_customer.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.hygieia_customer.pages.dashboard.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.example.hygieia_customer.pages.transactions.TransactionFragment"
+        android:label="fragment_transaction"
+        tools:layout="@layout/fragment_transaction" />
+    <fragment
+        android:id="@+id/QRScanningFragment"
+        android:name="com.example.hygieia_customer.pages.scanQR.QRScanningFragment"
+        android:label="fragment_q_r_scanning"
+        tools:layout="@layout/fragment_q_r_scanning" />
+    <fragment
+        android:id="@+id/announcementFragment2"
+        android:name="com.example.hygieia_customer.pages.announcement.AnnouncementFragment"
+        android:label="fragment_announcement"
+        tools:layout="@layout/fragment_announcement" />
+    <fragment
+        android:id="@+id/announcementDetailsFragment2"
+        android:name="com.example.hygieia_customer.pages.announcement.AnnouncementDetailsFragment"
+        android:label="fragment_announcement_details"
+        tools:layout="@layout/fragment_announcement_details" />
+    <fragment
+        android:id="@+id/offersFragment2"
+        android:name="com.example.hygieia_customer.pages.offers.OffersFragment"
+        android:label="fragment_offers"
+        tools:layout="@layout/fragment_offers" />
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.example.hygieia_customer.pages.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/editProfileFragment2"
+        android:name="com.example.hygieia_customer.pages.profile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/storeListFragment2"
+        android:name="com.example.hygieia_customer.pages.scanQR.StoreListFragment"
+        android:label="fragment_store_list"
+        tools:layout="@layout/fragment_store_list" />
+</navigation>

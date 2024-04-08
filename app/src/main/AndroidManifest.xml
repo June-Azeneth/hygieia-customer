@@ -13,6 +13,11 @@
         android:theme="@style/Theme.HygieiaStore"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/Theme.HygieiaStore.NoActionBar" />
+        <activity
             android:name=".LoggedInActivity"
             android:exported="false"
             android:label="@string/title_activity_logged_in" />
@@ -22,6 +27,7 @@
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -2,7 +2,6 @@ package com.example.hygieia_customer.pages.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -44,7 +43,7 @@ class LoginFragment : Fragment() {
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        isUserLoggedId()
+//        isUserLoggedId()
         initializeVariables()
         observeNetwork()
         setUpNavigation()
@@ -52,27 +51,30 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    private fun isUserLoggedId() {
-        auth = Firebase.auth
-        val currentUser = auth.currentUser
-
-        userRepo.checkAccountStatus { status ->
-            if (currentUser != null && status == "active") {
-                val networkViewModel = NetworkViewModel(requireContext())
-                networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
-                    if (available) {
-                        val intent = Intent(requireView().context, LoggedInActivity::class.java)
-                        startActivity(intent)
-                        binding.email.text = Editable.Factory.getInstance().newEditable("")
-                        binding.password.text = Editable.Factory.getInstance().newEditable("")
-                    } else {
-                        if (!dialog.isShowing)
-                            dialog.show()
-                    }
-                }
-            }
-        }
-    }
+//    private fun isUserLoggedId() {
+//        auth = Firebase.auth
+//        val currentUser = auth.currentUser
+//        try {
+//            userRepo.checkAccountStatus { status ->
+//                if (currentUser != null && status == "active") {
+//                    val networkViewModel = NetworkViewModel(requireContext())
+//                    networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
+//                        if (available) {
+//                            val intent = Intent(requireView().context, LoggedInActivity::class.java)
+//                            startActivity(intent)
+//                            binding.email.text = Editable.Factory.getInstance().newEditable("")
+//                            binding.password.text = Editable.Factory.getInstance().newEditable("")
+//                        } else {
+//                            if (!dialog.isShowing)
+//                                dialog.show()
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (error: Exception) {
+//            Commons().log("LOGIN", error.message.toString())
+//        }
+//    }
 
     private fun initializeVariables() {
         email = binding.email
@@ -128,7 +130,7 @@ class LoginFragment : Fragment() {
 
     private fun loginUser() {
         auth = Firebase.auth
-        val currentUser = auth.currentUser
+//        val currentUser = auth.currentUser
 
         val text = binding.textLogin
         val loader = binding.progressBar
@@ -158,6 +160,7 @@ class LoginFragment : Fragment() {
                                                     LoggedInActivity::class.java
                                                 )
                                                 startActivity(intent)
+                                                requireActivity().finish()
                                             }
                                         }
                                     } else {

@@ -17,6 +17,7 @@ import com.example.hygieia_customer.databinding.FragmentRewardsBinding
 import com.example.hygieia_customer.model.Reward
 import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.utils.NetworkViewModel
+import com.example.hygieia_customer.utils.SharedViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -29,6 +30,7 @@ class RewardsFragment : Fragment() {
     private lateinit var dialog: AlertDialog
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
     private lateinit var actualLayout : ConstraintLayout
     private lateinit var placeholder : ShimmerFrameLayout
@@ -40,6 +42,7 @@ class RewardsFragment : Fragment() {
             //so that it can be used/passed to another fragment later on
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
+            sharedViewModel.setStoreListNav("fromOffers")
             val dialog = RewardDetailsDialog(requireContext(), item, findNavController())
             dialog.show()
         }

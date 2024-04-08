@@ -54,6 +54,11 @@ class Commons {
         return dateFormat.format(date)
     }
 
+    fun dateFormatMMMDDYYYYDate(date: Date?): String {
+        val dateFormat = SimpleDateFormat("MMM-dd-yyyy", Locale.getDefault())
+        return dateFormat.format(date)
+    }
+
     fun dateFormatMMMDD(date: Date): String {
         val dateFormat = SimpleDateFormat("MMM-dd", Locale.getDefault())
         return dateFormat.format(date)

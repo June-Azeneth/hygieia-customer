@@ -93,7 +93,7 @@ class BuildProfileFragment : Fragment() {
         val validProvince = isNotEmpty(province)
 
         if (validFirstName && validLastName && validSitio && validBarangay && validCity && validProvince) {
-            signUpViewModel.email.observe(viewLifecycleOwner) { email ->
+            signUpViewModel.email.observe(viewLifecycleOwner) {
                 generateQRCode(userRepo.getCurrentUserId().toString())
             }
         } else {
