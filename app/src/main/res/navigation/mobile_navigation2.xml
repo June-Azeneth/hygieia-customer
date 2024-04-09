@@ -13,23 +13,27 @@
         <action
             android:id="@+id/action_dashboardFragment_to_QRScanningFragment"
             app:destination="@id/QRScanningFragment"
+            app:popUpToInclusive="true"
             app:popUpTo="@id/dashboardFragment"
-            app:popUpToInclusive="true"/>
+            />
         <action
             android:id="@+id/action_dashboardFragment_to_storeListFragment2"
             app:destination="@id/storeListFragment2"
+            app:popUpToInclusive="true"
             app:popUpTo="@id/dashboardFragment"
-            app:popUpToInclusive="true"/>
+            />
         <action
             android:id="@+id/action_dashboardFragment_to_announcementFragment2"
             app:destination="@id/announcementFragment2"
+            app:popUpToInclusive="true"
             app:popUpTo="@id/dashboardFragment"
-            app:popUpToInclusive="true"/>
+            />
         <action
             android:id="@+id/action_dashboardFragment_to_offersFragment2"
             app:destination="@id/offersFragment2"
+            app:popUpToInclusive="true"
             app:popUpTo="@id/dashboardFragment"
-            app:popUpToInclusive="true"/>
+            />
     </fragment>
     <fragment
         android:id="@+id/transactionFragment"
@@ -101,8 +105,9 @@
         android:label="Store Profile"
         tools:layout="@layout/fragment_store_profile" />
 
+
     <action
         android:id="@+id/to_store_profile"
         app:destination="@id/storeProfileFragment2"
-        app:popUpTo="@id/dashboardFragment"/>
+        />
 </navigation>

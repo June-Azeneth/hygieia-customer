@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -65,8 +64,8 @@ class StoreListFragment : Fragment() {
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
 
-        binding.searchItem.doOnTextChanged { text, _, _, _ ->
-            val storeName = text.toString().trim()
+        binding.searchBtn.setOnClickListener {
+            val storeName = binding.searchItem.text.toString().trim()
             if (storeName.isEmpty()) {
                 storeViewModel.fetchStores()
             } else {
@@ -79,7 +78,6 @@ class StoreListFragment : Fragment() {
     private fun observeDataSetChange() {
         storeViewModel.storeDetails.observe(viewLifecycleOwner) { stores ->
             if (stores != null) {
-                Commons().log("STORESLIST", stores.size.toString())
                 storeList.clear()
                 storeList.addAll(stores)
                 adapter.setData(storeList)

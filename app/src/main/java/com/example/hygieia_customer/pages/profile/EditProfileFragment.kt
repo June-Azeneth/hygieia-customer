@@ -151,19 +151,29 @@ class EditProfileFragment : Fragment() {
     }
 
     private fun updateProfile() {
-        val addressMap = mapOf(
-            "barangay" to barangay.text.toString(),
-            "city" to city.text.toString(),
-            "province" to province.text.toString()
-        )
+        val firstName = firstName.text.toString()
+        val lastName = lastName.text.toString()
+        val barangay = barangay.text.toString()
+        val city = city.text.toString()
+        val province = province.text.toString()
 
-        val updatedUserInfo = UserInfo(
-            photo = selectedProfilePicture,
-            firstName = firstName.text.toString(),
-            lastName = lastName.text.toString(),
-            address = addressMap
-        )
-        updateUserProfileInRepo(updatedUserInfo)
+        if (firstName.isEmpty() || lastName.isEmpty() || barangay.isEmpty() || city.isEmpty() || province.isEmpty()) {
+            Commons().showToast("Fill in all the fields", requireContext())
+        } else {
+            val addressMap = mapOf(
+                "barangay" to barangay,
+                "city" to city,
+                "province" to province
+            )
+
+            val updatedUserInfo = UserInfo(
+                photo = selectedProfilePicture,
+                firstName = firstName,
+                lastName = lastName,
+                address = addressMap
+            )
+            updateUserProfileInRepo(updatedUserInfo)
+        }
     }
 
     private fun updateUserProfileInRepo(updatedUserInfo: UserInfo) {
@@ -177,7 +187,7 @@ class EditProfileFragment : Fragment() {
                     if (success) {
                         binding.progressBar.visibility = INVISIBLE
                         Commons().showToast("Update Profile Success", requireContext())
-                        findNavController().navigate(R.id.action_editProfileFragment_to_profileFragment)
+                        findNavController().navigate(R.id.action_editProfileFragment2_to_profileFragment2)
 
                     } else {
                         binding.progressBar.visibility = INVISIBLE
