@@ -105,11 +105,12 @@ class UserRepo {
                         val storeData = document.data // Retrieve all data from the document
                         val store = Store(
                             document.getString("storeId") ?: "",
-                            storeData?.get("address") as? Map<*, *>?,
+                            document.getString("address") ?: "",
                             document.getString("email") ?: "",
                             storeData?.get("recyclable") as? List<*>?,
                             document.getString("name") ?: "",
-                            document.getString("photo") ?: ""
+                            document.getString("photo") ?: "",
+                            document.getString("googleMapLocation") ?: ""
                         )
                         callback(store)
                     } else {

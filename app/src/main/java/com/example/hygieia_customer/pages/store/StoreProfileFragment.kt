@@ -1,5 +1,8 @@
 package com.example.hygieia_customer.pages.store
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +16,6 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.hygieia_customer.R
@@ -22,7 +24,6 @@ import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
-import com.example.hygieia_customer.utils.SharedViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -30,7 +31,6 @@ class StoreProfileFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private val storeViewModel: StoreViewModel by activityViewModels()
-    private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
     private var _binding: FragmentStoreProfileBinding? = null
     private val binding get() = _binding!!
@@ -48,19 +48,21 @@ class StoreProfileFragment : Fragment() {
     ): View {
         _binding = FragmentStoreProfileBinding.inflate(inflater, container, false)
 
-        //Initialization
-        reward = binding.reward
-        promo = binding.promo
-        shimmerLayout = binding.shimmerLayout
-        actualLayout = binding.actualLayout
-        networkViewModel = NetworkViewModel(requireContext())
-
         //method calls
+        initializeVariables()
         navigation()
         observeNetwork()
         commonActions()
 
         return binding.root
+    }
+
+    private fun initializeVariables() {
+        reward = binding.reward
+        promo = binding.promo
+        shimmerLayout = binding.shimmerLayout
+        actualLayout = binding.actualLayout
+        networkViewModel = NetworkViewModel(requireContext())
     }
 
     private fun loadUI(flag: Boolean) {
@@ -145,24 +147,11 @@ class StoreProfileFragment : Fragment() {
             if (store != null) {
                 binding.storeName.text = store.name
                 binding.storeEmail.text = store.email
-
-                val sitio = store.address?.get("sitio") ?: ""
-                val barangay = store.address?.get("barangay") ?: ""
-                val city = store.address?.get("city") ?: ""
-                val province = store.address?.get("province") ?: ""
-                binding.storeAddress.text = requireContext().getString(
-                    R.string.complete_address_template,
-                    sitio,
-                    barangay,
-                    city,
-                    province
-                )
+                binding.storeAddress.text = store.address
 
                 val recyclables = store.recyclables
                 val recyclablesContainer = binding.recyclables
                 recyclablesContainer.removeAllViews()
-
-                Commons().log("TRIAL", recyclables.toString())
 
                 recyclables?.forEach { recyclable ->
                     val textView = TextView(requireContext()).apply {
@@ -197,10 +186,28 @@ class StoreProfileFragment : Fragment() {
                     .load(photoUrl)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(binding.storePhoto)
+
+                binding.storeAddress.setOnClickListener {
+                    openGoogleMaps(store.googleMapLink, requireContext())
+                }
+
                 loadUI(true)
             } else {
                 loadUI(false)
             }
+        }
+    }
+
+    private fun openGoogleMaps(link: String, context: Context) {
+        val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+
+        if (mapIntent.resolveActivity(context.packageManager) != null) {
+            context.startActivity(mapIntent)
+        } else {
+            Commons().showToast(
+                "This action cannot be completed as there is no app available to handle it.",
+                context
+            )
         }
     }
 

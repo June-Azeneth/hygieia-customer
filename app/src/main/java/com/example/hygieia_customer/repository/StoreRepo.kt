@@ -1,16 +1,15 @@
 package com.example.hygieia_customer.repository
 
-import android.util.Log
 import com.example.hygieia_customer.model.Store
 import com.google.firebase.firestore.FirebaseFirestore
 
 class StoreRepo {
     private val fireStore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
-    interface StoreFetchCallback {
-        fun onStoresFetched(stores: List<Store>?)
-        fun onError(error: String)
-    }
+//    interface StoreFetchCallback {
+//        fun onStoresFetched(stores: List<Store>?)
+//        fun onError(error: String)
+//    }
 
 //    fun getStores(callback: StoreFetchCallback) {
 //        try {
@@ -49,11 +48,12 @@ class StoreRepo {
                         if (name.contains(storeName, ignoreCase = true)) {
                             val store = Store(
                                 document.getString("storeId") ?: "",
-                                storeData?.get("address") as? Map<*, *>,
+                                document.getString("address") ?: "",
                                 document.getString("email") ?: "",
                                 storeData?.get("recyclable") as? List<*>,
                                 name,
-                                document.getString("photo") ?: ""
+                                document.getString("photo") ?: "",
+                                document.getString("googleMapLocation") ?: ""
                             )
                             storeList.add(store)
                         }
@@ -80,11 +80,12 @@ class StoreRepo {
                             val storeData = document.data
                             val store = Store(
                                 document.getString("storeId") ?: "",
-                                storeData["address"] as? Map<*, *>?,
+                                document.getString("address") ?: "",
                                 document.getString("email") ?: "",
                                 storeData["recyclable"] as? List<*>?,
                                 document.getString("name") ?: "",
                                 document.getString("photo") ?: "",
+                                document.getString("googleMapLocation") ?: "",
                             )
                             storeList.add(store)
                         } catch (error: Exception) {
@@ -97,7 +98,6 @@ class StoreRepo {
                     callback(null)
                 }
         } catch (e: Exception) {
-            Log.e("STORE_REPO", "Error fetching stores: ${e.message}")
             callback(null)
         }
     }

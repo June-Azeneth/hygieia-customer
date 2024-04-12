@@ -37,19 +37,14 @@ class StoreListAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentItem = storeList[position]
 
-        val barangay = currentItem.address?.get("barangay") ?: ""
-        val city = currentItem.address?.get("city") ?: ""
-        val province = currentItem.address?.get("province") ?: ""
-        val formattedAddress = "$barangay, $city, $province"
-
-        holder.address.text = formattedAddress
         Glide.with(holder.itemView)
             .load(currentItem.photo)
             .apply(RequestOptions.centerCropTransform())
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.image)
-
+        holder.address.text = currentItem.address
         holder.storeName.text = currentItem.name
+
         holder.item.setOnClickListener {
             onItemClickListener.onItemClick(currentItem)
         }
