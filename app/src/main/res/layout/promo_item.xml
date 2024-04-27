@@ -63,7 +63,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="PROMO NAME"
-                android:textColor="@color/accent_orange"
                 android:textSize="@dimen/text_regular" />
 
 

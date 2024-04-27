@@ -167,7 +167,8 @@ class PromosRepo {
                     document.getDouble(POINTS_REQUIRED) ?: 0.0,
                     document.getTimestamp(PROMO_START)?.toDate(),
                     document.getTimestamp(PROMO_END)?.toDate(),
-                    document.getString("description") ?: "",
+                    document.getString(DESCRIPTION) ?: "",
+                    document.getDouble(PRICE) ?: 0.0,
                 )
             } else {
                 null

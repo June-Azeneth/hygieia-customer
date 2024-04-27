@@ -142,7 +142,8 @@ class RewardsRepo {
                             document.getDouble("discount") ?: 0.0,
                             document.getDouble("discountedPrice") ?: 0.0,
                             document.getString("storeName") ?: "",
-                            document.getString("storeId") ?: ""
+                            document.getString("storeId") ?: "",
+                            document.getDouble("price") ?: 0.0,
                         )
                         rewardList.add(promo)
                     } catch (error: Exception) {

@@ -55,8 +55,6 @@ class PromosAdapter(
 
         holder.promoName.text = currentItem.promoName
         holder.product.text = context.getString(R.string.product_template, currentItem.product)
-        holder.discount.text =
-            context.getString(R.string.discount_template, Commons().formatDecimalNumber(currentItem.discountRate))
         holder.discPrice.text = context.getString(
             R.string.disc_price_template,
             Commons().formatDecimalNumber(currentItem.discountedPrice)
@@ -68,6 +66,12 @@ class PromosAdapter(
         holder.duration.text = formattedString
         holder.store.text = currentItem.storeName
 
+        if(currentItem.discountRate.toInt() == 100){
+            holder.discount.text = "FREE"
+        }else{
+            holder.discount.text =
+                context.getString(R.string.discount_template, Commons().formatDecimalNumber(currentItem.discountRate))
+        }
 
         holder.item.setOnClickListener {
             onItemClickListener.onItemClick(currentItem)

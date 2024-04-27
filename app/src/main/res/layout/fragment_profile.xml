@@ -100,17 +100,28 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/address" />
 
+                <TextView
+                    android:id="@+id/id"
+                    android:layout_marginTop="@dimen/small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_small"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/email" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/actions"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/medium"
+                    android:layout_marginTop="@dimen/regular"
                     android:background="@drawable/image_shape_config"
                     android:padding="@dimen/small"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/email" />
+                    app:layout_constraintTop_toBottomOf="@id/id" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

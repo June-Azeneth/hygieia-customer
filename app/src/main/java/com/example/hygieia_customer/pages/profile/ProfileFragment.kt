@@ -32,7 +32,6 @@ class ProfileFragment : Fragment() {
     private val userRepo = UserRepo()
 
     private lateinit var dialog: AlertDialog
-    private lateinit var adapter: ProfileAdapter
 
     private val optionsIcons = intArrayOf(
         R.drawable.user_avatar,
@@ -99,6 +98,7 @@ class ProfileFragment : Fragment() {
                         )
                     }
                     email.text = user.email
+                    id.text = getString(R.string.id, user.id)
 
                     if (user.address.isNullOrEmpty()) {
                         address.text = "Set address"

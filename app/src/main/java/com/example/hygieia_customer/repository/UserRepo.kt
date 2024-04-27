@@ -41,7 +41,7 @@ class UserRepo {
                         val document = documentSnapshot.documents[0]
                         val user = document.data // Retrieve all data from the document
                         val userData = UserInfo(
-                            document.getString("storeId") ?: "",
+                            document.id,
                             document.getString("firstName") ?: "",
                             document.getString("lastName") ?: "",
                             document.getString("photo") ?: "",

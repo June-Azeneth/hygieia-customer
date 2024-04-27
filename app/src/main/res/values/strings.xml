@@ -90,5 +90,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="userName">"%1$s %2$s "</string>
+    <string name="id">ID: %1$s</string>
 
 </resources>

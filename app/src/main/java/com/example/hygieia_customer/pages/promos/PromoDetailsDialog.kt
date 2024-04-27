@@ -61,7 +61,7 @@ class PromoDetailsDialog(
         if (promo.discountRate.toInt() == 100) {
             discount.text = "FREE"
         } else {
-            discount.text = "-${promo.discountRate}%"
+            discount.text = "-${Commons().formatDecimalNumber(promo.discountRate)}%"
         }
 
         if (promo.description.isEmpty()) {
@@ -70,11 +70,16 @@ class PromoDetailsDialog(
             description.text = "Description: \n${promo.description}"
         }
         promoName.text = promo.promoName
-        duration.text = "Duration: \n${promo.dateStart?.let { Commons().dateFormatMMMDD(it) }} to ${promo.dateEnd?.let { Commons().dateFormatMMMDD(it) }}"
-        points.text = "Points Required: ${promo.pointsRequired} pts"
+        duration.text = "Duration: ${promo.dateStart?.let { Commons().dateFormatMMMDD(it) }} to ${
+            promo.dateEnd?.let {
+                Commons().dateFormatMMMDD(it)
+            }
+        }"
+        points.text = "Points Required: ${Commons().formatDecimalNumber(promo.pointsRequired)} pts"
         shop.text = "Shop: ${promo.storeName}"
-        discountedPrice.text = "Discounted Price: ₱${promo.discountedPrice}"
-        originalPrice.text = "Original Price: ₱${promo.price}"
+        discountedPrice.text =
+            "Discounted Price: ₱${Commons().formatDecimalNumber(promo.discountedPrice)}"
+        originalPrice.text = "Original Price: ₱${Commons().formatDecimalNumber(promo.price)}"
         product.text = "Product: ${promo.product}"
         Glide.with(context).load(promo.photo).into(photo)
     }

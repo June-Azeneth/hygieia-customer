@@ -276,7 +276,7 @@ class SignUpFragment : Fragment() {
             .addOnFailureListener { e ->
                 Toast.makeText(
                     requireContext(),
-                    "Error uploading to Firestore: $e",
+                    "Error uploading to FireStore: $e",
                     Toast.LENGTH_SHORT
                 ).show()
                 callback(false)
@@ -302,7 +302,6 @@ class SignUpFragment : Fragment() {
                 passwordText.length < 8 -> "Must be more than 8 characters"
                 !passwordText.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#\$%^&+=]).{8,}".toRegex()) ->
                     "Password must contain 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (@\$%^&_+=)"
-
                 else -> null
             }
             passwordLayout.helperText = helperText

@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import com.bumptech.glide.Glide
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.model.Reward
+import com.example.hygieia_customer.utils.Commons
 import com.google.android.material.imageview.ShapeableImageView
 
 class RewardDetailsDialog(
@@ -57,7 +58,7 @@ class RewardDetailsDialog(
         if (reward.discount.toInt() == 100) {
             discount.text = "FREE"
         } else {
-            discount.text = "-${reward.discount}%"
+            discount.text = "-${Commons().formatDecimalNumber(reward.discount)}%"
         }
 
         if (reward.description.isEmpty()) {
@@ -65,10 +66,10 @@ class RewardDetailsDialog(
         } else {
             description.text = "Description: \n${reward.description}"
         }
-        points.text = "Points Required: ${reward.pointsRequired} pts"
+        points.text = "Points Required: ${Commons().formatDecimalNumber(reward.pointsRequired)} pts"
         shop.text = "Shop: ${reward.storeName}"
-        discountedPrice.text = "Discounted Price: ₱${reward.discountedPrice}"
-        originalPrice.text = "Original Price: ₱${reward.price}"
+        discountedPrice.text = "Discounted Price: ₱${Commons().formatDecimalNumber(reward.discountedPrice)}"
+        originalPrice.text = "Original Price: ₱${Commons().formatDecimalNumber(reward.price)}"
         product.text = reward.name
         Glide.with(context).load(reward.photo).into(photo)
     }

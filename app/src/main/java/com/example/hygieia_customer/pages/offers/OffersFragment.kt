@@ -41,7 +41,7 @@ class OffersFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var reward: AppCompatButton
     private lateinit var promo: AppCompatButton
-    private var currentTab: String = ""
+    private var currentTab: String = "rewards"
     private lateinit var dialog: AlertDialog
 
     private lateinit var rewardList: ArrayList<Reward>
