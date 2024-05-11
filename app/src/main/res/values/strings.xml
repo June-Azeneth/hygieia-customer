@@ -75,7 +75,7 @@
     <string name="original_price">Original Price: ₱%1$s</string>
     <string name="validate">Validate</string>
     <string name="build_you_profile">Build your Profile</string>
-    <string name="search_store">Enter store name</string>
+    <string name="search_store">Search store name or address</string>
     <string name="search_reward">Enter Item Name</string>
     <string name="search_promo">Search Promo</string>
     <string name="title_activity_main2">MainActivity2</string>

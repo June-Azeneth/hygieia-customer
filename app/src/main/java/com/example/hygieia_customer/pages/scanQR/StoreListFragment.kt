@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentStoreListBinding
 import com.example.hygieia_customer.model.Store
@@ -30,10 +32,11 @@ class StoreListFragment : Fragment() {
     private val storeViewModel: StoreViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
-    private lateinit var actualLayout: ConstraintLayout
+    private lateinit var actualLayout: SwipeRefreshLayout
     private lateinit var placeholder: ShimmerFrameLayout
     private val storeList: ArrayList<Store> = arrayListOf()
     private lateinit var dialog: AlertDialog
+    private var internetAvailable : Boolean = true
 
     private val adapter by lazy { StoreListAdapter(arrayListOf(), onItemClickListener) }
     private val onItemClickListener = object : StoreListAdapter.OnItemClickListener {
@@ -55,6 +58,7 @@ class StoreListFragment : Fragment() {
         observeDataSetChange()
         setUpRecyclerView()
         observeNetwork()
+        elasticSearch()
 
         return binding.root
     }
@@ -64,13 +68,54 @@ class StoreListFragment : Fragment() {
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
 
-        binding.searchBtn.setOnClickListener {
-            val storeName = binding.searchItem.text.toString().trim()
-            if (storeName.isEmpty()) {
-                storeViewModel.fetchStores()
-            } else {
+        Commons().setOnRefreshListener(actualLayout){
+            showNoDataMessage(false)
+            loadList(true)
+            storeViewModel.fetchStores{ success, error ->
+                loadList(false)
+                if (!success) {
+                    Commons().showToast("Failed to fetch stores: $error", requireContext())
+                }
+            }
+        }
+    }
+
+    private fun elasticSearch() {
+        binding.searchItem.doOnTextChanged { text, _, _, _ ->
+            if(internetAvailable){
+                dialog.hide()
+
                 binding.progressBar.visibility = View.VISIBLE
-                storeViewModel.searchForAStore(storeName)
+                binding.recyclerView.visibility = View.GONE
+
+                val searchText = text.toString().trim()
+                val filteredList = if (searchText.isEmpty()) {
+                    // If search text is empty, show all stores
+                    storeList
+                } else {
+                    // Filter stores based on search text
+                    storeList.filter { store ->
+                        // You can customize the search criteria here, for example, by store name
+                        store.name.contains(searchText, ignoreCase = true) || store.address.contains(searchText, ignoreCase = true)
+                    }
+                }
+                // Update the adapter with the filtered list
+                adapter.setData(filteredList)
+
+                if(filteredList.isEmpty()){
+                    binding.progressBar.visibility = View.GONE
+                    binding.recyclerView.visibility = View.VISIBLE
+                    showNoDataMessage(true)
+                }
+                else{
+                    binding.progressBar.visibility = View.GONE
+                    binding.recyclerView.visibility = View.VISIBLE
+                    showNoDataMessage(false)
+                }
+            }
+            else{
+                if (!dialog.isShowing)
+                    dialog.show()
             }
         }
     }
@@ -81,21 +126,14 @@ class StoreListFragment : Fragment() {
                 storeList.clear()
                 storeList.addAll(stores)
                 adapter.setData(storeList)
-                binding.progressBar.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
                 showNoDataMessage(false)
-            } else {
-                storeList.clear()
-                binding.recyclerView.visibility = View.GONE
-                binding.progressBar.visibility = View.GONE
-                showNoDataMessage(true)
             }
         }
     }
 
     private fun showNoDataMessage(show: Boolean) {
         if (show) {
-            binding.imageMessage.setImageResource(R.drawable.no_data)
+            binding.imageMessage.setImageResource(R.drawable.no_result)
             binding.imageMessage.visibility = View.VISIBLE
         } else {
             binding.imageMessage.visibility = View.GONE
@@ -104,18 +142,34 @@ class StoreListFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         try {
+            loadList(true)
             val recyclerView = binding.recyclerView
-
             recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.setHasFixedSize(true)
-
             recyclerView.adapter = adapter
 
-            binding.progressBar.visibility = View.VISIBLE
-
-            storeViewModel.fetchStores()
+            storeViewModel.fetchStores{ success, error ->
+                loadList(false)
+                if (success) {
+                    observeDataSetChange()
+                }
+                else{
+                    Commons().showToast("Failed to fetch stores: $error", requireContext())
+                }
+            }
         } catch (error: Exception) {
             Commons().showToast("An error occurred: $error", requireContext())
+        }
+    }
+
+    fun loadList(load: Boolean){
+        if(load){
+            binding.progressBar.visibility = View.VISIBLE
+            binding.recyclerView.visibility = View.GONE
+        }
+        else{
+            binding.progressBar.visibility = View.GONE
+            binding.recyclerView.visibility = View.VISIBLE
         }
     }
 
@@ -126,11 +180,13 @@ class StoreListFragment : Fragment() {
             .create()
         networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
             if (available) {
+                internetAvailable = true
                 actualLayout.visibility = View.VISIBLE
                 placeholder.visibility = View.INVISIBLE
                 dialog.hide()
                 observeDataSetChange()
             } else {
+                internetAvailable = false
                 actualLayout.visibility = View.INVISIBLE
                 placeholder.visibility = View.VISIBLE
                 storeList.clear()

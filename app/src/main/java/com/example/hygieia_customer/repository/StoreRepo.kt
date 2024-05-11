@@ -68,7 +68,7 @@ class StoreRepo {
             }
     }
 
-    fun getStores(callback: (List<Store>?) -> Unit) {
+    fun getStores(callback: (success: Boolean, stores: List<Store>?, error: String?) -> Unit) {
         try {
             fireStore.collection("store")
                 .whereEqualTo("status", "active")
@@ -89,16 +89,16 @@ class StoreRepo {
                             )
                             storeList.add(store)
                         } catch (error: Exception) {
-                            callback(null)
+                            callback(false, null, "Error parsing store data")
                         }
                     }
-                    callback(storeList)
+                    callback(true, storeList, null)
                 }
-                .addOnFailureListener {
-                    callback(null)
+                .addOnFailureListener { exception ->
+                    callback(false, null, "Failed to retrieve stores: ${exception.message}")
                 }
         } catch (e: Exception) {
-            callback(null)
+            callback(false, null, "Exception occurred: ${e.message}")
         }
     }
 }

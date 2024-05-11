@@ -15,10 +15,14 @@ class StoreViewModel : ViewModel() {
 //    private val _selectedReward = MutableLiveData<String>()
 //    val selectedReward: LiveData<String> get() = _selectedReward
 
-    fun fetchStores() {
+    fun fetchStores(callback: (success: Boolean, error: String?) -> Unit) {
         viewModelScope.launch {
-            storeRepo.getStores() { stores ->
-                _storeDetails.value = stores
+            storeRepo.getStores() { success, stores, error ->
+                if (success) {
+                    _storeDetails.value = stores
+                }
+                // Pass the success flag and error message to the caller
+                callback(success, error)
             }
         }
     }

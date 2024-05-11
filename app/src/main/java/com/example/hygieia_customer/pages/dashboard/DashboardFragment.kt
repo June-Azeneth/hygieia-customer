@@ -57,7 +57,6 @@ class DashboardFragment : Fragment() {
         actualLayout = binding.actualLayout
         placeholder = binding.dashboardPlaceholder
         adapter = StoresAdapter(ArrayList())
-
     }
 
 
@@ -129,7 +128,14 @@ class DashboardFragment : Fragment() {
 
             recyclerView.adapter = adapter
 
-            storeViewModel.fetchStores()
+            storeViewModel.fetchStores{ success, error ->
+                if (success) {
+                    updateUI()
+                }
+                else{
+                    Commons().showToast("Failed to fetch stores: $error", requireContext())
+                }
+            }
         } catch (error: Exception) {
             Commons().showToast("An error occurred: $error", requireContext())
         }
