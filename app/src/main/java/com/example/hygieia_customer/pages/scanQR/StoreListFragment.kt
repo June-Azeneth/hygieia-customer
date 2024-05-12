@@ -162,7 +162,7 @@ class StoreListFragment : Fragment() {
         }
     }
 
-    fun loadList(load: Boolean){
+    private fun loadList(load: Boolean){
         if(load){
             binding.progressBar.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE

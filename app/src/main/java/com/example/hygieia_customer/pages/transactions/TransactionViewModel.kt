@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hygieia_customer.model.Transaction
+import com.example.hygieia_customer.model.TransactionsFilterConfig
 import com.example.hygieia_customer.repository.TransactionsRepo
 import kotlinx.coroutines.launch
 
@@ -13,10 +14,18 @@ class TransactionViewModel : ViewModel() {
     val transactionDetails: LiveData<List<Transaction>?> get() = _transactionDetails
     private val transactionsRepo: TransactionsRepo = TransactionsRepo()
 
-    fun fetchTransactions(userID : String) {
+    private val _filterConfig = MutableLiveData<TransactionsFilterConfig>()
+    val filterConfig: LiveData<TransactionsFilterConfig> get() = _filterConfig
+
+    fun fetchTransactions() {
         viewModelScope.launch {
             val rewards = transactionsRepo.getTransactions()
             _transactionDetails.value = rewards
         }
     }
+
+    fun updateFilterConfig(filterConfig: TransactionsFilterConfig) {
+        _filterConfig.value = filterConfig
+    }
+
 }

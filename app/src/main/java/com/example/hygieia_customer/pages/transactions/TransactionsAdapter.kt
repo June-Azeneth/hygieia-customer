@@ -74,7 +74,7 @@ class TransactionsAdapter(
         val points: TextView = itemView.findViewById(R.id.pointsSubtractedOrAdded)
     }
 
-    fun setData(newTransactionList: ArrayList<Transaction>) {
+    fun setData(newTransactionList: List<Transaction>) {
         val oldTransactionList = ArrayList(transactionList) // Create a copy of the old list
         transactionList.clear() // Clear the old list
         transactionList.addAll(newTransactionList) // Update the list with the new data

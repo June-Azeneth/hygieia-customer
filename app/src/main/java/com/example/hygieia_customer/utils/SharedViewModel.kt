@@ -22,7 +22,7 @@ class SharedViewModel : ViewModel() {
     val action : LiveData<String> get() = _action
 
     private val _storeListNav = MutableLiveData<String>()
-    val storeListNav : LiveData<String> get() = _storeListNav
+//    val storeListNav : LiveData<String> get() = _storeListNav
 
     fun fetchUserDetails(userId: String) {
         viewModelScope.launch {

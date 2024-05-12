@@ -113,6 +113,17 @@ class DashboardFragment : Fragment() {
         observeNetworkAvailability()
     }
 
+    fun loadUi(load: Boolean){
+        if(load){
+            placeholder.visibility = View.VISIBLE
+            actualLayout.visibility = View.GONE
+        }
+        else{
+            placeholder.visibility = View.GONE
+            actualLayout.visibility = View.VISIBLE
+        }
+    }
+
     private fun navigateTo(view: View, action: Int) {
         view.setOnClickListener {
             findNavController().navigate(action)
@@ -143,17 +154,21 @@ class DashboardFragment : Fragment() {
 
     private fun updateUI() {
         try {
+            loadUi(true)
             val currentUser = userRepo.getCurrentUserId().toString()
             sharedViewModel.fetchUserDetails(currentUser)
-
             sharedViewModel.userDetails.observe(viewLifecycleOwner) { user ->
                 if (user != null) {
+                    loadUi(false)
                     if (user.firstName == "") {
                         binding.username.text = "Hello!"
                     } else {
                         binding.username.text = "Hello ${user.firstName}!"
                     }
                     binding.currentBalance.text = user.currentBalance.toString()
+                }
+                else{
+                    loadUi(true)
                 }
             }
 
@@ -162,11 +177,6 @@ class DashboardFragment : Fragment() {
                     storeList.clear()
                     storeList.addAll(stores)
                     adapter.setData(storeList)
-//
-//                    showNoDataMessage(false)
-                } else {
-//                    binding.progressBar.visibility = View.GONE
-//                    showNoDataMessage(true)
                 }
             }
         } catch (error: Exception) {

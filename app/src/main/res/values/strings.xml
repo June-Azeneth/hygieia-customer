@@ -91,5 +91,6 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="userName">"%1$s %2$s "</string>
     <string name="id">ID: %1$s</string>
+    <string name="date_range_transactions">%1$s to %2$s</string>
 
 </resources>
