@@ -1,11 +1,11 @@
 package com.example.hygieia_customer.pages.scanQR
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -17,6 +17,7 @@ import com.example.hygieia_customer.databinding.FragmentStoreListBinding
 import com.example.hygieia_customer.model.Store
 import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
+import com.example.hygieia_customer.pages.store.storesNearMe.StoresNearMe
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
 import com.example.hygieia_customer.utils.SharedViewModel
@@ -36,7 +37,7 @@ class StoreListFragment : Fragment() {
     private lateinit var placeholder: ShimmerFrameLayout
     private val storeList: ArrayList<Store> = arrayListOf()
     private lateinit var dialog: AlertDialog
-    private var internetAvailable : Boolean = true
+    private var internetAvailable: Boolean = true
 
     private val adapter by lazy { StoreListAdapter(arrayListOf(), onItemClickListener) }
     private val onItemClickListener = object : StoreListAdapter.OnItemClickListener {
@@ -59,6 +60,7 @@ class StoreListFragment : Fragment() {
         setUpRecyclerView()
         observeNetwork()
         elasticSearch()
+        storesNearLocation()
 
         return binding.root
     }
@@ -68,10 +70,10 @@ class StoreListFragment : Fragment() {
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
 
-        Commons().setOnRefreshListener(actualLayout){
+        Commons().setOnRefreshListener(actualLayout) {
             showNoDataMessage(false)
             loadList(true)
-            storeViewModel.fetchStores{ success, error ->
+            storeViewModel.fetchStores { success, error ->
                 loadList(false)
                 if (!success) {
                     Commons().showToast("Failed to fetch stores: $error", requireContext())
@@ -82,7 +84,7 @@ class StoreListFragment : Fragment() {
 
     private fun elasticSearch() {
         binding.searchItem.doOnTextChanged { text, _, _, _ ->
-            if(internetAvailable){
+            if (internetAvailable) {
                 dialog.hide()
 
                 binding.progressBar.visibility = View.VISIBLE
@@ -96,24 +98,25 @@ class StoreListFragment : Fragment() {
                     // Filter stores based on search text
                     storeList.filter { store ->
                         // You can customize the search criteria here, for example, by store name
-                        store.name.contains(searchText, ignoreCase = true) || store.address.contains(searchText, ignoreCase = true)
+                        store.name.contains(
+                            searchText,
+                            ignoreCase = true
+                        ) || store.address.contains(searchText, ignoreCase = true)
                     }
                 }
                 // Update the adapter with the filtered list
                 adapter.setData(filteredList)
 
-                if(filteredList.isEmpty()){
+                if (filteredList.isEmpty()) {
                     binding.progressBar.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
                     showNoDataMessage(true)
-                }
-                else{
+                } else {
                     binding.progressBar.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
                     showNoDataMessage(false)
                 }
-            }
-            else{
+            } else {
                 if (!dialog.isShowing)
                     dialog.show()
             }
@@ -127,6 +130,7 @@ class StoreListFragment : Fragment() {
                 storeList.addAll(stores)
                 adapter.setData(storeList)
                 showNoDataMessage(false)
+                Commons().log("STORES_LIST",stores.size.toString())
             }
         }
     }
@@ -148,12 +152,11 @@ class StoreListFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
             recyclerView.adapter = adapter
 
-            storeViewModel.fetchStores{ success, error ->
+            storeViewModel.fetchStores { success, error ->
                 loadList(false)
                 if (success) {
                     observeDataSetChange()
-                }
-                else{
+                } else {
                     Commons().showToast("Failed to fetch stores: $error", requireContext())
                 }
             }
@@ -162,12 +165,11 @@ class StoreListFragment : Fragment() {
         }
     }
 
-    private fun loadList(load: Boolean){
-        if(load){
+    private fun loadList(load: Boolean) {
+        if (load) {
             binding.progressBar.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE
-        }
-        else{
+        } else {
             binding.progressBar.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
         }
@@ -193,6 +195,13 @@ class StoreListFragment : Fragment() {
                 if (!dialog.isShowing)
                     dialog.show()
             }
+        }
+    }
+
+    private fun storesNearLocation() {
+        binding.storesNearMe.setOnClickListener {
+            val intent = Intent(requireContext(), StoresNearMe::class.java)
+            startActivity(intent)
         }
     }
 

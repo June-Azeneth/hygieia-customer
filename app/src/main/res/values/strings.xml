@@ -92,5 +92,6 @@
     <string name="userName">"%1$s %2$s "</string>
     <string name="id">ID: %1$s</string>
     <string name="date_range_transactions">%1$s to %2$s</string>
-
+    <string name="stores_near_me">Stores near me</string>
+    <style name="title_activity_stores_near_me">Stores Near Me</style>
 </resources>

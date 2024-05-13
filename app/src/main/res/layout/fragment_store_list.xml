@@ -8,6 +8,26 @@
     android:background="@color/bgColor"
     tools:context=".pages.scanQR.StoreListFragment">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchItemLayout"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:hint="@string/search_store"
+        android:layout_margin="@dimen/small"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="@dimen/tiny"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/placeholder"
         android:layout_width="0dp"
@@ -15,7 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/searchItemLayout">
 
         <include layout="@layout/placeholder_list" />
 
@@ -23,81 +43,55 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/actual_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/searchItemLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="visible"
-            android:padding="@dimen/small">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/small">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/storesNearMe"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="@color/red"
+                app:tint="@android:color/white"
+                android:clickable="true"
+                android:elevation="@dimen/tiniest"
+                android:src="@drawable/location"
+                app:fabSize="normal"
+                android:layout_margin="@dimen/small"
+                android:contentDescription="@string/stores_near_me"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:focusable="true" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:indeterminateTint="@color/secondary_green"
-                android:visibility="visible"
+                android:indeterminateTint="@color/main_green"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/searchBar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/searchItemLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:hint="@string/search_store"
-                    app:endIconMode="clear_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/searchItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/search"
-                        android:drawablePadding="@dimen/tiny"
-                        android:inputType="textEmailAddress" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <!--            <androidx.appcompat.widget.AppCompatButton-->
-                <!--                android:id="@+id/searchBtn"-->
-                <!--                android:layout_width="@dimen/XL"-->
-                <!--                android:textAllCaps="false"-->
-                <!--                android:layout_height="wrap_content"-->
-                <!--                android:background="@color/zxing_transparent"-->
-                <!--                android:text="Search"-->
-                <!--                app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                app:layout_constraintStart_toEndOf="@+id/searchItemLayout"-->
-                <!--                app:layout_constraintTop_toTopOf="parent" />-->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/tiny"
+                android:paddingHorizontal="@dimen/small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searchBar" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageMessage"
