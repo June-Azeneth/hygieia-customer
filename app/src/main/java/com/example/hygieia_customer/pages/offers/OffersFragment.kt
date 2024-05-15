@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -168,13 +169,92 @@ class OffersFragment : Fragment() {
     }
 
     private fun showNoDataMessage(show: Boolean) {
+        if(currentTab == "rewards"){
+            binding.imageMessage.setImageResource(R.drawable.no_rewards)
+        }else{
+            binding.imageMessage.setImageResource(R.drawable.no_promos)
+        }
+
         if (show) {
-            binding.imageMessage.setImageResource(R.drawable.no_data)
             binding.imageMessage.visibility = View.VISIBLE
             binding.listContainer.visibility = View.INVISIBLE
         } else {
             binding.imageMessage.visibility = View.GONE
             binding.listContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setUpSearch() {
+        binding.searchItem.doOnTextChanged { text, _, _, _ ->
+            val searchText = text.toString().trim()
+            binding.progressBar.visibility = View.VISIBLE
+            binding.rewardsList.visibility = View.GONE
+            binding.promosList.visibility = View.GONE
+
+            if(currentTab == "rewards"){
+                val filteredList = if (searchText.isEmpty()) {
+                    // If search text is empty, show all stores
+                    rewardList
+                } else {
+                    // Filter stores based on search text
+                    rewardList.filter { reward ->
+                        // You can customize the search criteria here, for example, by store name
+                        reward.name.contains(
+                            searchText,
+                            ignoreCase = true
+                        ) || reward.storeName.contains(
+                            searchText,
+                            ignoreCase = true
+                        ) || reward.description.contains(
+                            searchText,
+                            ignoreCase = true
+                        )
+                    }
+                }
+                // Update the adapter with the filtered list
+                rewardsAdapter.setData(filteredList)
+                binding.progressBar.visibility = View.GONE
+                if (filteredList.isEmpty()) {
+                    binding.rewardsList.visibility = View.GONE
+                    binding.promosList.visibility = View.GONE
+                    showNoDataMessage(true)
+                } else {
+                    binding.rewardsList.visibility = View.VISIBLE
+                    showNoDataMessage(false)
+                }
+            }
+            else{
+                val filteredList = if (searchText.isEmpty()) {
+                    // If search text is empty, show all stores
+                    promoList
+                } else {
+                    // Filter stores based on search text
+                    promoList.filter { reward ->
+                        // You can customize the search criteria here, for example, by store name
+                        reward.promoName.contains(
+                            searchText,
+                            ignoreCase = true
+                        ) || reward.storeName.contains(
+                            searchText,
+                            ignoreCase = true
+                        ) || reward.description.contains(
+                            searchText,
+                            ignoreCase = true
+                        )
+                    }
+                }
+                // Update the adapter with the filtered list
+                promosAdapter.setData(filteredList)
+                binding.progressBar.visibility = View.GONE
+                if (filteredList.isEmpty()) {
+                    binding.rewardsList.visibility = View.GONE
+                    binding.promosList.visibility = View.GONE
+                    showNoDataMessage(true)
+                } else {
+                    binding.promosList.visibility = View.VISIBLE
+                    showNoDataMessage(false)
+                }
+            }
         }
     }
 
@@ -240,27 +320,6 @@ class OffersFragment : Fragment() {
 //        transaction.replace(R.id.offers_fragment_container, fragment)
 //        transaction.addToBackStack(null)
 //        transaction.commit()
-    }
-
-    private fun setUpSearch() {
-        binding.searchBtn.setOnClickListener {
-            val searchInput = binding.searchItem.text.toString().trim()
-            if (searchInput.isEmpty()) {
-//                if (currentTab == "rewards") {
-//                    rewardViewModel.fetchRewards()
-//                } else {
-//                    promosViewModel.fetchPromos()
-//                }
-                Commons().showToast("Enter an item to search", requireContext())
-            } else {
-                binding.progressBar.visibility = View.VISIBLE
-                if (currentTab == "rewards") {
-                    rewardViewModel.searchReward(searchInput)
-                } else {
-                    promosViewModel.searchPromo(searchInput)
-                }
-            }
-        }
     }
 
     private fun setUpRecyclerView() {

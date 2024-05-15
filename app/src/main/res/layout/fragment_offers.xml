@@ -12,20 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/placeholder"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:padding="@dimen/small"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <include layout="@layout/placeholder_list" />
-
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/actual_layout"
             android:layout_width="match_parent"
@@ -74,67 +60,48 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--        <FrameLayout-->
-            <!--            android:id="@+id/offers_fragment_container"-->
-            <!--            android:layout_width="0dp"-->
-            <!--            android:layout_height="0dp"-->
-            <!--            android:background="@color/bgColor"-->
-            <!--            app:layout_constraintBottom_toBottomOf="parent"-->
-            <!--            app:layout_constraintEnd_toEndOf="parent"-->
-            <!--            app:layout_constraintStart_toStartOf="parent"-->
-            <!--            app:layout_constraintTop_toBottomOf="@id/options" />-->
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/searchBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/tiny"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchItemLayout"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="@dimen/tiny"
+                android:hint="@string/search_reward"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/options"
-                app:layout_constraintBottom_toTopOf="@id/listContainer">
+                app:startIconDrawable="@drawable/search">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/searchItemLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="@dimen/tiny"
-                    android:hint="@string/search_reward"
-                    app:endIconMode="clear_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/searchBtn"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/searchItem"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawablePadding="@dimen/tiny"/>
-                </com.google.android.material.textfield.TextInputLayout>
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/placeholder"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searchItemLayout">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/searchBtn"
-                    android:layout_width="@dimen/XL"
-                    android:layout_height="match_parent"
-                    android:text="Search"
-                    android:textAllCaps="false"
-                    android:background="@color/zxing_transparent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/searchItemLayout"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                <include layout="@layout/placeholder_list" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/listContainer"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:paddingTop="@dimen/tiniest"
                 android:paddingHorizontal="@dimen/small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searchBar">
+                app:layout_constraintTop_toBottomOf="@+id/searchItemLayout">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rewardsList"
@@ -148,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/bgColor"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ProgressBar

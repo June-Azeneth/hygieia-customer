@@ -94,7 +94,7 @@ class PromosAdapter(
         val item : CardView = itemView.findViewById(R.id.item)
     }
 
-    fun setData(newPromoList: ArrayList<Promo>) {
+    fun setData(newPromoList: List<Promo>) {
         val oldPromoList = ArrayList(promosList) // Create a copy of the old list
         promosList.clear() // Clear the old list
         promosList.addAll(newPromoList) // Update the list with the new data

@@ -37,7 +37,7 @@ class StoresNearMe : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 1
-        private const val NEARBY_DISTANCE_THRESHOLD = 50000
+        private const val NEARBY_DISTANCE_THRESHOLD = 5000
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

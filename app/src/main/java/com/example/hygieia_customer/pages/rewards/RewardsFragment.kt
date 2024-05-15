@@ -34,8 +34,8 @@ class RewardsFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val storeViewModel: StoreViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
-    private lateinit var actualLayout : ConstraintLayout
-    private lateinit var placeholder : ShimmerFrameLayout
+    private lateinit var actualLayout: ConstraintLayout
+    private lateinit var placeholder: ShimmerFrameLayout
 
     private val adapter by lazy { RewardsAdapter(arrayListOf(), onItemClickListener) }
     private val onItemClickListener = object : RewardsAdapter.OnItemClickListener {
@@ -59,27 +59,14 @@ class RewardsFragment : Fragment() {
         initializeVariables()
         setUpRecyclerView()
         observeNetwork()
-        setUpSearch()
         return binding.root
     }
 
-    private fun initializeVariables(){
+    private fun initializeVariables() {
         binding.recyclerView.adapter = adapter
         networkViewModel = NetworkViewModel(requireContext())
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
-    }
-
-    private fun setUpSearch(){
-        binding.searchItem.doOnTextChanged { text, _, _, _ ->
-            val storeName = text.toString().trim()
-            if (storeName.isEmpty()) {
-                rewardViewModel.fetchRewards()
-            } else {
-                binding.progressBar.visibility = View.VISIBLE
-                rewardViewModel.searchReward(storeName)
-            }
-        }
     }
 
     private fun observeNetwork() {
@@ -111,8 +98,7 @@ class RewardsFragment : Fragment() {
                 adapter.setData(rewardList)
                 binding.progressBar.visibility = View.GONE
                 showNoDataMessage(false)
-            }
-            else{
+            } else {
                 showNoDataMessage(true)
             }
         }
