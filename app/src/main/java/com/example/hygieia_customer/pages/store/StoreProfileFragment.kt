@@ -137,10 +137,20 @@ class StoreProfileFragment : Fragment() {
     }
 
     private fun observeDataSet() {
-        rewardViewModel.selectedReward.observe(viewLifecycleOwner) { storeId ->
-            rewardViewModel.fetchRewardsBasedOnStoreId(storeId)
-            promosViewModel.fetchPromosBasedOnStoreId(storeId)
-            storeViewModel.fetchStoreDetails(storeId)
+        if (storeViewModel.fromScreen.value == "offers") {
+            rewardViewModel.selectedReward.observe(viewLifecycleOwner) { storeId ->
+                rewardViewModel.fetchRewardsBasedOnStoreId(storeId)
+                promosViewModel.fetchPromosBasedOnStoreId(storeId)
+                storeViewModel.fetchStoreDetails(storeId)
+            }
+        } else {
+            Commons().log("STORE ID PROFILE", "I don't know what the fuck is going on")
+            storeViewModel.storeId.observe(viewLifecycleOwner) { id ->
+                Commons().log("STORE ID PROFILE", id)
+                rewardViewModel.fetchRewardsBasedOnStoreId(id)
+                promosViewModel.fetchPromosBasedOnStoreId(id)
+                storeViewModel.fetchStoreDetails(id)
+            }
         }
 
         storeViewModel.storeDetails.observe(viewLifecycleOwner) { store ->

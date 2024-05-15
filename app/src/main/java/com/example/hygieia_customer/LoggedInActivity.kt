@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.hygieia_customer.databinding.ActivityLoggedInBinding
-import com.example.hygieia_customer.pages.rewards.RewardsFragment
-import com.example.hygieia_customer.pages.store.StoreProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -29,7 +27,6 @@ class LoggedInActivity : AppCompatActivity() {
 
             val navController = findNavController(R.id.nav_host_fragment_activity_logged_in)
             navView.setupWithNavController(navController)
-
         } catch (error: Exception) {
             Toast.makeText(this, error.toString(), Toast.LENGTH_SHORT).show()
         }

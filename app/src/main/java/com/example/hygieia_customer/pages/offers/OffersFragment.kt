@@ -25,6 +25,7 @@ import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardDetailsDialog
 import com.example.hygieia_customer.pages.rewards.RewardsAdapter
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
+import com.example.hygieia_customer.pages.store.StoreViewModel
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
 import com.example.hygieia_customer.utils.SharedViewModel
@@ -39,6 +40,7 @@ class OffersFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val storeViewModel: StoreViewModel by activityViewModels()
     private lateinit var reward: AppCompatButton
     private lateinit var promo: AppCompatButton
     private var currentTab: String = "rewards"
@@ -55,6 +57,8 @@ class OffersFragment : Fragment() {
         override fun onItemClick(item: Reward) {
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
+            sharedViewModel.setStoreListNav("fromOffers")
+            storeViewModel.setAction("offers")
             val dialog = RewardDetailsDialog(requireContext(), item, findNavController())
             dialog.show()
         }
@@ -68,6 +72,7 @@ class OffersFragment : Fragment() {
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
             sharedViewModel.setStoreListNav("fromOffers")
+            storeViewModel.setAction("offers")
             val dialog = PromoDetailsDialog(requireContext(), item, findNavController())
             dialog.show()
         }

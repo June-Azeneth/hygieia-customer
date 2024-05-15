@@ -1,6 +1,7 @@
 package com.example.hygieia_customer.pages.store.storesNearMe
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.example.hygieia_customer.MainActivity2
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.ActivityStoresNearMeBinding
 import com.example.hygieia_customer.repository.StoreRepo
@@ -35,7 +37,7 @@ class StoresNearMe : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
 
     companion object {
         private const val LOCATION_REQUEST_CODE = 1
-        private const val NEARBY_DISTANCE_THRESHOLD = 5000
+        private const val NEARBY_DISTANCE_THRESHOLD = 50000
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +84,7 @@ class StoresNearMe : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
             if (location != null) {
                 lastLocation = location
                 val currentLatLong = LatLng(location.latitude, location.longitude)
-                placeMarkerOnMap(currentLatLong, "You are here!")
+                placeMarkerOnMap(currentLatLong, "You are here!", "currentLocation")
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLong, 12f))
 
                 val storeRepo = StoreRepo()
@@ -101,14 +103,22 @@ class StoresNearMe : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
                                     val distance = location.distanceTo(storeLocation)
                                     if (distance <= NEARBY_DISTANCE_THRESHOLD) {
                                         val latLng = LatLng(latitude, longitude)
-                                        placeMarkerOnMap(latLng, store.name)
-                                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
+                                        placeMarkerOnMap(latLng, store.name, store.storeId)
+                                        mMap.animateCamera(
+                                            CameraUpdateFactory.newLatLngZoom(
+                                                latLng,
+                                                12f
+                                            )
+                                        )
                                     }
                                 } else {
                                     Commons().showToast("Invalid coordinates", this)
                                 }
                             } else {
-                                Commons().showToast("Coordinates not found for store: ${store.name}", this)
+                                Commons().showToast(
+                                    "Coordinates not found for store: ${store.name}",
+                                    this
+                                )
                             }
                         }
                     } else {
@@ -119,23 +129,20 @@ class StoresNearMe : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         }
     }
 
-    private fun extractLatLngFromMapUrl(mapUrl: String): Pair<Double, Double>? {
-        // Regular expression pattern to match latitude and longitude
-        val pattern = """@(-?\d+\.\d+),(-?\d+\.\d+)""".toRegex()
-        val matchResult = pattern.find(mapUrl)
-        return matchResult?.destructured?.let { (latitude, longitude) ->
-            Pair(latitude.toDouble(), longitude.toDouble())
-        }
-    }
-
-    private fun placeMarkerOnMap(currentLatLong: LatLng, storeName: String) {
+    private fun placeMarkerOnMap(currentLatLong: LatLng, storeName: String, storeId: String) {
         val markerOptions = MarkerOptions().position(currentLatLong).title(storeName)
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker))
-        mMap.addMarker(markerOptions)
+        val marker = mMap.addMarker(markerOptions)
+        marker?.tag = storeId
     }
 
     override fun onInfoWindowClick(marker: Marker) {
-        Toast.makeText(this, "Clicked marker: ${marker.title}", Toast.LENGTH_SHORT).show()
+        if(marker.tag == "currentLocation"){
+            Commons().showToast("This is your current location", this)
+        }else{
+            Commons().showToast("Navigating to store profile. Please wait...", this)
+            navigateToStoreProfile(marker.tag.toString())
+        }
     }
 
     override fun onMarkerClick(marker: Marker) = false
@@ -147,13 +154,14 @@ class StoresNearMe : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarker
         val titleTextView = infoWindowView.findViewById<TextView>(R.id.storeName)
         titleTextView.text = marker.title
 
-        // Make the custom info window view clickable
-        infoWindowView.setOnClickListener {
-            // Handle the click event here
-            Toast.makeText(this, "Clicked marker: ${marker.title}", Toast.LENGTH_SHORT).show()
-        }
-
         return infoWindowView
+    }
+
+    private fun navigateToStoreProfile(storeId: String) {
+        val intent = Intent(this, MainActivity2::class.java).apply {
+            putExtra("storeId", storeId)
+        }
+        startActivity(intent)
     }
 
     override fun getInfoWindow(p0: Marker): View? {

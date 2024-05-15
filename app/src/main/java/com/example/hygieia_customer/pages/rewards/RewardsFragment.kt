@@ -16,6 +16,7 @@ import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentRewardsBinding
 import com.example.hygieia_customer.model.Reward
 import com.example.hygieia_customer.pages.promos.PromosViewModel
+import com.example.hygieia_customer.pages.store.StoreViewModel
 import com.example.hygieia_customer.utils.NetworkViewModel
 import com.example.hygieia_customer.utils.SharedViewModel
 import com.facebook.shimmer.ShimmerFrameLayout
@@ -31,6 +32,7 @@ class RewardsFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val storeViewModel: StoreViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
     private lateinit var actualLayout : ConstraintLayout
     private lateinit var placeholder : ShimmerFrameLayout
