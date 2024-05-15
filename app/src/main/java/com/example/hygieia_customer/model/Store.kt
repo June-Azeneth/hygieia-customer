@@ -7,5 +7,6 @@ class Store(
     val recyclables: List<*>? = null,
     var name: String = "",
     var photo: String = "",
-    var googleMapLink: String = ""
+    var googleMapLink: String = "",
+    var coordinates: Map<String, Double>? = null
 )

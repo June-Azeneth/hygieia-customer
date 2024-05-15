@@ -78,6 +78,10 @@ class StoreRepo {
                     for (document in querySnapshot) {
                         try {
                             val storeData = document.data
+                            val coordinates = storeData["coordinates"] as? Map<*, *>
+                            val latitude = coordinates?.get("latitude") as? Double ?: 0.0
+                            val longitude = coordinates?.get("longitude") as? Double ?: 0.0
+
                             val store = Store(
                                 document.getString("storeId") ?: "",
                                 document.getString("address") ?: "",
@@ -86,6 +90,7 @@ class StoreRepo {
                                 document.getString("name") ?: "",
                                 document.getString("photo") ?: "",
                                 document.getString("googleMapLocation") ?: "",
+                                mapOf("latitude" to latitude, "longitude" to longitude)
                             )
                             storeList.add(store)
                         } catch (error: Exception) {

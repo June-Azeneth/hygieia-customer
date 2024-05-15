@@ -130,7 +130,6 @@ class StoreListFragment : Fragment() {
                 storeList.addAll(stores)
                 adapter.setData(storeList)
                 showNoDataMessage(false)
-                Commons().log("STORES_LIST",stores.size.toString())
             }
         }
     }
