@@ -12,8 +12,6 @@ class StoreViewModel : ViewModel() {
     private val storeRepo: StoreRepo = StoreRepo()
     private val _storeDetails = MutableLiveData<List<Store>?>()
     val storeDetails: LiveData<List<Store>?> get() = _storeDetails
-//    private val _selectedReward = MutableLiveData<String>()
-//    val selectedReward: LiveData<String> get() = _selectedReward
 
     fun fetchStores(callback: (success: Boolean, error: String?) -> Unit) {
         viewModelScope.launch {
@@ -27,12 +25,12 @@ class StoreViewModel : ViewModel() {
         }
     }
 
-    fun searchForAStore(storeName: String) {
-        viewModelScope.launch {
-            storeRepo.searchStore(storeName) { stores ->
-                _storeDetails.value = stores
-            }
-        }
-    }
+//    fun searchForAStore(storeName: String) {
+//        viewModelScope.launch {
+//            storeRepo.searchStore(storeName) { stores ->
+//                _storeDetails.value = stores
+//            }
+//        }
+//    }
 
 }

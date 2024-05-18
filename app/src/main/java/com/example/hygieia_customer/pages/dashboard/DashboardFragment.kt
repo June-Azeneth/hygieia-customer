@@ -49,6 +49,7 @@ class DashboardFragment : Fragment() {
         setUpNavigation()
         setupRefreshListener()
         setUpRecyclerView()
+        sharedViewModel.setStoreListNav("fromStoreList")
 
         return binding.root
     }

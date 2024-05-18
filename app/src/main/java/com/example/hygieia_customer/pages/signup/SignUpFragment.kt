@@ -300,7 +300,7 @@ class SignUpFragment : Fragment() {
             val passwordText = text.toString()
             val helperText: CharSequence? = when {
                 passwordText.length < 8 -> "Must be more than 8 characters"
-                !passwordText.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#\$%^&+=]).{8,}".toRegex()) ->
+                !passwordText.matches("(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#\$%^&_+=]).{8,}".toRegex()) ->
                     "Password must contain 1 uppercase letter, 1 lowercase letter, 1 digit, and 1 special character (@\$%^&_+=)"
                 else -> null
             }

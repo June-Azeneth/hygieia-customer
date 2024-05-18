@@ -22,7 +22,6 @@ class TransactionViewModel : ViewModel() {
         viewModelScope.launch {
             val rewards = transactionsRepo.getTransactions()
             _transactionDetails.value = rewards
-            Commons().log("TRANSACTIONS VIEW MODEL", transactionDetails.value?.size.toString())
         }
     }
 

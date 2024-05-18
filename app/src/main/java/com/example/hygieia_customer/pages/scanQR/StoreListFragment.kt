@@ -45,6 +45,7 @@ class StoreListFragment : Fragment() {
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
             sharedViewModel.setStoreListNav("fromStoreList")
+
             findNavController().navigate(R.id.action_storeListFragment2_to_storeProfileFragment2)
         }
     }
@@ -206,6 +207,6 @@ class StoreListFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
+//        _binding = null
     }
 }

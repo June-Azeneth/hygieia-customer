@@ -67,6 +67,8 @@ class RewardsFragment : Fragment() {
         networkViewModel = NetworkViewModel(requireContext())
         actualLayout = binding.actualLayout
         placeholder = binding.placeholder
+
+        rewardViewModel.fetchRewards()
     }
 
     private fun observeNetwork() {
