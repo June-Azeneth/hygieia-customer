@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.hygieia_customer.model.Transaction
 import com.example.hygieia_customer.model.TransactionsFilterConfig
 import com.example.hygieia_customer.repository.TransactionsRepo
+import com.example.hygieia_customer.utils.Commons
 import kotlinx.coroutines.launch
 
 class TransactionViewModel : ViewModel() {
@@ -21,6 +22,7 @@ class TransactionViewModel : ViewModel() {
         viewModelScope.launch {
             val rewards = transactionsRepo.getTransactions()
             _transactionDetails.value = rewards
+            Commons().log("TRANSACTIONS VIEW MODEL", transactionDetails.value?.size.toString())
         }
     }
 

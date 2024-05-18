@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +17,14 @@ import java.util.Date
 import java.util.Locale
 
 class TransactionsAdapter(
-    private val transactionList: ArrayList<Transaction>
-) :
-    RecyclerView.Adapter<TransactionsAdapter.MyViewHolder>() {
+    private val transactionList: ArrayList<Transaction>,
+    private val onItemClickListener: OnItemClickListener,
+) : RecyclerView.Adapter<TransactionsAdapter.MyViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(item: Transaction)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.transaction_item, parent, false)
@@ -55,16 +61,14 @@ class TransactionsAdapter(
                 )
             }
         }
+
+        holder.view.setOnClickListener {
+            onItemClickListener.onItemClick(currentItem)
+        }
     }
 
     override fun getItemCount(): Int {
         return transactionList.size
-    }
-
-    private fun formatDateOnly(date: Timestamp): String {
-        val dateInMillis = date.seconds * 1000 + date.nanoseconds / 1000000 // Convert Timestamp to milliseconds
-        val dateFormat = SimpleDateFormat("MMM dd yyyy", Locale.getDefault())
-        return dateFormat.format(Date(dateInMillis))
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -72,6 +76,7 @@ class TransactionsAdapter(
         val type: TextView = itemView.findViewById(R.id.transactionType)
         val date: TextView = itemView.findViewById(R.id.date)
         val points: TextView = itemView.findViewById(R.id.pointsSubtractedOrAdded)
+        val view : CardView = itemView.findViewById(R.id.view)
     }
 
     fun setData(newTransactionList: List<Transaction>) {

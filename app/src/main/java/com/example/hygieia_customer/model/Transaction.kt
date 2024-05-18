@@ -16,4 +16,5 @@ class Transaction(
     var storeName: String = "",
     var discount: Double = 0.0,
     var promoId: String = "",
+    var totalPointsSpent : Double = 0.0,
 )

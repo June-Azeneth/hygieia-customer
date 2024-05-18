@@ -50,8 +50,9 @@ class OffersFragment : Fragment() {
     private lateinit var rewardList: ArrayList<Reward>
     private lateinit var promoList: ArrayList<Promo>
     private lateinit var networkViewModel: NetworkViewModel
-    private lateinit var actualLayout: ConstraintLayout
+    private lateinit var listContainer: ConstraintLayout
     private lateinit var placeholder: ShimmerFrameLayout
+    private var internetAvailable : Boolean = true
     private val rewardsAdapter by lazy { RewardsAdapter(arrayListOf(), rewardsOnItemClickListener) }
     private val rewardsOnItemClickListener = object : RewardsAdapter.OnItemClickListener {
 
@@ -99,7 +100,7 @@ class OffersFragment : Fragment() {
 
     private fun initializeVariables() {
         networkViewModel = NetworkViewModel(requireContext())
-        actualLayout = binding.actualLayout
+        listContainer = binding.listContainer
         placeholder = binding.placeholder
         reward = binding.reward
         promo = binding.promo
@@ -109,30 +110,48 @@ class OffersFragment : Fragment() {
 
     private fun commonActions() {
         commons.setOnRefreshListener(binding.swipeRefreshLayout) {
-            rewardViewModel.fetchRewards()
-            promosViewModel.fetchPromos()
-            binding.searchItem.text?.clear()
+            if(internetAvailable){
+                rewardViewModel.fetchRewards()
+                promosViewModel.fetchPromos()
+                binding.searchItem.text?.clear()
+                showUi(true)
+            }
+            else{
+                showUi(false)
+            }
         }
     }
-
+ 
     private fun observeNetwork() {
         dialog = MaterialAlertDialogBuilder(requireContext(), R.style.MaterialAlertDialog_Rounded)
             .setView(R.layout.connectivity_dialog_box)
             .setCancelable(true)
             .create()
         networkViewModel.isNetworkAvailable.observe(viewLifecycleOwner) { available ->
+            internetAvailable = available
             if (available) {
-                actualLayout.visibility = View.VISIBLE
-                placeholder.visibility = View.INVISIBLE
-                dialog.hide()
+                showUi(true)
                 observeDataSetChange()
             } else {
-                actualLayout.visibility = View.INVISIBLE
-                placeholder.visibility = View.VISIBLE
-                rewardList.clear()
+                showUi(false)
                 if (!dialog.isShowing)
                     dialog.show()
             }
+        }
+    }
+
+    private fun showUi(show : Boolean){
+        if (show) {
+            listContainer.visibility = View.VISIBLE
+            placeholder.visibility = View.GONE
+            dialog.hide()
+            observeDataSetChange()
+        } else {
+            listContainer.visibility = View.GONE
+            placeholder.visibility = View.VISIBLE
+            rewardList.clear()
+            if (!dialog.isShowing)
+                dialog.show()
         }
     }
 

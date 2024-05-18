@@ -37,7 +37,15 @@ class TransactionFragment : Fragment() {
     private val transactionViewModel: TransactionViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val storeViewModel: StoreViewModel by activityViewModels()
-    private val adapter by lazy { TransactionsAdapter(arrayListOf()) }
+    private var adapter : TransactionsAdapter = TransactionsAdapter(
+        transactionList,
+        object : TransactionsAdapter.OnItemClickListener {
+            override fun onItemClick(item: Transaction) {
+                val dialog = TransactionDetailsDialog(requireContext(), item)
+                dialog.show()
+            }
+        }
+    )
     private val userRepo = UserRepo()
     private var currentUser: String = ""
     private lateinit var dialog: AlertDialog

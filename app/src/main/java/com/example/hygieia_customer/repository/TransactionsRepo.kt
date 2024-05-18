@@ -1,6 +1,7 @@
 package com.example.hygieia_customer.repository
 
 import android.util.Log
+import com.example.hygieia_customer.model.RedeemedRewards
 import com.example.hygieia_customer.model.Transaction
 import com.example.hygieia_customer.utils.Commons
 import com.google.firebase.auth.FirebaseAuth
@@ -101,6 +102,26 @@ class TransactionsRepo {
                 } catch (e: Exception) {
                     null
                 }
+            }
+        }
+    }
+
+    suspend fun getTransactionProducts(transactionId: String): List<RedeemedRewards>? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val fireStore = FirebaseFirestore.getInstance()
+                val productsRef = fireStore.collection("transaction").document(transactionId)
+                    .collection("products")
+
+                val querySnapshot = productsRef.get().await()
+                val productsList = mutableListOf<RedeemedRewards>()
+                for (document in querySnapshot) {
+                    val productData = document.toObject(RedeemedRewards::class.java)
+                    productsList.add(productData)
+                }
+                productsList
+            } catch (e: Exception) {
+                null
             }
         }
     }
