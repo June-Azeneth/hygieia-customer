@@ -20,10 +20,7 @@ class QRScanningFragment : Fragment() {
     private val userRepo = UserRepo()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private var _binding: FragmentQRScanningBinding? = null
-    private var commons: Commons = Commons()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val currentUser: String = userRepo.getCurrentUserId().toString()
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -33,11 +30,18 @@ class QRScanningFragment : Fragment() {
     ): View {
         _binding = FragmentQRScanningBinding.inflate(inflater, container, false)
         updateUI()
+        refreshUi()
 
         binding.viewStores.setOnClickListener {
             findNavController().navigate(R.id.action_QRScanningFragment_to_storeListFragment2)
         }
         return binding.root
+    }
+
+    private fun refreshUi() {
+        Commons().setOnRefreshListener(binding.swipeRefreshLayout) {
+            sharedViewModel.fetchUserDetails(currentUser)
+        }
     }
 
     private fun updateUI() {
@@ -59,7 +63,6 @@ class QRScanningFragment : Fragment() {
                     binding.qrCode.setImageResource(R.drawable.image_not_found)
                 }
             }
-            val currentUser = userRepo.getCurrentUserId().toString()
             sharedViewModel.fetchUserDetails(currentUser)
         } catch (error: Exception) {
             Log.e(TAG, error.toString())

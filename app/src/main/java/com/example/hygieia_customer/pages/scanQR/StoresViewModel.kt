@@ -8,7 +8,7 @@ import com.example.hygieia_customer.model.Store
 import com.example.hygieia_customer.repository.StoreRepo
 import kotlinx.coroutines.launch
 
-class StoreViewModel : ViewModel() {
+class StoresViewModel : ViewModel() {
     private val storeRepo: StoreRepo = StoreRepo()
     private val _storeDetails = MutableLiveData<List<Store>?>()
     val storeDetails: LiveData<List<Store>?> get() = _storeDetails

@@ -18,6 +18,7 @@ import com.example.hygieia_customer.model.Store
 import com.example.hygieia_customer.pages.promos.PromosViewModel
 import com.example.hygieia_customer.pages.rewards.RewardsViewModel
 import com.example.hygieia_customer.pages.store.storesNearMe.StoresNearMe
+import com.example.hygieia_customer.pages.store.StoreViewModel
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
 import com.example.hygieia_customer.utils.SharedViewModel
@@ -31,6 +32,7 @@ class StoreListFragment : Fragment() {
     private val rewardViewModel: RewardsViewModel by activityViewModels()
     private val promosViewModel: PromosViewModel by activityViewModels()
     private val storeViewModel: StoreViewModel by activityViewModels()
+    private val storeVM : StoresViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private lateinit var networkViewModel: NetworkViewModel
     private lateinit var actualLayout: SwipeRefreshLayout
@@ -45,7 +47,7 @@ class StoreListFragment : Fragment() {
             rewardViewModel.setSelectedReward(item.storeId)
             promosViewModel.setSelectedReward(item.storeId)
             sharedViewModel.setStoreListNav("fromStoreList")
-
+            storeViewModel.setAction("offers")
             findNavController().navigate(R.id.action_storeListFragment2_to_storeProfileFragment2)
         }
     }
@@ -74,7 +76,7 @@ class StoreListFragment : Fragment() {
         Commons().setOnRefreshListener(actualLayout) {
             showNoDataMessage(false)
             loadList(true)
-            storeViewModel.fetchStores { success, error ->
+            storeVM.fetchStores { success, error ->
                 loadList(false)
                 if (!success) {
                     Commons().showToast("Failed to fetch stores: $error", requireContext())
@@ -125,7 +127,7 @@ class StoreListFragment : Fragment() {
     }
 
     private fun observeDataSetChange() {
-        storeViewModel.storeDetails.observe(viewLifecycleOwner) { stores ->
+        storeVM.storeDetails.observe(viewLifecycleOwner) { stores ->
             if (stores != null) {
                 storeList.clear()
                 storeList.addAll(stores)
@@ -152,7 +154,7 @@ class StoreListFragment : Fragment() {
             recyclerView.setHasFixedSize(true)
             recyclerView.adapter = adapter
 
-            storeViewModel.fetchStores { success, error ->
+            storeVM.fetchStores { success, error ->
                 loadList(false)
                 if (success) {
                     observeDataSetChange()

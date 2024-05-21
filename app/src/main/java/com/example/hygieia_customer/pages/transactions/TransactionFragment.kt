@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hygieia_customer.R
 import com.example.hygieia_customer.databinding.FragmentTransactionBinding
 import com.example.hygieia_customer.model.Transaction
-import com.example.hygieia_customer.pages.scanQR.StoreViewModel
+import com.example.hygieia_customer.pages.scanQR.StoresViewModel
 import com.example.hygieia_customer.repository.UserRepo
 import com.example.hygieia_customer.utils.Commons
 import com.example.hygieia_customer.utils.NetworkViewModel
@@ -36,7 +36,7 @@ class TransactionFragment : Fragment() {
     private val storeList = mutableListOf("All Stores")
     private val transactionViewModel: TransactionViewModel by activityViewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val storeViewModel: StoreViewModel by activityViewModels()
+    private val storeViewModel: StoresViewModel by activityViewModels()
     private var adapter : TransactionsAdapter = TransactionsAdapter(
         transactionList,
         object : TransactionsAdapter.OnItemClickListener {

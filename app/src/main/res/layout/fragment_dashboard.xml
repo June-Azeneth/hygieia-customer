@@ -30,8 +30,8 @@
                 android:id="@+id/actual_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
                 android:paddingBottom="@dimen/small"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +53,7 @@
                     android:layout_marginTop="@dimen/small"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:textSize="20sp"
+                    android:text="Hello User!"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,6 +61,7 @@
                     android:id="@+id/text1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/currentBalance"
                     android:fontFamily="@font/nunito_sans_semibold"
                     android:text="@string/your_current_balance_is"
                     android:textSize="12sp"
@@ -88,6 +90,7 @@
                     android:text="@string/_0"
                     android:textColor="@color/text_color"
                     android:textSize="45sp"
+                    app:layout_constraintBottom_toTopOf="@id/ads"
                     app:layout_constraintStart_toEndOf="@id/text2"
                     app:layout_constraintTop_toBottomOf="@+id/text1" />
 
@@ -95,72 +98,27 @@
                     android:id="@+id/earnMore"
                     android:layout_width="120dp"
                     android:layout_height="48dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginBottom="@dimen/regular"
                     android:background="@drawable/orange_round_button"
                     android:text="@string/earn_more"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@id/ads"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.91"
-                    app:layout_constraintTop_toBottomOf="@id/text1" />
+                    />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/banner"
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:id="@+id/ads"
+                    android:background="@color/calmGray"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/green_rounded_button"
-                    android:paddingTop="15dp"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginTop="@dimen/regular"
+                    app:layout_constraintTop_toBottomOf="@id/currentBalance"
+                    app:layout_constraintBottom_toTopOf="@+id/card1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/currentBalance">
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/img1"
-                        android:layout_width="165dp"
-                        android:layout_height="0dp"
-                        android:src="@drawable/recyclables"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@id/text4"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0" />
-
-                    <TextView
-                        android:id="@+id/text3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:fontFamily="@font/nunito_sans_bold"
-                        android:gravity="end"
-                        android:text="@string/recycle_now"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.698"
-                        app:layout_constraintStart_toEndOf="@id/img1"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/text4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginBottom="10dp"
-                        android:gravity="end"
-                        android:text="@string/shop_at_any_of_our_affiliated_stores_return_the_recyclable_packaging_s_scan_your_qr_code_to_earn_points_effortlessly_it_s_that_simple"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.425"
-                        app:layout_constraintStart_toEndOf="@id/img1"
-                        app:layout_constraintTop_toBottomOf="@id/text3"
-                        app:layout_constraintVertical_bias="1.0" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/card1"
@@ -172,7 +130,7 @@
                     app:cardCornerRadius="@dimen/text_tiny"
                     app:layout_constraintEnd_toStartOf="@id/card2"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/banner">
+                    app:layout_constraintTop_toBottomOf="@id/ads">
 
                     <LinearLayout
                         android:id="@+id/rewardsCard"
@@ -215,7 +173,7 @@
                     app:cardCornerRadius="@dimen/text_tiny"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/card1"
-                    app:layout_constraintTop_toBottomOf="@id/banner">
+                    app:layout_constraintTop_toBottomOf="@id/ads">
 
                     <LinearLayout
                         android:id="@+id/promosCard"
@@ -275,12 +233,14 @@
                         android:textStyle="italic" />
 
                 </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/storeList"
-                    android:layout_marginTop="@dimen/tiny"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/tiny"
+                    android:layout_marginTop="@dimen/tiny"
+                    android:layout_marginBottom="@dimen/regular"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/head" />
